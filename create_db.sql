@@ -103,7 +103,7 @@ CREATE TABLE feats (
     bonus_reference text DEFAULT ''
 );
 
-CREATE TABLE inventory (
+CREATE TABLE character_inventory (
     character text references characters(name),
     gold numeric CHECK (gold >= 0.00) DEFAULT 0.00,
     item_name text references items(name),
