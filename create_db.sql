@@ -139,7 +139,7 @@ CREATE TABLE trait_bonuses (
     description text DEFAULT '',
     is_conditional boolean NOT NULL,
     bonus_value integer DEFAULT 1,
-    bonus_type bonus DEFAULT 'trait'
+    bonus_type bonus_type DEFAULT 'trait'
 );
 
 CREATE TABLE feats (
@@ -148,11 +148,19 @@ CREATE TABLE feats (
     is_stackable boolean DEFAULT false
 );
 
+CREATE TABLE feat_bonuses (
+    name text references feats(name),
+    description text DEFAULT '',
+    is_conditional boolean NOT NULL,
+    bonus_value integer DEFAULT 1,
+    bonus_type bonus_type NOT NULL
+);
+
 CREATE TABLE inventory (
     character text references characters(name),
-    name text references items(name),
+    name text NOT NULL,
     description text DEFAULT '',
-    unit_weight numeric(10,1) DEFAULT 0
+    unit_weight numeric(10,1) DEFAULT 0,
     count integer CHECK (count > 0) DEFAULT 1,
     is_camp boolean DEFAULT false,
     is_carrying boolean DEFAULT true,
@@ -172,4 +180,3 @@ CREATE TABLE character_feats (
     count integer CHECK (count >= 1) DEFAULT 1,
     PRIMARY KEY(character, name)
 );
-
