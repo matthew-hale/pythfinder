@@ -79,37 +79,27 @@ CREATE TABLE character_skills (
     profession_or_craft_type text DEFAULT ''
 );
 
-CREATE TABLE items (
-    name text PRIMARY KEY,
-    description text DEFAULT '',
-    unit_weight numeric(10,1) DEFAULT 0,
-    bonus_value integer DEFAULT 0,
-    bonus_type text DEFAULT '',
-    bonus_reference text DEFAULT ''
-);
-
 CREATE TABLE traits (
     name text PRIMARY KEY,
-    description text DEFAULT '',
-    bonus_value integer DEFAULT 0,
-    bonus_type text DEFAULT '',
-    bonus_reference text DEFAULT ''
+    description text DEFAULT ''
 );
 
 CREATE TABLE feats (
     name text PRIMARY KEY,
     description text DEFAULT '',
-    bonus_value integer DEFAULT 0,
-    bonus_type text DEFAULT '',
-    bonus_reference text DEFAULT ''
+    is_stackable boolean DEFAULT false,
+    has_conditional_bonus boolean DEFAULT false
 );
 
-CREATE TABLE character_inventory (
+CREATE TABLE inventory (
     character text references characters(name),
-    item_name text references items(name),
+    name text references items(name),
+    description text DEFAULT '',
+    unit_weight numeric(10,1) DEFAULT 0
     count integer CHECK (count > 0) DEFAULT 1,
     is_camp boolean DEFAULT false,
-    is_carrying boolean DEFAULT true
+    is_carrying boolean DEFAULT true,
+    PRIMARY KEY(character, name)
 );
 
 CREATE TABLE character_traits (
