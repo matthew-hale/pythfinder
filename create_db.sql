@@ -12,6 +12,7 @@ CREATE TABLE characters (
     race text NOT NULL,
     class text NOT NULL,
     level integer CHECK (level > 0) NOT NULL,
+    gold numeric CHECK (gold >= 0.00) DEFAULT 0.00,
     max_health integer CHECK (max_health > 0) NOT NULL,
     base_attack_bonus integer DEFAULT 1
 );
@@ -105,7 +106,6 @@ CREATE TABLE feats (
 
 CREATE TABLE character_inventory (
     character text references characters(name),
-    gold numeric CHECK (gold >= 0.00) DEFAULT 0.00,
     item_name text references items(name),
     count integer CHECK (count > 0) DEFAULT 1,
     is_camp boolean DEFAULT false,
