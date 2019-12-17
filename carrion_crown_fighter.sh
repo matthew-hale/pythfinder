@@ -28,7 +28,7 @@ baseAttackBonus=1
 # Traits
 
 traits="On the payroll: +150 starting gold
-Ordinary: +4 to stealth checks when attempting to in a crowd"
+Ordinary: +4 to stealth checks when attempting to blend in a crowd"
 
 # Feats
 feats="Skill Focus: +3 to checks with chosen skill (sleight of hand)
