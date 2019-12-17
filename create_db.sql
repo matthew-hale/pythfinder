@@ -7,6 +7,28 @@ CREATE TYPE ability AS ENUM (
     'charisma'
 );
 
+CREATE TYPE bonus AS ENUM (
+    'alchemical',
+    'armor',
+    'circumstance',
+    'competence',
+    'deflection',
+    'dodge',
+    'enhancement',
+    'inherent',
+    'insight',
+    'luck',
+    'morale',
+    'natural armor',
+    'profane',
+    'racial',
+    'resistance',
+    'sacred',
+    'shield',
+    'size',
+    'trait'
+);
+
 CREATE TABLE characters (
     name text PRIMARY KEY, 
     race text NOT NULL,
