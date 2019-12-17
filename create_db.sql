@@ -44,6 +44,26 @@ CREATE TABLE bonuses (
     is_self_stackable boolean NOT NULL
 );
 
+INSERT INTO bonuses VALUES ('alchemical', false);
+INSERT INTO bonuses VALUES ('armor', false);
+INSERT INTO bonuses VALUES ('circumstance', true);
+INSERT INTO bonuses VALUES ('competence', false);
+INSERT INTO bonuses VALUES ('deflection', false);
+INSERT INTO bonuses VALUES ('dodge', true);
+INSERT INTO bonuses VALUES ('enhancement', false);
+INSERT INTO bonuses VALUES ('inherent', false);
+INSERT INTO bonuses VALUES ('insight', false);
+INSERT INTO bonuses VALUES ('luck', false);
+INSERT INTO bonuses VALUES ('morale', false);
+INSERT INTO bonuses VALUES ('natural armor', false);
+INSERT INTO bonuses VALUES ('profane', false);
+INSERT INTO bonuses VALUES ('racial', true);
+INSERT INTO bonuses VALUES ('resistance', false);
+INSERT INTO bonuses VALUES ('sacred', false);
+INSERT INTO bonuses VALUES ('shield', false);
+INSERT INTO bonuses VALUES ('size', false);
+INSERT INTO bonuses VALUES ('trait', false);
+
 CREATE TABLE character_abilities (
     character text PRIMARY KEY references characters(name),
     strength int CHECK (strength > 0 AND strength < 99) DEFAULT 10,
@@ -106,16 +126,27 @@ CREATE TABLE character_skills (
     profession_or_craft_type text DEFAULT ''
 );
 
+-- Traits are just names and descriptions, but can have multiple bonuses
+
 CREATE TABLE traits (
     name text PRIMARY KEY,
     description text DEFAULT ''
+);
+
+-- Bonuses that come from traits will reference traits by name
+CREATE TABLE trait_bonuses (
+    name text references traits(name),
+    description text DEFAULT '',
+    is_conditional boolean NOT NULL,
+    bonus_value integer DEFAULT 1,
+    bonus_type bonus DEFAULT 'trait'
 );
 
 CREATE TABLE feats (
     name text PRIMARY KEY,
     description text DEFAULT '',
     is_stackable boolean DEFAULT false,
-    has_conditional_bonus boolean DEFAULT false
+    has_bonus boolean DEFAULT false
 );
 
 CREATE TABLE inventory (
