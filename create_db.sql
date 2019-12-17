@@ -228,56 +228,16 @@ INSERT INTO characters VALUES (
     1
 );
 
-INSERT INTO character_abilities VALUES (
-    'Qofin Parora',
-    17,
-    16,
-    16,
-    13,
-    10,
-    11
-);
+INSERT INTO character_abilities VALUES ('Qofin Parora', 17, 16, 16, 13, 10, 11);
 
-INSERT INTO feats VALUES (
-    'Deft Hands',
-    '+2 to Disable Device and Sleight of Hand checks; bonus increases to +4 with 10 or more ranks in these skills.',
-    false
-);
+INSERT INTO character_skills VALUES ('Qofin Parora', 'Acrobatics', 0, false, DEFAULT);
+INSERT INTO character_skills VALUES ('Qofin Parora', 'Appraise', 0, false, DEFAULT);
+INSERT INTO character_skills VALUES ('Qofin Parora', 'Bluff', 1, true, DEFAULT);
+INSERT INTO character_skills VALUES ('Qofin Parora', 'Climb', 1, true, DEFAULT);
+INSERT INTO character_skills VALUES ('Qofin Parora', 'Craft', 1, true, 'Weapons');
+INSERT INTO character_skills VALUES ('Qofin Parora', 'Diplomacy', 0, false, DEFAULT);
+INSERT INTO character_skills VALUES ('Qofin Parora', 'Disable Device', 0, false, DEFAULT);
+INSERT INTO character_skills VALUES ('Qofin Parora', 'Disguise', 0, true, DEFAULT);
+INSERT INTO character_skills VALUES ('Qofin Parora', 'Escape Artist', 0, false, DEFAULT);
+INSERT INTO character_skills VALUES ('Qofin Parora', 'Fly', 0, false, DEFAULT);
 
-INSERT INTO feat_bonuses VALUES (
-    'Deft Hands',
-    'Disable Device, pre 10 ranks',
-    true,
-    2,
-    'skill',
-    'trait'
-);
-
-INSERT INTO feat_bonuses VALUES (
-    'Deft Hands',
-    'Sleight of Hand, pre 10 ranks',
-    true,
-    2,
-    'skill',
-    'trait'
-);
-
-INSERT INTO feat_bonuses VALUES (
-    'Deft Hands',
-    'Disable Device, post 10 ranks',
-    true,
-    4,
-    'skill',
-    'trait'
-);
-
-INSERT INTO feat_bonuses VALUES (
-    'Deft Hands',
-    'Sleight of Hand, post 10 ranks',
-    true,
-    4,
-    'skill',
-    'trait'
-);
-
-INSERT INTO character_feats VALUES ('Qofin Parora', 'Deft Hands', 1);
