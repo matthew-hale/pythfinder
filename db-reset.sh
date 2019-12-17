@@ -6,3 +6,4 @@
 
 psql postgres -c "DROP DATABASE pathfinder"
 createdb pathfinder
+psql pathfinder -f "~/pathfinder/create_db.sql"
