@@ -7,7 +7,7 @@ CREATE TYPE ability AS ENUM (
     'charisma'
 );
 
-CREATE TYPE bonus_type AS ENUM (
+CREATE TYPE bonus_source AS ENUM (
     'alchemical',
     'armor',
     'circumstance',
@@ -26,7 +26,28 @@ CREATE TYPE bonus_type AS ENUM (
     'sacred',
     'shield',
     'size',
-    'trait'
+    'trait',
+    'other'
+);
+
+CREATE TYPE bonus_target AS ENUM (
+    'skill',
+    'ability',
+    'CMD',
+    'initiative',
+    'damage',
+    'attack',
+    'crit',
+    'armor_penalty',
+    'saving_throw',
+    'other'
+);
+
+CREATE TYPE bonus_type AS ENUM (
+    'enhancement',
+    'capcaity',
+    'reroll',
+    'other'
 );
 
 CREATE TABLE characters (
@@ -51,7 +72,7 @@ CREATE TABLE inventory (
 );
 
 CREATE TABLE bonuses (
-    name bonus_type PRIMARY KEY,
+    name bonus_source PRIMARY KEY,
     is_self_stackable boolean NOT NULL
 );
 
@@ -151,7 +172,7 @@ CREATE TABLE trait_bonuses (
     description text DEFAULT '',
     is_conditional boolean NOT NULL,
     bonus_value integer DEFAULT 1,
-    bonus_type bonus_type DEFAULT 'trait'
+    bonus_source bonus_source DEFAULT 'trait'
 );
 
 CREATE TABLE character_traits (
@@ -172,7 +193,7 @@ CREATE TABLE feat_bonuses (
     description text DEFAULT '',
     is_conditional boolean NOT NULL,
     bonus_value integer DEFAULT 1,
-    bonus_type bonus_type NOT NULL
+    bonus_source bonus_source NOT NULL
 );
 
 CREATE TABLE character_feats (
