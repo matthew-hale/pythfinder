@@ -39,6 +39,11 @@ CREATE TABLE characters (
     base_attack_bonus integer DEFAULT 1
 );
 
+CREATE TABLE bonuses (
+    name bonus PRIMARY KEY,
+    is_self_stackable boolean NOT NULL
+);
+
 CREATE TABLE character_abilities (
     character text PRIMARY KEY references characters(name),
     strength int CHECK (strength > 0 AND strength < 99) DEFAULT 10,
