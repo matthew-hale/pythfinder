@@ -7,7 +7,7 @@ CREATE TYPE ability AS ENUM (
     'charisma'
 );
 
-CREATE TYPE bonus AS ENUM (
+CREATE TYPE bonus_type AS ENUM (
     'alchemical',
     'armor',
     'circumstance',
@@ -40,7 +40,7 @@ CREATE TABLE characters (
 );
 
 CREATE TABLE bonuses (
-    name bonus PRIMARY KEY,
+    name bonus_type PRIMARY KEY,
     is_self_stackable boolean NOT NULL
 );
 
