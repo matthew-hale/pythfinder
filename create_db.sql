@@ -7,49 +7,6 @@ CREATE TYPE ability AS ENUM (
     'charisma'
 );
 
-CREATE TYPE bonus_source AS ENUM (
-    'alchemical',
-    'armor',
-    'circumstance',
-    'competence',
-    'deflection',
-    'dodge',
-    'enhancement',
-    'inherent',
-    'insight',
-    'luck',
-    'morale',
-    'natural armor',
-    'profane',
-    'racial',
-    'resistance',
-    'sacred',
-    'shield',
-    'size',
-    'trait',
-    'other'
-);
-
-CREATE TYPE bonus_target AS ENUM (
-    'skill',
-    'ability',
-    'CMD',
-    'initiative',
-    'damage',
-    'attack',
-    'crit',
-    'armor_penalty',
-    'saving_throw',
-    'other'
-);
-
-CREATE TYPE bonus_type AS ENUM (
-    'enhancement',
-    'capcaity',
-    'reroll',
-    'other'
-);
-
 CREATE TABLE characters (
     name text PRIMARY KEY, 
     race text NOT NULL,
@@ -70,31 +27,6 @@ CREATE TABLE inventory (
     is_carrying boolean DEFAULT true,
     PRIMARY KEY(character, name)
 );
-
-CREATE TABLE bonuses (
-    name bonus_source PRIMARY KEY,
-    is_self_stackable boolean NOT NULL
-);
-
-INSERT INTO bonuses VALUES ('alchemical', false);
-INSERT INTO bonuses VALUES ('armor', false);
-INSERT INTO bonuses VALUES ('circumstance', true);
-INSERT INTO bonuses VALUES ('competence', false);
-INSERT INTO bonuses VALUES ('deflection', false);
-INSERT INTO bonuses VALUES ('dodge', true);
-INSERT INTO bonuses VALUES ('enhancement', false);
-INSERT INTO bonuses VALUES ('inherent', false);
-INSERT INTO bonuses VALUES ('insight', false);
-INSERT INTO bonuses VALUES ('luck', false);
-INSERT INTO bonuses VALUES ('morale', false);
-INSERT INTO bonuses VALUES ('natural armor', false);
-INSERT INTO bonuses VALUES ('profane', false);
-INSERT INTO bonuses VALUES ('racial', true);
-INSERT INTO bonuses VALUES ('resistance', false);
-INSERT INTO bonuses VALUES ('sacred', false);
-INSERT INTO bonuses VALUES ('shield', false);
-INSERT INTO bonuses VALUES ('size', false);
-INSERT INTO bonuses VALUES ('trait', false);
 
 CREATE TABLE character_abilities (
     character text PRIMARY KEY references characters(name),
@@ -165,17 +97,6 @@ CREATE TABLE traits (
     description text DEFAULT ''
 );
 
--- Bonuses that come from traits will reference traits by name
-
-CREATE TABLE trait_bonuses (
-    name text references traits(name),
-    description text DEFAULT '',
-    is_conditional boolean NOT NULL,
-    bonus_value integer DEFAULT 1,
-    bonus_target bonus_target NOT NULL,
-    bonus_source bonus_source DEFAULT 'trait'
-);
-
 CREATE TABLE character_traits (
     character text references characters(name),
     name text references traits(name),
@@ -186,15 +107,6 @@ CREATE TABLE feats (
     name text PRIMARY KEY,
     description text DEFAULT '',
     is_stackable boolean DEFAULT false
-);
-
-CREATE TABLE feat_bonuses (
-    name text references feats(name),
-    description text DEFAULT '',
-    is_conditional boolean NOT NULL,
-    bonus_value integer DEFAULT 1,
-    bonus_target bonus_target NOT NULL,
-    bonus_source bonus_source NOT NULL
 );
 
 CREATE TABLE character_feats (
