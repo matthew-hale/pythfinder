@@ -39,6 +39,17 @@ CREATE TABLE characters (
     base_attack_bonus integer DEFAULT 1
 );
 
+CREATE TABLE inventory (
+    character text references characters(name),
+    name text NOT NULL,
+    description text DEFAULT '',
+    unit_weight numeric(10,1) DEFAULT 0,
+    count integer CHECK (count > 0) DEFAULT 1,
+    is_camp boolean DEFAULT false,
+    is_carrying boolean DEFAULT true,
+    PRIMARY KEY(character, name)
+);
+
 CREATE TABLE bonuses (
     name bonus_type PRIMARY KEY,
     is_self_stackable boolean NOT NULL
@@ -134,12 +145,20 @@ CREATE TABLE traits (
 );
 
 -- Bonuses that come from traits will reference traits by name
+
 CREATE TABLE trait_bonuses (
     name text references traits(name),
     description text DEFAULT '',
     is_conditional boolean NOT NULL,
     bonus_value integer DEFAULT 1,
     bonus_type bonus_type DEFAULT 'trait'
+);
+
+CREATE TABLE character_traits (
+    character text references characters(name),
+    name text references traits(name),
+    count integer CHECK (count >= 1) DEFAULT 1,
+    PRIMARY KEY(character, name)
 );
 
 CREATE TABLE feats (
@@ -156,27 +175,10 @@ CREATE TABLE feat_bonuses (
     bonus_type bonus_type NOT NULL
 );
 
-CREATE TABLE inventory (
-    character text references characters(name),
-    name text NOT NULL,
-    description text DEFAULT '',
-    unit_weight numeric(10,1) DEFAULT 0,
-    count integer CHECK (count > 0) DEFAULT 1,
-    is_camp boolean DEFAULT false,
-    is_carrying boolean DEFAULT true,
-    PRIMARY KEY(character, name)
-);
-
-CREATE TABLE character_traits (
-    character text references characters(name),
-    name text references traits(name),
-    count integer CHECK (count >= 1) DEFAULT 1,
-    PRIMARY KEY(character, name)
-);
-
 CREATE TABLE character_feats (
     character text references characters(name),
     name text references feats(name),
     count integer CHECK (count >= 1) DEFAULT 1,
     PRIMARY KEY(character, name)
 );
+
