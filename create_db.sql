@@ -145,8 +145,7 @@ CREATE TABLE trait_bonuses (
 CREATE TABLE feats (
     name text PRIMARY KEY,
     description text DEFAULT '',
-    is_stackable boolean DEFAULT false,
-    has_bonus boolean DEFAULT false
+    is_stackable boolean DEFAULT false
 );
 
 CREATE TABLE inventory (
