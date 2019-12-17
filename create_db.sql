@@ -161,13 +161,15 @@ CREATE TABLE inventory (
 
 CREATE TABLE character_traits (
     character text references characters(name),
-    trait_name text references traits(name),
-    count integer CHECK (count >= 1) DEFAULT 1
+    name text references traits(name),
+    count integer CHECK (count >= 1) DEFAULT 1,
+    PRIMARY KEY(character, name)
 );
 
 CREATE TABLE character_feats (
     character text references characters(name),
-    feat_name text references feats(name),
-    count integer CHECK (count >= 1) DEFAULT 1
+    name text references feats(name),
+    count integer CHECK (count >= 1) DEFAULT 1,
+    PRIMARY KEY(character, name)
 );
 
