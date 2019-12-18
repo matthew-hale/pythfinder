@@ -1,3 +1,15 @@
+CREATE TYPE alignment AS ENUM (
+    'LG',
+    'LN',
+    'LE',
+    'NG',
+    'NN',
+    'NE',
+    'CG',
+    'CN',
+    'CE'
+);
+
 CREATE TYPE ability AS ENUM (
     'strength',
     'dexterity',
@@ -11,6 +23,7 @@ CREATE TABLE characters (
     name text PRIMARY KEY, 
     race text NOT NULL,
     class text NOT NULL,
+    alignment alignment NOT NULL,
     level integer CHECK (level > 0) NOT NULL,
     gold numeric CHECK (gold >= 0.00) DEFAULT 0.00,
     max_health integer CHECK (max_health > 0) NOT NULL,
@@ -128,20 +141,24 @@ $stack$ LANGUAGE plpgsql;
 CREATE TRIGGER feat_stack_check BEFORE INSERT OR UPDATE ON character_feats
     FOR EACH ROW EXECUTE PROCEDURE feat_stack_check();
 
--- demo data
+-- Demo data
 
+-- Qofin Parora, new Carrion Crown character
 INSERT INTO characters VALUES (
     'Qofin Parora',
     'Half-elf',
     'Fighter',
+    'NE',
     1,
     0.00,
     13,
     1
 );
 
+-- Ability scores
 INSERT INTO character_abilities VALUES ('Qofin Parora', 17, 16, 16, 13, 10, 11);
 
+-- Skills
 INSERT INTO character_skills VALUES ('Qofin Parora', 'Acrobatics', 0, false, DEFAULT);
 INSERT INTO character_skills VALUES ('Qofin Parora', 'Appraise', 0, false, DEFAULT);
 INSERT INTO character_skills VALUES ('Qofin Parora', 'Bluff', 0, true, DEFAULT);
@@ -178,3 +195,6 @@ INSERT INTO character_skills VALUES ('Qofin Parora', 'Survival', 1, true, DEFAUL
 INSERT INTO character_skills VALUES ('Qofin Parora', 'Swim', 0, true, DEFAULT);
 INSERT INTO character_skills VALUES ('Qofin Parora', 'Use Magic Device', 0, false, DEFAULT);
 
+-- Traits
+
+-- Feats
