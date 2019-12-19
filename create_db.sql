@@ -210,3 +210,33 @@ INSERT INTO feats VALUES ('Deft Hands', 'You have exceptional manual dexterity. 
 
 INSERT INTO character_feats VALUES ('Qofin Parora', 'Skill Focus (Sleight of Hand)', DEFAULT);
 INSERT INTO character_feats VALUES ('Qofin Parora', 'Deft Hands', DEFAULT);
+
+-- Items
+
+INSERT INTO inventory VALUES ('Qofin Parora', 'Tent, hanging', '', 15, 1, true, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Outfit, traveler''s', '', 5, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Backpack, masterwork', '', 4, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Bedroll', '', 5, 1, true, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Blanket', '', 3, 1, true, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Fishing tackle', '+1 Circumstance bonus to Survical checks to gather food aroun dbodies of water that contain fish.', 5, 1, true, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Crowbar', '+2 Circumstance bonus to Strength checks to force open a door or chest.', 5, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Pouch, belt', 'Can hold 1/5 cubic feet of material.', 5, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Scarf, pocketed', '+4 bonus on Sleight of Hand checks made to hide objects on your body.', 0.5, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Flint and steel', 'Lighting a torch with a flint and steel is a full-round action.', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Pot, cooking, iron', 'Holds 1 gallon.', 2, 1, true, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Kit, mess', '', 1, 1, true, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Tools, artisan''s', '', 5, 1, true, true);
+INSERT INTO inventory VALUES ('Qofin Parora', 'Rope, hemp', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
+INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
