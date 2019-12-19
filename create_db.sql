@@ -173,7 +173,7 @@ INSERT INTO character_skills VALUES ('Qofin Parora', 'Handle Animal', 0, false, 
 INSERT INTO character_skills VALUES ('Qofin Parora', 'Heal', 0, false, DEFAULT);
 INSERT INTO character_skills VALUES ('Qofin Parora', 'Intimidate', 1, true, DEFAULT);
 INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (arcana)', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (dungeonering)', 0, true, DEFAULT);
+INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (dungeoneering)', 0, true, DEFAULT);
 INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (engineering)', 0, true, DEFAULT);
 INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (geography)', 0, false, DEFAULT);
 INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (history)', 0, false, DEFAULT);
