@@ -197,4 +197,16 @@ INSERT INTO character_skills VALUES ('Qofin Parora', 'Use Magic Device', 0, fals
 
 -- Traits
 
+INSERT INTO traits VALUES ('On the Payroll', 'Benefit: You begin play with an additional 150 gp in starting wealth.');
+INSERT INTO traits VALUES ('Ordinary','The only thing extraordinary about your appearance is its ordinariness. You carry yourself in an understated way, and many people who see your face soon forget it. Benefit: You gain a +4 trait bonus on Stealth checks whenever you attempt to hide in a crowd.');
+
+INSERT INTO character_traits VALUES ('Qofin Parora','On the Payroll');
+INSERT INTO character_traits VALUES ('Qofin Parora','Ordinary');
+
 -- Feats
+
+INSERT INTO feats VALUES ('Skill Focus (Sleight of Hand)', 'Choose a skill. You are particularly adept at that skill. Benefit: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6. Special: You can ain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.', false);
+INSERT INTO feats VALUES ('Deft Hands', 'You have exceptional manual dexterity. Benefit: You get a +2 bonus on Disable Device and Sleight of Hand skill checks. If you have 10 or more ranks in one of these skills, the bonus increases to +4 for that skill.', false);
+
+INSERT INTO character_feats VALUES ('Qofin Parora', 'Skill Focus (Sleight of Hand)', DEFAULT);
+INSERT INTO character_feats VALUES ('Qofin Parora', 'Deft Hands', DEFAULT);
