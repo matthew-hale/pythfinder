@@ -19,7 +19,45 @@ CREATE TYPE ability AS ENUM (
     'charisma'
 );
 
-CREATE TABLE characters (
+CREATE TYPE skill AS ENUM (
+    'Acrobatics',
+    'Appraise',
+    'Bluff',
+    'Climb',
+    'Craft',
+    'Diplomacy',
+    'Disable Device',
+    'Disguise',
+    'Escape Artist',
+    'Fly',
+    'Handle Animal',
+    'Heal',
+    'Intimidate',
+    'Knowledge (arcana)',
+    'Knowledge (dungeoneering)',
+    'Knowledge (engineering)',
+    'Knowledge (geography)',
+    'Knowledge (history)',
+    'Knowledge (local)',
+    'Knowledge (nature)',
+    'Knowledge (nobility)',
+    'Knowledge (planes)',
+    'Knowledge (religion)',
+    'Linguistics',
+    'Perception',
+    'Perform',
+    'Profession',
+    'Ride',
+    'Sense Motive',
+    'Sleight of Hand',
+    'Spellcraft',
+    'Stealth',
+    'Survival',
+    'Swim',
+    'Use Magic Device'
+);
+
+CREATE TABLE character (
     name text PRIMARY KEY, 
     race text NOT NULL,
     class text NOT NULL,
@@ -41,7 +79,7 @@ CREATE TABLE inventory (
     PRIMARY KEY(character, name)
 );
 
-CREATE TABLE character_abilities (
+CREATE TABLE character_ability (
     character text PRIMARY KEY references characters(name),
     strength int CHECK (strength > 0 AND strength < 99) DEFAULT 10,
     dexterity int CHECK (dexterity > 0 AND dexterity < 99) DEFAULT 10,
@@ -51,51 +89,51 @@ CREATE TABLE character_abilities (
     charisma int CHECK (charisma > 0 AND charisma < 99) DEFAULT 10
 );
 
-CREATE TABLE skills (
-    name text PRIMARY KEY,
+CREATE TABLE skill (
+    name skill PRIMARY KEY,
     description text DEFAULT '',
     use_untrained boolean NOT NULL,
     modifier ability NOT NULL,
     ac_penalty boolean NOT NULL
 );
 
-INSERT INTO skills VALUES ('Acrobatics', '', true, 'dexterity', true);
-INSERT INTO skills VALUES ('Appraise', '', true, 'intelligence', false);
-INSERT INTO skills VALUES ('Bluff', '', true, 'charisma', false);
-INSERT INTO skills VALUES ('Climb', '', true, 'strength', true);
-INSERT INTO skills VALUES ('Craft', '', true, 'intelligence', false);
-INSERT INTO skills VALUES ('Diplomacy', '', true, 'charisma', false);
-INSERT INTO skills VALUES ('Disable Device', '', false, 'dexterity', true);
-INSERT INTO skills VALUES ('Disguise', '', true, 'charisma', false);
-INSERT INTO skills VALUES ('Escape Artist', '', true, 'dexterity', true);
-INSERT INTO skills VALUES ('Fly', '', true, 'dexterity', true);
-INSERT INTO skills VALUES ('Handle Animal', '', false, 'charisma', false);
-INSERT INTO skills VALUES ('Heal', '', true, 'wisdom', false);
-INSERT INTO skills VALUES ('Intimidate', '', true, 'charisma', false);
-INSERT INTO skills VALUES ('Knowledge (arcana)', '', false, 'intelligence', false);
-INSERT INTO skills VALUES ('Knowledge (dungeoneering)', '', false, 'intelligence', false);
-INSERT INTO skills VALUES ('Knowledge (engineering)', '', false, 'intelligence', false);
-INSERT INTO skills VALUES ('Knowledge (geography)', '', false, 'intelligence', false);
-INSERT INTO skills VALUES ('Knowledge (history)', '', false, 'intelligence', false);
-INSERT INTO skills VALUES ('Knowledge (local)', '', false, 'intelligence', false);
-INSERT INTO skills VALUES ('Knowledge (nature)', '', false, 'intelligence', false);
-INSERT INTO skills VALUES ('Knowledge (nobility)', '', false, 'intelligence', false);
-INSERT INTO skills VALUES ('Knowledge (planes)', '', false, 'intelligence', false);
-INSERT INTO skills VALUES ('Knowledge (religion)', '', false, 'intelligence', false);
-INSERT INTO skills VALUES ('Linguistics', '', false, 'intelligence', false);
-INSERT INTO skills VALUES ('Perception', '', true, 'wisdom', false);
-INSERT INTO skills VALUES ('Perform', '', true, 'charisma', false);
-INSERT INTO skills VALUES ('Profession', '', false, 'wisdom', false);
-INSERT INTO skills VALUES ('Ride', '', true, 'dexterity', true);
-INSERT INTO skills VALUES ('Sense Motive', '', true, 'wisdom', false);
-INSERT INTO skills VALUES ('Sleight of Hand', '', false, 'dexterity', true);
-INSERT INTO skills VALUES ('Spellcraft', '', false, 'intelligence', false);
-INSERT INTO skills VALUES ('Stealth', '', true, 'dexterity', true);
-INSERT INTO skills VALUES ('Survival', '', true, 'wisdom', false);
-INSERT INTO skills VALUES ('Swim', '', true, 'strength', true);
-INSERT INTO skills VALUES ('Use Magic Device', '', false, 'charisma', false);
+INSERT INTO skill VALUES ('Acrobatics', '', true, 'dexterity', true);
+INSERT INTO skill VALUES ('Appraise', '', true, 'intelligence', false);
+INSERT INTO skill VALUES ('Bluff', '', true, 'charisma', false);
+INSERT INTO skill VALUES ('Climb', '', true, 'strength', true);
+INSERT INTO skill VALUES ('Craft', '', true, 'intelligence', false);
+INSERT INTO skill VALUES ('Diplomacy', '', true, 'charisma', false);
+INSERT INTO skill VALUES ('Disable Device', '', false, 'dexterity', true);
+INSERT INTO skill VALUES ('Disguise', '', true, 'charisma', false);
+INSERT INTO skill VALUES ('Escape Artist', '', true, 'dexterity', true);
+INSERT INTO skill VALUES ('Fly', '', true, 'dexterity', true);
+INSERT INTO skill VALUES ('Handle Animal', '', false, 'charisma', false);
+INSERT INTO skill VALUES ('Heal', '', true, 'wisdom', false);
+INSERT INTO skill VALUES ('Intimidate', '', true, 'charisma', false);
+INSERT INTO skill VALUES ('Knowledge (arcana)', '', false, 'intelligence', false);
+INSERT INTO skill VALUES ('Knowledge (dungeoneering)', '', false, 'intelligence', false);
+INSERT INTO skill VALUES ('Knowledge (engineering)', '', false, 'intelligence', false);
+INSERT INTO skill VALUES ('Knowledge (geography)', '', false, 'intelligence', false);
+INSERT INTO skill VALUES ('Knowledge (history)', '', false, 'intelligence', false);
+INSERT INTO skill VALUES ('Knowledge (local)', '', false, 'intelligence', false);
+INSERT INTO skill VALUES ('Knowledge (nature)', '', false, 'intelligence', false);
+INSERT INTO skill VALUES ('Knowledge (nobility)', '', false, 'intelligence', false);
+INSERT INTO skill VALUES ('Knowledge (planes)', '', false, 'intelligence', false);
+INSERT INTO skill VALUES ('Knowledge (religion)', '', false, 'intelligence', false);
+INSERT INTO skill VALUES ('Linguistics', '', false, 'intelligence', false);
+INSERT INTO skill VALUES ('Perception', '', true, 'wisdom', false);
+INSERT INTO skill VALUES ('Perform', '', true, 'charisma', false);
+INSERT INTO skill VALUES ('Profession', '', false, 'wisdom', false);
+INSERT INTO skill VALUES ('Ride', '', true, 'dexterity', true);
+INSERT INTO skill VALUES ('Sense Motive', '', true, 'wisdom', false);
+INSERT INTO skill VALUES ('Sleight of Hand', '', false, 'dexterity', true);
+INSERT INTO skill VALUES ('Spellcraft', '', false, 'intelligence', false);
+INSERT INTO skill VALUES ('Stealth', '', true, 'dexterity', true);
+INSERT INTO skill VALUES ('Survival', '', true, 'wisdom', false);
+INSERT INTO skill VALUES ('Swim', '', true, 'strength', true);
+INSERT INTO skill VALUES ('Use Magic Device', '', false, 'charisma', false);
 
-CREATE TABLE character_skills (
+CREATE TABLE character_skill (
     character text references characters(name),
     name text references skills(name),
     ranks integer CHECK (ranks >= 0) DEFAULT 0,
@@ -105,24 +143,24 @@ CREATE TABLE character_skills (
 
 -- Traits are just names and descriptions, but can have multiple bonuses
 
-CREATE TABLE traits (
+CREATE TABLE trait (
     name text PRIMARY KEY,
     description text DEFAULT ''
 );
 
-CREATE TABLE character_traits (
+CREATE TABLE character_trait (
     character text references characters(name),
     name text references traits(name),
     PRIMARY KEY(character, name)
 );
 
-CREATE TABLE feats (
+CREATE TABLE feat (
     name text PRIMARY KEY,
     description text DEFAULT '',
     is_stackable boolean DEFAULT false
 );
 
-CREATE TABLE character_feats (
+CREATE TABLE character_feat (
     character text references characters(name),
     name text references feats(name),
     count integer CHECK (count >= 1) DEFAULT 1,
@@ -131,20 +169,20 @@ CREATE TABLE character_feats (
 
 CREATE FUNCTION feat_stack_check() RETURNS trigger AS $stack$
     BEGIN
-        IF NEW.count > 1 AND (SELECT is_stackable FROM feats WHERE NEW.name = feats.name) IS TRUE THEN
+        IF NEW.count > 1 AND (SELECT is_stackable FROM feats WHERE NEW.name = feat.name) IS TRUE THEN
             RAISE EXCEPTION 'this feat is not stackable';
         END IF;
         RETURN NEW;
     END;
 $stack$ LANGUAGE plpgsql;
 
-CREATE TRIGGER feat_stack_check BEFORE INSERT OR UPDATE ON character_feats
+CREATE TRIGGER feat_stack_check BEFORE INSERT OR UPDATE ON character_feat
     FOR EACH ROW EXECUTE PROCEDURE feat_stack_check();
 
 -- Demo data
 
 -- Qofin Parora, new Carrion Crown character
-INSERT INTO characters VALUES (
+INSERT INTO character VALUES (
     'Qofin Parora',
     'Half-elf',
     'Fighter',
@@ -156,60 +194,60 @@ INSERT INTO characters VALUES (
 );
 
 -- Ability scores
-INSERT INTO character_abilities VALUES ('Qofin Parora', 17, 16, 16, 13, 10, 11);
+INSERT INTO character_abilitie VALUES ('Qofin Parora', 17, 16, 16, 13, 10, 11);
 
 -- Skills
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Acrobatics', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Appraise', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Bluff', 0, true, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Climb', 0, true, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Craft', 1, true, 'Weapons');
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Diplomacy', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Disable Device', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Disguise', 0, true, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Escape Artist', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Fly', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Handle Animal', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Heal', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Intimidate', 1, true, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (arcana)', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (dungeoneering)', 0, true, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (engineering)', 0, true, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (geography)', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (history)', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (local)', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (nature)', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (nobility)', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (planes)', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Knowledge (religion)', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Linguistics', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Perception', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Perform', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Profession', 1, true, 'smuggler');
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Ride', 0, true, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Sense Motive', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Sleight of Hand', 1, true, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Spellcraft', 0, false, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Stealth', 1, true, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Survival', 1, true, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Swim', 0, true, DEFAULT);
-INSERT INTO character_skills VALUES ('Qofin Parora', 'Use Magic Device', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Acrobatics', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Appraise', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Bluff', 0, true, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Climb', 0, true, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Craft', 1, true, 'Weapons');
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Diplomacy', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Disable Device', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Disguise', 0, true, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Escape Artist', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Fly', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Handle Animal', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Heal', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Intimidate', 1, true, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Knowledge (arcana)', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Knowledge (dungeoneering)', 0, true, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Knowledge (engineering)', 0, true, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Knowledge (geography)', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Knowledge (history)', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Knowledge (local)', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Knowledge (nature)', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Knowledge (nobility)', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Knowledge (planes)', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Knowledge (religion)', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Linguistics', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Perception', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Perform', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Profession', 1, true, 'smuggler');
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Ride', 0, true, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Sense Motive', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Sleight of Hand', 1, true, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Spellcraft', 0, false, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Stealth', 1, true, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Survival', 1, true, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Swim', 0, true, DEFAULT);
+INSERT INTO character_skill VALUES ('Qofin Parora', 'Use Magic Device', 0, false, DEFAULT);
 
 -- Traits
 
-INSERT INTO traits VALUES ('On the Payroll', 'Benefit: You begin play with an additional 150 gp in starting wealth.');
-INSERT INTO traits VALUES ('Ordinary','The only thing extraordinary about your appearance is its ordinariness. You carry yourself in an understated way, and many people who see your face soon forget it. Benefit: You gain a +4 trait bonus on Stealth checks whenever you attempt to hide in a crowd.');
+INSERT INTO trait VALUES ('On the Payroll', 'Benefit: You begin play with an additional 150 gp in starting wealth.');
+INSERT INTO trait VALUES ('Ordinary','The only thing extraordinary about your appearance is its ordinariness. You carry yourself in an understated way, and many people who see your face soon forget it. Benefit: You gain a +4 trait bonus on Stealth checks whenever you attempt to hide in a crowd.');
 
-INSERT INTO character_traits VALUES ('Qofin Parora','On the Payroll');
-INSERT INTO character_traits VALUES ('Qofin Parora','Ordinary');
+INSERT INTO character_trait VALUES ('Qofin Parora','On the Payroll');
+INSERT INTO character_trait VALUES ('Qofin Parora','Ordinary');
 
 -- Feats
 
-INSERT INTO feats VALUES ('Skill Focus (Sleight of Hand)', 'Choose a skill. You are particularly adept at that skill. Benefit: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6. Special: You can ain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.', false);
-INSERT INTO feats VALUES ('Deft Hands', 'You have exceptional manual dexterity. Benefit: You get a +2 bonus on Disable Device and Sleight of Hand skill checks. If you have 10 or more ranks in one of these skills, the bonus increases to +4 for that skill.', false);
+INSERT INTO feat VALUES ('Skill Focus (Sleight of Hand)', 'Choose a skill. You are particularly adept at that skill. Benefit: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6. Special: You can ain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.', false);
+INSERT INTO feat VALUES ('Deft Hands', 'You have exceptional manual dexterity. Benefit: You get a +2 bonus on Disable Device and Sleight of Hand skill checks. If you have 10 or more ranks in one of these skills, the bonus increases to +4 for that skill.', false);
 
-INSERT INTO character_feats VALUES ('Qofin Parora', 'Skill Focus (Sleight of Hand)', DEFAULT);
-INSERT INTO character_feats VALUES ('Qofin Parora', 'Deft Hands', DEFAULT);
+INSERT INTO character_feat VALUES ('Qofin Parora', 'Skill Focus (Sleight of Hand)', DEFAULT);
+INSERT INTO character_feat VALUES ('Qofin Parora', 'Deft Hands', DEFAULT);
 
 -- Items
 
