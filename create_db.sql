@@ -227,16 +227,3 @@ INSERT INTO inventory VALUES ('Qofin Parora', 'Pot, cooking, iron', 'Holds 1 gal
 INSERT INTO inventory VALUES ('Qofin Parora', 'Kit, mess', '', 1, 1, true, true);
 INSERT INTO inventory VALUES ('Qofin Parora', 'Tools, artisan''s', '', 5, 1, true, true);
 INSERT INTO inventory VALUES ('Qofin Parora', 'Rope, hemp', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
-INSERT INTO inventory VALUES ('Qofin Parora', '', '', 0, 1, false, true);
