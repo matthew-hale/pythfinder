@@ -69,7 +69,7 @@ CREATE TABLE character (
 );
 
 CREATE TABLE inventory (
-    character text references characters(name),
+    character text references character(name),
     name text NOT NULL,
     description text DEFAULT '',
     unit_weight numeric(10,1) DEFAULT 0,
@@ -80,7 +80,7 @@ CREATE TABLE inventory (
 );
 
 CREATE TABLE character_ability (
-    character text PRIMARY KEY references characters(name),
+    character text PRIMARY KEY references character(name),
     strength int CHECK (strength > 0 AND strength < 99) DEFAULT 10,
     dexterity int CHECK (dexterity > 0 AND dexterity < 99) DEFAULT 10,
     constitution int CHECK (constitution > 0 AND constitution < 99) DEFAULT 10,
@@ -134,7 +134,7 @@ INSERT INTO skill VALUES ('Swim', '', true, 'strength', true);
 INSERT INTO skill VALUES ('Use Magic Device', '', false, 'charisma', false);
 
 CREATE TABLE character_skill (
-    character text references characters(name),
+    character text references character(name),
     name text references skills(name),
     ranks integer CHECK (ranks >= 0) DEFAULT 0,
     is_class boolean DEFAULT false,
@@ -149,7 +149,7 @@ CREATE TABLE trait (
 );
 
 CREATE TABLE character_trait (
-    character text references characters(name),
+    character text references character(name),
     name text references traits(name),
     PRIMARY KEY(character, name)
 );
@@ -161,7 +161,7 @@ CREATE TABLE feat (
 );
 
 CREATE TABLE character_feat (
-    character text references characters(name),
+    character text references character(name),
     name text references feats(name),
     count integer CHECK (count >= 1) DEFAULT 1,
     PRIMARY KEY(character, name)
