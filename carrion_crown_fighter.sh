@@ -23,6 +23,7 @@ cha=11"
 lvl=1
 hitDie=10
 maxHP=13
+currentHP=13
 baseAttackBonus=1
 
 # Traits
@@ -35,12 +36,18 @@ feats="Skill Focus: +3 to checks with chosen skill (sleight of hand)
 Deft Hands: +2 to Disable Device and Sleight of Hand checks; bonus increases to +4 with 10 or more ranks in these skills"
 
 # Gold
-gold=35
-silver=4
+gold=10
+silver=8
 copper=8
 
 # Equipment
 equipment="Tent, hanging: weight=15(lbs) count=1 pack=0
+Piton x2: weight=1(lbs) count=1 pack=0
+Hook, grappling: weight=4(lbs) count=1 pack=1
+Chalk: weight=0(lbs) count=5 pack=1
+Hammer: weight=2(lbs) count=1 pack=1
+Lantern, hooded: weight=2(lbs) count=1 pack=1
+Oil, lamp, pint: count=2 weight=1(lbs) pack=1
 Outfit, traveler's: weight=5(lbs) count=1 pack=1
 Backpack, masterwork: weight=4(lbs) capacity=2(cubic feet) count=1 pack=1 special=(Treat strength as 1 higher for carrying capacity)
 Bedroll: weight=5(lbs) count=1 pack=0
@@ -54,19 +61,22 @@ Pot, cooking, iron: weight=2(lbs) count=1 pack=0 special=(holds 1 gallon)
 Kit, mess: weight=1(lbs) count=1 pack=0
 Tools, artisan's: weight=5(lbs) count=1 pack=0
 Rope, hemp, 50 ft: count=1 weight=10(lbs) pack=1
-Twine, 100 ft: count=1 weight=1(lbs) pack=1
+Block and tackle: count=1 weight=5(lbs) pack=1 special=(+5 circumstance to strength checks to lift heavy objects; takes 1 minute to secure)
+Twine, 100 ft: count=1 weight=1(lbs) pack=0
 Soap: weight=1(lbs) count=1 pack=0
-Torch: count=5 weight=1(lbs) pack=1
+Torch: count=10 weight=1(lbs) pack=1
+Sunrod: count=4 weight=1(lbs) pack=1
 Compass: count=1 weight=0(lbs) pack=1 special=(+1 to survival checks made to avoid becoming lost, and +1 to KnowledgeDungeoneering checks made underground for navigation)
-Rations, trail: count=5 weight=1(lbs) pack=1
-Waterskin: capacity=1(gallon) count=1 pack=1
+Rations, trail: count=5 weight=1(lbs) pack=0
+Waterskin: capacity=1(gallon) count=1 pack=0
 Reinforced tunic: weight=5(lbs) count=1 pack=1
 Sword, short: weight=2(lbs) count=1 pack=1
 Shield, light wooden: weight=5(lbs) count=1 pack=1
 Longspear: weight=9(lbs) count=1 pack=1
 Dagger: weight=2(lbs) count=2 pack=1
 Crossbow, light: weight=4(lbs) count=2 pack=1
-Bolts, crossbow: weight=1(lbs) count=30 pack=1"
+Bolts, crossbow x10: weight=1(lbs) count=3 pack=1
+Bolt, grappling: weight=1(lbs) count=1 pack=1"
 
 # Weapons
 weapons="Sword, short: damage=1d6 critRoll=19 critMulti=2 damageType=piercing
@@ -192,6 +202,15 @@ getSkills() {
 getFeats() {
     out=""
     for item in $feats; do
+        out="${out}${item}\n"
+    done
+    echo "$out"
+}
+
+# Display traits
+getTraits() {
+    out=""
+    for item in $traits; do
         out="${out}${item}\n"
     done
     echo "$out"
@@ -328,6 +347,21 @@ case "$1" in
         ;;
     list)
         case "$2" in
+            # Character features, traits, feats, abilities, health
+            character)
+                out="${name}, ${race} ${class}\n"
+                for a in $abilities; do
+                    value=$(echo "$a" | grep -o "[0-9]*")
+                    mod=$(getAbilityMod $value)
+                    if [ "$mod" -gt 0 ]; then
+                        mod="+${mod}"
+                    fi
+                    out="${out}$a ($mod)\n"
+                done
+                out="${out}\nSaving throws:\nFort: 5\nReflex: 3\nWill: 0\n"
+                out="${out}\nFeats:\n$(getFeats)"
+                out="${out}\nTraits:\n$(getTraits)"
+                ;;
             abilities)
                 out=""
                 for a in $abilities; do
@@ -351,8 +385,11 @@ case "$1" in
             feats)
                 out=$(getFeats)
                 ;;
+            traits)
+                out=$(getTraits)
+                ;;
             *)
-                out="Usage: $0 list {abilities|skills|items|weapons|feats}\n"
+                out="Usage: $0 list {character|abilities|skills|items|weapons|feats|traits}\n"
                 ;;
         esac
         env printf "$out"
