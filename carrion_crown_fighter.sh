@@ -1,3 +1,7 @@
+#!/bin/sh
+#
+# carrion_crown_fighter.sh
+
 ### CHARACTER VARIABLES ###
 
 # Informational
