@@ -65,7 +65,7 @@ Block and tackle: count=1 weight=5(lbs) pack=1 special=(+5 circumstance to stren
 Twine, 100 ft: count=1 weight=1(lbs) pack=0
 Soap: weight=1(lbs) count=1 pack=0
 Torch: count=10 weight=1(lbs) pack=1
-Sunrod: count=4 weight=1(lbs) pack=1
+Sunrod: count=8 weight=1(lbs) pack=1
 Compass: count=1 weight=0(lbs) pack=1 special=(+1 to survival checks made to avoid becoming lost, and +1 to KnowledgeDungeoneering checks made underground for navigation)
 Rations, trail: count=5 weight=1(lbs) pack=0
 Waterskin: capacity=1(gallon) count=1 pack=0
@@ -76,7 +76,9 @@ Longspear: weight=9(lbs) count=1 pack=1
 Dagger: weight=2(lbs) count=2 pack=1
 Crossbow, light: weight=4(lbs) count=2 pack=1
 Bolts, crossbow x10: weight=1(lbs) count=3 pack=1
-Bolt, grappling: weight=1(lbs) count=1 pack=1"
+Bolt, grappling: weight=1(lbs) count=1 pack=1
+Arrows, ghost: weight=3 count=1 pack=1 special=(see notes)
+Darkwood case: weight=9 count=1 pack=1 special=(see notes)"
 
 # Weapons
 weapons="Sword, short: damage=1d6 critRoll=19 critMulti=2 damageType=piercing
