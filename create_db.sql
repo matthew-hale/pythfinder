@@ -89,7 +89,7 @@ CREATE TABLE character_ability (
     charisma int CHECK (charisma > 0 AND charisma < 99) DEFAULT 10
 );
 
-CREATE TABLE skill (
+CREATE TABLE skills (
     name skill PRIMARY KEY,
     description text DEFAULT '',
     use_untrained boolean NOT NULL,
@@ -97,45 +97,45 @@ CREATE TABLE skill (
     ac_penalty boolean NOT NULL
 );
 
-INSERT INTO skill VALUES ('Acrobatics', '', true, 'dexterity', true);
-INSERT INTO skill VALUES ('Appraise', '', true, 'intelligence', false);
-INSERT INTO skill VALUES ('Bluff', '', true, 'charisma', false);
-INSERT INTO skill VALUES ('Climb', '', true, 'strength', true);
-INSERT INTO skill VALUES ('Craft', '', true, 'intelligence', false);
-INSERT INTO skill VALUES ('Diplomacy', '', true, 'charisma', false);
-INSERT INTO skill VALUES ('Disable Device', '', false, 'dexterity', true);
-INSERT INTO skill VALUES ('Disguise', '', true, 'charisma', false);
-INSERT INTO skill VALUES ('Escape Artist', '', true, 'dexterity', true);
-INSERT INTO skill VALUES ('Fly', '', true, 'dexterity', true);
-INSERT INTO skill VALUES ('Handle Animal', '', false, 'charisma', false);
-INSERT INTO skill VALUES ('Heal', '', true, 'wisdom', false);
-INSERT INTO skill VALUES ('Intimidate', '', true, 'charisma', false);
-INSERT INTO skill VALUES ('Knowledge (arcana)', '', false, 'intelligence', false);
-INSERT INTO skill VALUES ('Knowledge (dungeoneering)', '', false, 'intelligence', false);
-INSERT INTO skill VALUES ('Knowledge (engineering)', '', false, 'intelligence', false);
-INSERT INTO skill VALUES ('Knowledge (geography)', '', false, 'intelligence', false);
-INSERT INTO skill VALUES ('Knowledge (history)', '', false, 'intelligence', false);
-INSERT INTO skill VALUES ('Knowledge (local)', '', false, 'intelligence', false);
-INSERT INTO skill VALUES ('Knowledge (nature)', '', false, 'intelligence', false);
-INSERT INTO skill VALUES ('Knowledge (nobility)', '', false, 'intelligence', false);
-INSERT INTO skill VALUES ('Knowledge (planes)', '', false, 'intelligence', false);
-INSERT INTO skill VALUES ('Knowledge (religion)', '', false, 'intelligence', false);
-INSERT INTO skill VALUES ('Linguistics', '', false, 'intelligence', false);
-INSERT INTO skill VALUES ('Perception', '', true, 'wisdom', false);
-INSERT INTO skill VALUES ('Perform', '', true, 'charisma', false);
-INSERT INTO skill VALUES ('Profession', '', false, 'wisdom', false);
-INSERT INTO skill VALUES ('Ride', '', true, 'dexterity', true);
-INSERT INTO skill VALUES ('Sense Motive', '', true, 'wisdom', false);
-INSERT INTO skill VALUES ('Sleight of Hand', '', false, 'dexterity', true);
-INSERT INTO skill VALUES ('Spellcraft', '', false, 'intelligence', false);
-INSERT INTO skill VALUES ('Stealth', '', true, 'dexterity', true);
-INSERT INTO skill VALUES ('Survival', '', true, 'wisdom', false);
-INSERT INTO skill VALUES ('Swim', '', true, 'strength', true);
-INSERT INTO skill VALUES ('Use Magic Device', '', false, 'charisma', false);
+INSERT INTO skills VALUES ('Acrobatics', '', true, 'dexterity', true);
+INSERT INTO skills VALUES ('Appraise', '', true, 'intelligence', false);
+INSERT INTO skills VALUES ('Bluff', '', true, 'charisma', false);
+INSERT INTO skills VALUES ('Climb', '', true, 'strength', true);
+INSERT INTO skills VALUES ('Craft', '', true, 'intelligence', false);
+INSERT INTO skills VALUES ('Diplomacy', '', true, 'charisma', false);
+INSERT INTO skills VALUES ('Disable Device', '', false, 'dexterity', true);
+INSERT INTO skills VALUES ('Disguise', '', true, 'charisma', false);
+INSERT INTO skills VALUES ('Escape Artist', '', true, 'dexterity', true);
+INSERT INTO skills VALUES ('Fly', '', true, 'dexterity', true);
+INSERT INTO skills VALUES ('Handle Animal', '', false, 'charisma', false);
+INSERT INTO skills VALUES ('Heal', '', true, 'wisdom', false);
+INSERT INTO skills VALUES ('Intimidate', '', true, 'charisma', false);
+INSERT INTO skills VALUES ('Knowledge (arcana)', '', false, 'intelligence', false);
+INSERT INTO skills VALUES ('Knowledge (dungeoneering)', '', false, 'intelligence', false);
+INSERT INTO skills VALUES ('Knowledge (engineering)', '', false, 'intelligence', false);
+INSERT INTO skills VALUES ('Knowledge (geography)', '', false, 'intelligence', false);
+INSERT INTO skills VALUES ('Knowledge (history)', '', false, 'intelligence', false);
+INSERT INTO skills VALUES ('Knowledge (local)', '', false, 'intelligence', false);
+INSERT INTO skills VALUES ('Knowledge (nature)', '', false, 'intelligence', false);
+INSERT INTO skills VALUES ('Knowledge (nobility)', '', false, 'intelligence', false);
+INSERT INTO skills VALUES ('Knowledge (planes)', '', false, 'intelligence', false);
+INSERT INTO skills VALUES ('Knowledge (religion)', '', false, 'intelligence', false);
+INSERT INTO skills VALUES ('Linguistics', '', false, 'intelligence', false);
+INSERT INTO skills VALUES ('Perception', '', true, 'wisdom', false);
+INSERT INTO skills VALUES ('Perform', '', true, 'charisma', false);
+INSERT INTO skills VALUES ('Profession', '', false, 'wisdom', false);
+INSERT INTO skills VALUES ('Ride', '', true, 'dexterity', true);
+INSERT INTO skills VALUES ('Sense Motive', '', true, 'wisdom', false);
+INSERT INTO skills VALUES ('Sleight of Hand', '', false, 'dexterity', true);
+INSERT INTO skills VALUES ('Spellcraft', '', false, 'intelligence', false);
+INSERT INTO skills VALUES ('Stealth', '', true, 'dexterity', true);
+INSERT INTO skills VALUES ('Survival', '', true, 'wisdom', false);
+INSERT INTO skills VALUES ('Swim', '', true, 'strength', true);
+INSERT INTO skills VALUES ('Use Magic Device', '', false, 'charisma', false);
 
 CREATE TABLE character_skill (
     character text references character(name),
-    name text references skills(name),
+    name skill references skills(name),
     ranks integer CHECK (ranks >= 0) DEFAULT 0,
     is_class boolean DEFAULT false,
     profession_or_craft_type text DEFAULT ''
@@ -150,7 +150,7 @@ CREATE TABLE trait (
 
 CREATE TABLE character_trait (
     character text references character(name),
-    name text references traits(name),
+    name text references trait(name),
     PRIMARY KEY(character, name)
 );
 
@@ -162,14 +162,14 @@ CREATE TABLE feat (
 
 CREATE TABLE character_feat (
     character text references character(name),
-    name text references feats(name),
+    name text references feat(name),
     count integer CHECK (count >= 1) DEFAULT 1,
     PRIMARY KEY(character, name)
 );
 
 CREATE FUNCTION feat_stack_check() RETURNS trigger AS $stack$
     BEGIN
-        IF NEW.count > 1 AND (SELECT is_stackable FROM feats WHERE NEW.name = feat.name) IS TRUE THEN
+        IF NEW.count > 1 AND (SELECT is_stackable FROM feat WHERE NEW.name = feat.name) IS TRUE THEN
             RAISE EXCEPTION 'this feat is not stackable';
         END IF;
         RETURN NEW;
@@ -194,7 +194,7 @@ INSERT INTO character VALUES (
 );
 
 -- Ability scores
-INSERT INTO character_abilitie VALUES ('Qofin Parora', 17, 16, 16, 13, 10, 11);
+INSERT INTO character_ability VALUES ('Qofin Parora', 17, 16, 16, 13, 10, 11);
 
 -- Skills
 INSERT INTO character_skill VALUES ('Qofin Parora', 'Acrobatics', 0, false, DEFAULT);
