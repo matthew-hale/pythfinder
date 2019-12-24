@@ -50,9 +50,9 @@
             "notes": ""
         },
         {
-            "name": "Piton x2",
-            "weight": 1,
-            "count": 1,
+            "name": "Piton",
+            "weight": 0.5,
+            "count": 2,
             "pack": false,
             "notes": ""
         },
@@ -190,11 +190,11 @@
             "notes": "+5 circumstance to strength checks to lift heavy objects; takes 1 minute to secure"
         },
         {
-            "name": "Twine, 100 ft",
-            "count": 1,
-            "weight": 1,
+            "name": "Twine, 50 ft",
+            "count": 2,
+            "weight": 0.5,
             "pack": false,
-            "notes": ""
+            "notes": "Used for crafting bolts/arrows."
         },
         {
             "name": "Soap",

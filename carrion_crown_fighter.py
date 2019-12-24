@@ -52,8 +52,7 @@ def getAbilityString():
     for k, v in character["abilities"].items():
         outstring += k + ": " + str(v) + "\n"
     # Slicing off the last newline
-    outstring = outstring[0:-1]
-    return outstring
+    return outstring[0:-1]
 
 def getSkillString():
     outstring = ""
@@ -65,9 +64,20 @@ def getSkillString():
             outstring += ", "
         outstring += "Mod: " + skill["mod"] + " (" + str(getAbilityMod(character["abilities"][skill["mod"]])) + ")\n"
     # Slicing off the last newline
-    outstring = outstring[0:-1]
-    return outstring
+    return outstring[0:-1]
 
+# Formatted string of items
+def getEquipmentString():
+    outstring=""
+    for item in character["equipment"]:
+        outstring += item["name"] + " - Unit Weight: " + str(item["weight"]) + " lbs, Count: " + str(item["count"])
+        if item["notes"]:
+            outstring += ", Notes: " + item["notes"]
+        if item["pack"]:
+            outstring += " (pack item)"
+        outstring += "\n"
+    # Slicing off the last newline
+    return outstring[0:-1]
 ### MAIN ###
 
 # Check for argument
@@ -85,7 +95,7 @@ elif sys.argv[1] == "abilities":
 elif sys.argv[1] == "skills":
     print("Skills:\n" + getSkillString())
 elif sys.argv[1] == "items":
-    print("items")
+    print("Items:\n" + getEquipmentString())
 elif sys.argv[1] == "attacks":
     print("attacks")
 elif sys.argv[1] == "feats":
