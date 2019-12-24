@@ -86,12 +86,12 @@ elif sys.argv[1] == "skills":
     print("Skills:\n" + getSkillString())
 elif sys.argv[1] == "items":
     print("items")
-elif sys.argv[1] == "weapons":
-    print("weapons")
+elif sys.argv[1] == "attacks":
+    print("attacks")
 elif sys.argv[1] == "feats":
     print("feats")
 elif sys.argv[1] == "traits":
     print("traits")
 else:
-    print("Usage: " + sys.argv[0] + " {character|abilities|skills|items|weapons|feats|traits}")
+    print("Usage: " + sys.argv[0] + " {character|abilities|skills|items|attacks|feats|traits}")
     sys.exit()
