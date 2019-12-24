@@ -12,10 +12,9 @@ character = {
     "race": "half-elf",
     "class": "fighter",
     "description": """
-    A half-elf pack mule.
-    Works closely with traveling merchants of the area.
-    Skilled at smuggling, concealing daggers, etc.
-    """,
+A half-elf pack mule.
+Works closely with traveling merchants of the area.
+Skilled at smuggling, concealing daggers, etc.""",
     "height": "5'11\"",
     "weight": "160",
     "abilities": {
@@ -372,7 +371,40 @@ Swim: rank=0 isClass=1 mod=str bonus=0
 UseMagicDevice: rank=0 isClass=0 mod=cha bonus=0"
 """
 
-###########################
+### FUNCTIONS ###
+
+# Get the modifier for a given ability
+def getAbilityMod(ability):
+    if ability == 1:
+        return -5
+    elif ability in [2, 3]:
+        return -4
+    elif ability in [4, 5]:
+        return -3
+    elif ability in [6, 7]:
+        return -2
+    elif ability in [8, 9]:
+        return -1
+    elif ability in [10, 11]:
+        return 0
+    elif ability in [12, 13]:
+        return 1
+    elif ability in [14, 15]:
+        return 2
+    elif ability in [16, 17]:
+        return 3
+    elif ability in [18, 19]:
+        return 4
+    elif ability in [20, 21]:
+        return 5
+    elif ability in [22, 23]:
+        return 6
+    elif ability in [24, 25]:
+        return 7
+    elif ability in [26, 27]:
+        return 8
+    elif ability in [28, 29]:
+        return 9
 
 ### MAIN ###
 
@@ -383,7 +415,15 @@ if not (len(sys.argv) >= 2):
 
 # Argument options
 if sys.argv[1] == "character":
-    print("character")
+    print(character["name"] + ", the " + character["race"] + " " + character["class"] + ". Level: " + str(character["level"]))
+    print(character["height"] + ", " + character["weight"] + "\n" + character["description"] + "\n")
+    print(
+    "str: " + str(character["abilities"]["str"]) + " (" + str(getAbilityMod(character["abilities"]["str"])) + ")\n" +
+    "dex: " + str(character["abilities"]["dex"]) + " (" + str(getAbilityMod(character["abilities"]["dex"])) + ")\n" +
+    "con: " + str(character["abilities"]["con"]) + " (" + str(getAbilityMod(character["abilities"]["con"])) + ")\n" +
+    "int: " + str(character["abilities"]["int"]) + " (" + str(getAbilityMod(character["abilities"]["int"])) + ")\n" +
+    "wis: " + str(character["abilities"]["wis"]) + " (" + str(getAbilityMod(character["abilities"]["wis"])) + ")\n" +
+    "cha: " + str(character["abilities"]["cha"]) + " (" + str(getAbilityMod(character["abilities"]["cha"])) + ")\n")
 elif sys.argv[1] == "abilities":
     print("abilities")
 elif sys.argv[1] == "skills":
