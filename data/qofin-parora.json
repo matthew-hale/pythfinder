@@ -1,0 +1,559 @@
+{
+    "name": "Qofin Parora",
+    "race": "half-elf",
+    "class": "fighter",
+    "description": "A half-elf pack mule.\nWorks closely with traveling merchants of the area.\nSkilled at smuggling, concealing daggers, etc.",
+    "height": "5'11\"",
+    "weight": "160",
+    "abilities": {
+        "str": 17,
+        "dex": 16,
+        "con": 16,
+        "int": 13,
+        "wis": 10,
+        "cha": 11
+    },
+    "level": 1,
+    "hitDie": 10,
+    "maxHP": 13,
+    "currentHP": 13,
+    "baseAttackBonus": 1,
+    "traits": [
+        {
+            "name": "On the payroll",
+            "description": "+150 starting gold"
+        },
+        {
+            "name": "Ordinary",
+            "description": "+4 to stealth checks when attempting to blend in a crowd"
+        }
+    ],
+    "feats": [
+        {
+            "name": "Skill Focus",
+            "description": "+3 to checks with chosen skill",
+            "notes": "Sleight of Hand"
+        },
+        {
+            "name": "Deft Hands",
+            "description": "+2 to Disable Device and Sleight of Hand checks; bonus increases to +4 with 10 or more ranks in these skills",
+            "notes": ""
+        }
+    ],
+    "gold": 10.88,
+    "equipment": [
+        {
+            "name": "Tent, hanging",
+            "weight": 15,
+            "count": 1,
+            "pack": false,
+            "notes": ""
+        },
+        {
+            "name": "Piton x2",
+            "weight": 1,
+            "count": 1,
+            "pack": false,
+            "notes": ""
+        },
+        {
+            "name": "Hook, grappling",
+            "weight": 4,
+            "count": 1,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Chalk",
+            "weight": 0,
+            "count": 5,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Hammer",
+            "weight": 2,
+            "count": 1,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Lantern, hooded",
+            "weight": 2,
+            "count": 1,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Oil, lamp, pint",
+            "count": 2,
+            "weight": 1,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Outfit, traveler's",
+            "weight": 5,
+            "count": 1,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Backpack, masterwork",
+            "weight": 4,
+            "count": 1,
+            "pack": true,
+            "notes": "Has a capacity of 2 cubic feet. Treat strength as 1 higher for carrying capacity."
+        },
+        {
+            "name": "Bedroll",
+            "weight": 5,
+            "count": 1,
+            "pack": false,
+            "notes": ""
+        },
+        {
+            "name": "Blanket",
+            "weight": 3,
+            "count": 1,
+            "pack": false,
+            "notes": ""
+        },
+        {
+            "name": "Fishing tackle",
+            "weight": 5,
+            "count": 1,
+            "pack": false,
+            "notes": "+1 circumstance bonus to survival checks to gather food around bodies of water that contain fish"
+        },
+        {
+            "name": "Crowbar",
+            "weight": 5,
+            "count": 1,
+            "pack": true,
+            "notes": "+2 circumstance bonus to strength checks to force open a door or chest"
+        },
+        {
+            "name": "Pouch, belt",
+            "weight": 1,
+            "count": 1,
+            "pack": true,
+            "notes": "Holds 1/5 cubic feet"
+        },
+        {
+            "name": "Scarf, pocketed",
+            "weight": 1,
+            "count": 1,
+            "pack": true,
+            "notes": "+4 bonus on Sleight of Hand checks made to hide objects on your body"
+        },
+        {
+            "name": "Flint & steel",
+            "count": 1,
+            "weight": 0,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Pot, cooking, iron",
+            "weight": 2,
+            "count": 1,
+            "pack": false,
+            "notes": "Holds 1 gallon"
+        },
+        {
+            "name": "Kit, mess",
+            "weight": 1,
+            "count": 1,
+            "pack": false,
+            "notes": ""
+        },
+        {
+            "name": "Tools, artisan's",
+            "weight": 5,
+            "count": 1,
+            "pack": false,
+            "notes": ""
+        },
+        {
+            "name": "Rope, hemp, 50 ft",
+            "count": 1,
+            "weight": 10,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Block and tackle",
+            "count": 1,
+            "weight": 5,
+            "pack": true,
+            "notes": "+5 circumstance to strength checks to lift heavy objects; takes 1 minute to secure"
+        },
+        {
+            "name": "Twine, 100 ft",
+            "count": 1,
+            "weight": 1,
+            "pack": false,
+            "notes": ""
+        },
+        {
+            "name": "Soap",
+            "weight": 1,
+            "count": 1,
+            "pack": false,
+            "notes": ""
+        },
+        {
+            "name": "Torch",
+            "count": 10,
+            "weight": 1,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Sunrod",
+            "count": 8,
+            "weight": 1,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Compass",
+            "count": 1,
+            "weight": 0,
+            "pack": true,
+            "notes": "+1 to survival checks made to avoid becoming lost, and +1 to KnowledgeDungeoneering checks made underground for navigation"
+        },
+        {
+            "name": "Rations, trail",
+            "count": 5,
+            "weight": 1,
+            "pack": false,
+            "notes": ""
+        },
+        {
+            "name": "Waterskin",
+            "weight": 0,
+            "count": 1,
+            "pack": false,
+            "notes": "Holds 1 gallon"
+        },
+        {
+            "name": "Reinforced tunic",
+            "weight": 5,
+            "count": 1,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Sword, short",
+            "weight": 2,
+            "count": 1,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Shield, light wooden",
+            "weight": 5,
+            "count": 1,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Longspear",
+            "weight": 9,
+            "count": 1,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Dagger",
+            "weight": 2,
+            "count": 2,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Crossbow, light",
+            "weight": 4,
+            "count": 2,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Bolts, crossbow x10",
+            "weight": 1,
+            "count": 3,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Bolt, grappling",
+            "weight": 1,
+            "count": 1,
+            "pack": true,
+            "notes": ""
+        },
+        {
+            "name": "Arrows, ghost",
+            "weight": 3,
+            "count": 1,
+            "pack": true,
+            "notes": "see notes"
+        },
+        {
+            "name": "Darkwood case",
+            "weight": 9,
+            "count": 1,
+            "pack": true,
+            "notes": "see notes"
+        }
+    ],
+    "skills": [
+        {
+            "name": "Acrobatics",
+            "rank": 0,
+            "isClass": false,
+            "mod": "dex",
+            "notes": ""
+        },
+        {
+            "name": "Appraise",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "Bluff",
+            "rank": 0,
+            "isClass": true,
+            "mod": "cha",
+            "notes": ""
+        },
+        {
+            "name": "Climb",
+            "rank": 0,
+            "isClass": true,
+            "mod": "str",
+            "notes": ""
+        },
+        {
+            "name": "Craft",
+            "rank": 1,
+            "isClass": true,
+            "mod": "int",
+            "notes": "Weapons"
+        },
+        {
+            "name": "Diplomacy",
+            "rank": 0,
+            "isClass": false,
+            "mod": "cha",
+            "notes": ""
+        },
+        {
+            "name": "DisableDevice",
+            "rank": 0,
+            "isClass": false,
+            "mod": "dex",
+            "notes": ""
+        },
+        {
+            "name": "Disguise",
+            "rank": 0,
+            "isClass": true,
+            "mod": "cha",
+            "notes": ""
+        },
+        {
+            "name": "EscapeArtist",
+            "rank": 0,
+            "isClass": false,
+            "mod": "dex",
+            "notes": ""
+        },
+        {
+            "name": "Fly",
+            "rank": 0,
+            "isClass": false,
+            "mod": "dex",
+            "notes": ""
+        },
+        {
+            "name": "HandleAnimal",
+            "rank": 0,
+            "isClass": true,
+            "mod": "cha",
+            "notes": ""
+        },
+        {
+            "name": "Heal",
+            "rank": 0,
+            "isClass": false,
+            "mod": "wis",
+            "notes": ""
+        },
+        {
+            "name": "Intimidate",
+            "rank": 1,
+            "isClass": true,
+            "mod": "cha",
+            "notes": ""
+        },
+        {
+            "name": "KnowledgeArcana",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "KnowledgeDungeoneering",
+            "rank": 0,
+            "isClass": true,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "KnowledgeEngineering",
+            "rank": 0,
+            "isClass": true,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "KnowledgeGeography",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "KnowledgeHistory",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "KnowledgeLocal",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "KnowledgeNature",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "KnowledgeNobility",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "KnowledgePlanes",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "KnowledgeReligion",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "Linguistics",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "Perception",
+            "rank": 0,
+            "isClass": false,
+            "mod": "wis",
+            "notes": ""
+        },
+        {
+            "name": "Perform",
+            "rank": 0,
+            "isClass": false,
+            "mod": "cha",
+            "notes": ""
+        },
+        {
+            "name": "Profession",
+            "rank": 1,
+            "isClass": true,
+            "mod": "wis",
+            "notes": "Smuggling"
+        },
+        {
+            "name": "Ride",
+            "rank": 0,
+            "isClass": true,
+            "mod": "dex",
+            "notes": ""
+        },
+        {
+            "name": "SenseMotive",
+            "rank": 0,
+            "isClass": false,
+            "mod": "wis",
+            "notes": ""
+        },
+        {
+            "name": "SleightOfHand",
+            "rank": 1,
+            "isClass": true,
+            "mod": "dex",
+            "notes": ""
+        },
+        {
+            "name": "Spellcraft",
+            "rank": 0,
+            "isClass": false,
+            "mod": "int",
+            "notes": ""
+        },
+        {
+            "name": "Stealth",
+            "rank": 1,
+            "isClass": true,
+            "mod": "dex",
+            "notes": ""
+        },
+        {
+            "name": "Survival",
+            "rank": 1,
+            "isClass": true,
+            "mod": "wis",
+            "notes": ""
+        },
+        {
+            "name": "Swim",
+            "rank": 0,
+            "isClass": true,
+            "mod": "str",
+            "notes": ""
+        },
+        {
+            "name": "UseMagicDevice",
+            "rank": 0,
+            "isClass": false,
+            "mod": "cha",
+            "notes": ""
+        }
+    ]
+}
