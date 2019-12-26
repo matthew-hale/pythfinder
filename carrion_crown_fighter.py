@@ -8,6 +8,11 @@ import json
 # Paths to data file (for demo purposes)
 dataPath = "/home/matt/pathfinder/data/qofin-parora.json"
 
+# Any functions that intend to change character data will flag this as True; at 
+# the end of the loop, if this is true, data will be written to the data 
+# argument given as input.
+dataChanged = False
+
 ### FUNCTIONS ###
 
 # Read the json data from path
@@ -18,7 +23,7 @@ def readCharacter(path):
 
 # Write the given character data to the file in path
 def writeCharacter(character, path):
-    with open(path, "w", encoding="utf-8"):
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(character, f, indent=4)
 
 # Primary user input function
@@ -31,12 +36,13 @@ def getInput():
             "attacks",
             "feats",
             "traits",
-            "[q]uit"]
+            "quit",
+            "q"]
     inputString = ""
     inputString += data + " > "
     arg = input(inputString)
     while not arg in args:
-        print("\nUsage:\n\n" + "{" + "|".join(args) + "}\n")
+        print("\n    Usage:\n\n" + "    {" + "|".join(args[:-1]) + "}\n")
         arg = input(inputString)
     return arg
 
@@ -82,16 +88,15 @@ def getAbilityString():
     return outstring[0:-1]
 
 def getSkillString():
-    outstring = ""
+    outstring = "\n    Skills:\n\n    "
     for skill in character["skills"]:
         outstring += skill["name"] + " - Ranks: " + str(skill["rank"])
         if skill["isClass"]:
             outstring += " (class), "
         else:
             outstring += ", "
-        outstring += "Mod: " + skill["mod"] + " (" + str(getAbilityMod(character["abilities"][skill["mod"]])) + ")\n"
-    # Slicing off the last newline
-    return outstring[0:-1]
+        outstring += "Mod: " + skill["mod"] + " (" + str(getAbilityMod(character["abilities"][skill["mod"]])) + ")\n    "
+    return outstring
 
 # Formatted string of items
 def getEquipmentString():
@@ -129,7 +134,7 @@ while True:
     elif arg == "abilities":
         print("Abilities:\n" + getAbilityString())
     elif arg == "skills":
-        print("Skills:\n" + getSkillString())
+        print(getSkillString())
     elif arg == "items":
         print("Items:\n" + getEquipmentString())
     elif arg == "attacks":
@@ -138,9 +143,9 @@ while True:
         print("feats")
     elif arg == "traits":
         print("traits")
-    elif arg == "q" || arg == "quit":
+    elif arg == "q" or arg == "quit":
         break
 
-# Will be changed to data in future
-writeCharacter(character, dataPath)
+if dataChanged:
+    writeCharacter(character, data)
 sys.exit()
