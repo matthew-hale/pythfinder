@@ -81,11 +81,10 @@ def getAbilityMod(ability):
 
 # Formatted string of abilities
 def getAbilityString():
-    outstring = ""
+    outstring = "\n    Abilities:\n\n    "
     for k, v in character["abilities"].items():
-        outstring += k + ": " + str(v) + "\n"
-    # Slicing off the last newline
-    return outstring[0:-1]
+        outstring += k + ": " + str(v) + "\n    "
+    return outstring
 
 def getSkillString():
     outstring = "\n    Skills:\n\n    "
@@ -130,9 +129,9 @@ while True:
     if arg == "character":
         print(character["name"] + ", the " + character["race"] + " " + character["class"] + ". Level: " + str(character["level"]))
         print(character["height"] + ", " + character["weight"] + "\n" + character["description"] + "\n")
-        print("Abilities:\n" + getAbilityString())
+        print(getAbilityString())
     elif arg == "abilities":
-        print("Abilities:\n" + getAbilityString())
+        print(getAbilityString())
     elif arg == "skills":
         print(getSkillString())
     elif arg == "items":
