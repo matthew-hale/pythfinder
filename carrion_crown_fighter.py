@@ -31,7 +31,7 @@ def getInput():
             "attacks",
             "feats",
             "traits",
-            "quit"]
+            "[q]uit"]
     inputString = ""
     inputString += data + " > "
     arg = input(inputString)
@@ -122,27 +122,25 @@ character = readCharacter(dataPath)
 # Main loop
 while True:
     arg = getInput()
-    print(arg)
-# Load character data from demo path
+    if arg == "character":
+        print(character["name"] + ", the " + character["race"] + " " + character["class"] + ". Level: " + str(character["level"]))
+        print(character["height"] + ", " + character["weight"] + "\n" + character["description"] + "\n")
+        print("Abilities:\n" + getAbilityString())
+    elif arg == "abilities":
+        print("Abilities:\n" + getAbilityString())
+    elif arg == "skills":
+        print("Skills:\n" + getSkillString())
+    elif arg == "items":
+        print("Items:\n" + getEquipmentString())
+    elif arg == "attacks":
+        print("attacks")
+    elif arg == "feats":
+        print("feats")
+    elif arg == "traits":
+        print("traits")
+    elif arg == "q" || arg == "quit":
+        break
 
-# Argument options
-if sys.argv[1] == "character":
-    print(character["name"] + ", the " + character["race"] + " " + character["class"] + ". Level: " + str(character["level"]))
-    print(character["height"] + ", " + character["weight"] + "\n" + character["description"] + "\n")
-    print("Abilities:\n" + getAbilityString())
-elif sys.argv[1] == "abilities":
-    print("Abilities:\n" + getAbilityString())
-elif sys.argv[1] == "skills":
-    print("Skills:\n" + getSkillString())
-elif sys.argv[1] == "items":
-    print("Items:\n" + getEquipmentString())
-elif sys.argv[1] == "attacks":
-    print("attacks")
-elif sys.argv[1] == "feats":
-    print("feats")
-elif sys.argv[1] == "traits":
-    print("traits")
-else:
-    print("Usage: " + sys.argv[0] + " {character|abilities|skills|items|attacks|feats|traits}")
-    sys.exit()
-    """
+# Will be changed to data in future
+writeCharacter(character, dataPath)
+sys.exit()
