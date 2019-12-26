@@ -8,10 +8,37 @@ import json
 # Paths to data file (for demo purposes)
 dataPath = "/home/matt/pathfinder/data/qofin-parora.json"
 
-with open(dataPath) as f:
-    character = json.load(f)
-
 ### FUNCTIONS ###
+
+# Read the json data from path
+def readCharacter(path):
+    with open(path) as f:
+        character = json.load(f)
+    return character
+
+# Write the given character data to the file in path
+def writeCharacter(character, path):
+    with open(path, "w", encoding="utf-8"):
+        json.dump(character, f, indent=4)
+
+# Primary user input function
+def getInput():
+    arg = ""
+    args = ["character",
+            "abilities",
+            "skills",
+            "items",
+            "attacks",
+            "feats",
+            "traits",
+            "quit"]
+    inputString = ""
+    inputString += data + " > "
+    arg = input(inputString)
+    while not arg in args:
+        print("\nUsage:\n\n" + "{" + "|".join(args) + "}\n")
+        arg = input(inputString)
+    return arg
 
 # Get the modifier for a given ability
 def getAbilityMod(ability):
@@ -78,12 +105,25 @@ def getEquipmentString():
         outstring += "\n"
     # Slicing off the last newline
     return outstring[0:-1]
+
+
 ### MAIN ###
 
 # Check for argument
 if not (len(sys.argv) >= 2):
-    print("Usage: " + sys.argv[0] + " {character|abilities|skills|items|weapons|feats|traits}")
+    print("Usage: " + sys.argv[0] + " <data_path>")
     sys.exit()
+
+data = sys.argv[1]
+
+# Will be changed to data in future
+character = readCharacter(dataPath)
+
+# Main loop
+while True:
+    arg = getInput()
+    print(arg)
+# Load character data from demo path
 
 # Argument options
 if sys.argv[1] == "character":
@@ -105,3 +145,4 @@ elif sys.argv[1] == "traits":
 else:
     print("Usage: " + sys.argv[0] + " {character|abilities|skills|items|attacks|feats|traits}")
     sys.exit()
+    """
