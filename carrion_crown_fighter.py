@@ -39,7 +39,7 @@ def getInput():
             "quit",
             "q"]
     inputString = ""
-    inputString += character["name"] + " > "
+    inputString += data + " (" + character["name"] + ") > "
     arg = input(inputString)
     while not arg in args:
         print("\n    Usage:\n\n" + "    {" + "|".join(args[:-1]) + "}\n")
