@@ -5,14 +5,6 @@
 import sys
 import json
 
-# Paths to data file (for demo purposes)
-dataPath = "/home/matt/pythfinder/data/qofin-parora.json"
-
-# Any functions that intend to change character data will flag this as True; at 
-# the end of the loop, if this is true, data will be written to the data 
-# argument given as input.
-dataChanged = False
-
 ### FUNCTIONS ###
 
 # Read the json data from path
@@ -78,6 +70,8 @@ def getAbilityMod(ability):
         return 8
     elif ability in [28, 29]:
         return 9
+    else:
+        raise ValueError("getAbilityMod: ability must be within range of 1-29, inclusive.")
 
 # Formatted string of basic character info, including abilities
 def getCharacterString(c):
@@ -157,6 +151,14 @@ def getAttackString(c):
 ### MAIN ###
 
 if __name__ == "__main__":
+    # Paths to data file (for demo purposes)
+    dataPath = "/home/matt/pythfinder/data/qofin-parora.json"
+
+    # Any functions that intend to change character data will flag this as True; at 
+    # the end of the loop, if this is true, data will be written to the data 
+    # argument given as input.
+    dataChanged = False
+
     # Check for argument
     if not (len(sys.argv) >= 2):
         print("Usage: " + sys.argv[0] + " <data_path>")
