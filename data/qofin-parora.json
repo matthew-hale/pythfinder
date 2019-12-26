@@ -564,7 +564,8 @@
             "damage": "1d6",
             "critRoll": 19,
             "critMulti": 2,
-            "range": 0
+            "range": 0,
+            "notes": ""
         },
         {
             "weapon": "Dagger",
@@ -573,7 +574,8 @@
             "damage": "1d4",
             "critRoll": 19,
             "critMulti": 2,
-            "range": 10
+            "range": 10,
+            "notes": ""
         },
         {
             "weapon": "Crossbow, light",
@@ -582,7 +584,8 @@
             "damage": "1d8",
             "critRoll": 19,
             "critMulti": 2,
-            "range": 80
+            "range": 80,
+            "notes": ""
         },
         {
             "weapon": "Longspear",
@@ -591,7 +594,8 @@
             "damage": "1d8",
             "critRoll": 20,
             "critMulti": 3,
-            "range": 0
+            "range": 0,
+            "notes": "brace, reach"
         }
     ]
 }

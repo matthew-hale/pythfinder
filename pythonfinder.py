@@ -130,6 +130,22 @@ def getTraitString():
         outstring += trait["name"] + ":\n        " + trait["description"] + "\n    "
     return outstring
 
+# Formatted string of attacks
+def getAttackString():
+    outstring = "\n    Attacks:\n"
+    for attack in character["attacks"]:
+        outstring += "\n    " + attack["weapon"] + " (" + attack["attackType"] + ")\n        "
+        outstring += "Damage: " + attack["damage"] + " " + str(attack["critRoll"])
+        if attack["critRoll"] < 20:
+            outstring += "-20"
+        outstring += " x" + str(attack["critMulti"]) + " (" + ",".join(attack["damageType"]) + ") "
+        if attack["range"] > 0:
+            outstring += "\n        " + str(attack["range"]) + " ft. range increment"
+        if attack["notes"]:
+            outstring += "\n        " + attack["notes"]
+        outstring += "\n"
+    return outstring
+
 ### MAIN ###
 
 # Check for argument
@@ -154,7 +170,7 @@ while True:
     elif arg == "items":
         print(getEquipmentString())
     elif arg == "attacks":
-        print("attacks")
+        print(getAttackString())
     elif arg == "feats":
         print(getFeatString())
     elif arg == "traits":
