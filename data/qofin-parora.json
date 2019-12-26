@@ -246,7 +246,7 @@
             "notes": ""
         },
         {
-            "name": "Sword, short",
+            "name": "Shortsword",
             "weight": 2,
             "count": 1,
             "pack": true,
@@ -554,6 +554,44 @@
             "isClass": false,
             "mod": "cha",
             "notes": ""
+        }
+    ],
+    "attacks": [
+        {
+            "weapon": "Shortsword",
+            "attackType": "melee",
+            "damageType": ["p"],
+            "damage": "1d6",
+            "critRoll": 19,
+            "critMulti": 2,
+            "range": 0
+        },
+        {
+            "weapon": "Dagger",
+            "attackType": "melee",
+            "damageType": ["p", "s"],
+            "damage": "1d4",
+            "critRoll": 19,
+            "critMulti": 2,
+            "range": 10
+        },
+        {
+            "weapon": "Crossbow, light",
+            "attackType": "ranged",
+            "damageType": ["p"],
+            "damage": "1d8",
+            "critRoll": 19,
+            "critMulti": 2,
+            "range": 80
+        },
+        {
+            "weapon": "Longspear",
+            "attackType": "melee",
+            "damageType": ["p"],
+            "damage": "1d8",
+            "critRoll": 20,
+            "critMulti": 3,
+            "range": 0
         }
     ]
 }
