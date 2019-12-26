@@ -92,7 +92,12 @@ def getCharacterString(c):
 def getAbilityString(c):
     outstring = "\n    Abilities:\n\n    "
     for k, v in c["abilities"].items():
-        outstring += k + ": " + str(v) + "\n    "
+        modValue = getAbilityMod(v)
+        if modValue >= 0:
+            modString = "+" + str(modValue)
+        else:
+            modString = "-" + str(modValue)
+        outstring += k + ": " + str(v) + " (" + modString + ")\n    "
     return outstring
 
 # Formatted string of skills
