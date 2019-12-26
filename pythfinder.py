@@ -6,7 +6,7 @@ import sys
 import json
 
 # Paths to data file (for demo purposes)
-dataPath = "/home/matt/pathfinder/data/qofin-parora.json"
+dataPath = "/home/matt/pythfinder/data/qofin-parora.json"
 
 # Any functions that intend to change character data will flag this as True; at 
 # the end of the loop, if this is true, data will be written to the data 
@@ -81,7 +81,9 @@ def getAbilityMod(ability):
 
 # Formatted string of basic character info, including abilities
 def getCharacterString(c):
-    outstring = "\n    " + c["name"] + ", the " + c["race"] + " " + c["class"] + ". Level: " + str(c["level"])
+    outstring = "\n    " + c["name"] + ", the " + c["alignment"] + " " + c["race"]
+    for item in c["classes"]:
+        outstring += "\n    " + item["class"] + " - Lvl. " + str(item["level"])
     outstring += "\n    " + c["height"] + ", " + c["weight"] + "\n    " + c["description"] + "\n"
     outstring += getAbilityString(c)
     return outstring

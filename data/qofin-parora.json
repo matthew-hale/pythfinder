@@ -1,7 +1,13 @@
 {
     "name": "Qofin Parora",
-    "race": "half-elf",
-    "class": "fighter",
+    "race": "Half-elf",
+    "classes": [
+        {
+            "class": "Fighter",
+            "level": 1
+        }
+    ],
+    "alignment": "NE",
     "description": "A half-elf pack mule. Works closely with traveling merchants of the area. Skilled at smuggling, concealing daggers, etc.",
     "height": "5'11\"",
     "weight": "160",
@@ -13,7 +19,6 @@
         "wis": 10,
         "cha": 11
     },
-    "level": 1,
     "hitDie": 10,
     "maxHP": 13,
     "currentHP": 13,
