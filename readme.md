@@ -15,9 +15,9 @@ got lots of rough edges.
 ## Roadmap
 
 + Basic tracking of, and output for:
-    + attacks
+    + ~~attacks~~
     + feats
-    + traits
+    + ~~traits~~
     + spells
 + Add/edit functionality for:
     + ability scores
@@ -30,5 +30,5 @@ got lots of rough edges.
 + New character creation walkthrough process
 + Eventually:
     + Decoupling of input and data processing, converting outputs to json format
-    + Option to have outputs be served via restful API
+    + Option to have outputs be served via restful API (in addition to CLI)
     + Web app frontend for restful API
