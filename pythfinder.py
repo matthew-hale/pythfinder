@@ -1,6 +1,6 @@
 #!/bin/python3
 #
-# carrion_crown_fighter.py
+# pythfinder.py
 
 import sys
 import json
@@ -46,7 +46,7 @@ def getInput():
         arg = input(inputString)
     return arg
 
-# Get the modifier for a given ability
+# Get the modifier for a given ability value
 def getAbilityMod(ability):
     if ability == 1:
         return -5
@@ -80,34 +80,35 @@ def getAbilityMod(ability):
         return 9
 
 # Formatted string of basic character info, including abilities
-def getCharacterString():
-    outstring = "\n    " + character["name"] + ", the " + character["race"] + " " + character["class"] + ". Level: " + str(character["level"])
-    outstring += "\n    " + character["height"] + ", " + character["weight"] + "\n    " + character["description"] + "\n"
-    outstring += getAbilityString()
+def getCharacterString(c):
+    outstring = "\n    " + c["name"] + ", the " + c["race"] + " " + c["class"] + ". Level: " + str(c["level"])
+    outstring += "\n    " + c["height"] + ", " + c["weight"] + "\n    " + c["description"] + "\n"
+    outstring += getAbilityString(c)
     return outstring
 
 # Formatted string of abilities
-def getAbilityString():
+def getAbilityString(c):
     outstring = "\n    Abilities:\n\n    "
-    for k, v in character["abilities"].items():
+    for k, v in c["abilities"].items():
         outstring += k + ": " + str(v) + "\n    "
     return outstring
 
-def getSkillString():
+# Formatted string of skills
+def getSkillString(c):
     outstring = "\n    Skills:\n\n    "
-    for skill in character["skills"]:
+    for skill in c["skills"]:
         outstring += skill["name"] + " - Ranks: " + str(skill["rank"])
         if skill["isClass"]:
             outstring += " (class), "
         else:
             outstring += ", "
-        outstring += "Mod: " + skill["mod"] + " (" + str(getAbilityMod(character["abilities"][skill["mod"]])) + ")\n    "
+        outstring += "Mod: " + skill["mod"] + " (" + str(getAbilityMod(c["abilities"][skill["mod"]])) + ")\n    "
     return outstring
 
 # Formatted string of items
-def getEquipmentString():
+def getEquipmentString(c):
     outstring = "\n    Items:\n\n    "
-    for item in character["equipment"]:
+    for item in c["equipment"]:
         outstring += item["name"] + " - Unit Weight: " + str(item["weight"]) + " lbs, Count: " + str(item["count"])
         if item["notes"]:
             outstring += ", Notes: " + item["notes"]
@@ -117,23 +118,23 @@ def getEquipmentString():
     return outstring
 
 # Formatted string of feats
-def getFeatString():
+def getFeatString(c):
     outstring = "\n    Feats:\n\n    "
-    for feat in character["feats"]:
+    for feat in c["feats"]:
         outstring += feat["name"] + ":\n        " + feat["description"] + "\n        " + feat["notes"] + "\n    "
     return outstring
 
 # Formatted string of traits
-def getTraitString():
+def getTraitString(c):
     outstring = "\n    Traits:\n\n    "
-    for trait in character["traits"]:
+    for trait in c["traits"]:
         outstring += trait["name"] + ":\n        " + trait["description"] + "\n    "
     return outstring
 
 # Formatted string of attacks
-def getAttackString():
+def getAttackString(c):
     outstring = "\n    Attacks:\n"
-    for attack in character["attacks"]:
+    for attack in c["attacks"]:
         outstring += "\n    " + attack["weapon"] + " (" + attack["attackType"] + ")\n        "
         outstring += "Damage: " + attack["damage"] + " " + str(attack["critRoll"])
         if attack["critRoll"] < 20:
@@ -148,36 +149,37 @@ def getAttackString():
 
 ### MAIN ###
 
-# Check for argument
-if not (len(sys.argv) >= 2):
-    print("Usage: " + sys.argv[0] + " <data_path>")
+if __name__ == "__main__":
+    # Check for argument
+    if not (len(sys.argv) >= 2):
+        print("Usage: " + sys.argv[0] + " <data_path>")
+        sys.exit()
+
+    data = sys.argv[1]
+
+    # Will be changed to data in future
+    character = readCharacter(dataPath)
+
+    # Main loop
+    while True:
+        arg = getInput()
+        if arg == "character":
+            print(getCharacterString(character))
+        elif arg == "abilities":
+            print(getAbilityString(character))
+        elif arg == "skills":
+            print(getSkillString(character))
+        elif arg == "items":
+            print(getEquipmentString(character))
+        elif arg == "attacks":
+            print(getAttackString(character))
+        elif arg == "feats":
+            print(getFeatString(character))
+        elif arg == "traits":
+            print(getTraitString(character))
+        elif arg == "q" or arg == "quit":
+            break
+
+    if dataChanged:
+        writeCharacter(character, data)
     sys.exit()
-
-data = sys.argv[1]
-
-# Will be changed to data in future
-character = readCharacter(dataPath)
-
-# Main loop
-while True:
-    arg = getInput()
-    if arg == "character":
-        print(getCharacterString())
-    elif arg == "abilities":
-        print(getAbilityString())
-    elif arg == "skills":
-        print(getSkillString())
-    elif arg == "items":
-        print(getEquipmentString())
-    elif arg == "attacks":
-        print(getAttackString())
-    elif arg == "feats":
-        print(getFeatString())
-    elif arg == "traits":
-        print(getTraitString())
-    elif arg == "q" or arg == "quit":
-        break
-
-if dataChanged:
-    writeCharacter(character, data)
-sys.exit()
