@@ -1,4 +1,4 @@
-# Pathfinder
+# Pythfinder
 
 A repository for an in-development Pathfinder 1e python app. The goal is to be 
 able to keep track of multiple characters, and provide functionality such as 
@@ -28,6 +28,7 @@ got lots of rough edges.
     + traits
     + spells
 + New character creation walkthrough process
++ Character sheet JSON format enforcement
 + Eventually:
     + Decoupling of input and data processing, converting outputs to json format
     + Option to have outputs be served via restful API (in addition to CLI)
