@@ -16,7 +16,7 @@ got lots of rough edges.
 
 + Basic tracking of, and output for:
     + ~~attacks~~
-    + feats
+    + ~~feats~~
     + ~~traits~~
     + spells
 + Add/edit functionality for:
