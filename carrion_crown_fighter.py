@@ -106,16 +106,15 @@ def getSkillString():
 
 # Formatted string of items
 def getEquipmentString():
-    outstring=""
+    outstring="\n    Items:\n\n    "
     for item in character["equipment"]:
         outstring += item["name"] + " - Unit Weight: " + str(item["weight"]) + " lbs, Count: " + str(item["count"])
         if item["notes"]:
             outstring += ", Notes: " + item["notes"]
         if item["pack"]:
             outstring += " (pack item)"
-        outstring += "\n"
-    # Slicing off the last newline
-    return outstring[0:-1]
+        outstring += "\n    "
+    return outstring
 
 
 ### MAIN ###
@@ -140,7 +139,7 @@ while True:
     elif arg == "skills":
         print(getSkillString())
     elif arg == "items":
-        print("Items:\n" + getEquipmentString())
+        print(getEquipmentString())
     elif arg == "attacks":
         print("attacks")
     elif arg == "feats":
