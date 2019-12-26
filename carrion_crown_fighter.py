@@ -79,6 +79,13 @@ def getAbilityMod(ability):
     elif ability in [28, 29]:
         return 9
 
+# Formatted string of basic character info, including abilities
+def getCharacterString():
+    outstring = "\n    " + character["name"] + ", the " + character["race"] + " " + character["class"] + ". Level: " + str(character["level"])
+    outstring += "\n    " + character["height"] + ", " + character["weight"] + "\n    " + character["description"] + "\n"
+    outstring += getAbilityString()
+    return outstring
+
 # Formatted string of abilities
 def getAbilityString():
     outstring = "\n    Abilities:\n\n    "
@@ -127,9 +134,7 @@ character = readCharacter(dataPath)
 while True:
     arg = getInput()
     if arg == "character":
-        print(character["name"] + ", the " + character["race"] + " " + character["class"] + ". Level: " + str(character["level"]))
-        print(character["height"] + ", " + character["weight"] + "\n" + character["description"] + "\n")
-        print(getAbilityString())
+        print(getCharacterString())
     elif arg == "abilities":
         print(getAbilityString())
     elif arg == "skills":
