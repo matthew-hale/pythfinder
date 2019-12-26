@@ -123,6 +123,13 @@ def getFeatString():
         outstring += feat["name"] + ":\n        " + feat["description"] + "\n        " + feat["notes"] + "\n    "
     return outstring
 
+# Formatted string of traits
+def getTraitString():
+    outstring = "\n    Traits:\n\n    "
+    for trait in character["traits"]:
+        outstring += trait["name"] + ":\n        " + trait["description"] + "\n    "
+    return outstring
+
 ### MAIN ###
 
 # Check for argument
@@ -151,7 +158,7 @@ while True:
     elif arg == "feats":
         print(getFeatString())
     elif arg == "traits":
-        print("traits")
+        print(getTraitString())
     elif arg == "q" or arg == "quit":
         break
 
