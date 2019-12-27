@@ -14,8 +14,8 @@ def readCharacter(path):
     return character
 
 # Read in json data from a string
-def readCharacterString(json):
-    return json.loads(json)
+def readCharacterString(j):
+    return json.loads(j)
 
 # Write the given character data to the file in path
 def writeCharacter(character, path):
