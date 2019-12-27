@@ -20,9 +20,11 @@
         "cha": 11
     },
     "hitDie": 10,
-    "maxHP": 13,
-    "currentHP": 13,
-    "baseAttackBonus": 1,
+    "hp": {
+        "max": 13,
+        "current": 13
+    },
+    "baseAttackBonus": [1],
     "traits": [
         {
             "name": "On the payroll",

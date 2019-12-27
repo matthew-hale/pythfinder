@@ -4,7 +4,6 @@
 
 import sys
 import json
-from copy import deepcopy as cp
 
 ### FUNCTIONS ###
 
@@ -63,46 +62,17 @@ def getAbilityMod(ability):
 # Returns the given character object, without long elements like skills, feats, 
 # traits, spells, and equipment.
 def getCharacter(json):
-    c = cp(json)
-    try:
-        del c["traits"]
-    except KeyError:
-        pass
-
-    try:
-        del c["feats"]
-    except KeyError:
-        pass
-
-    try:
-        del c["equipment"]
-    except KeyError:
-        pass
-
-    try:
-        del c["skills"]
-    except KeyError:
-        pass
-
-    try:
-        del c["spells"]
-    except KeyError:
-        pass
-
-    try:
-        del c["attacks"]
-    except KeyError:
-        pass
-
-    return c
-    """
-    outstring = "\n    " + c["name"] + ", the " + c["alignment"] + " " + c["race"]
-    for item in c["classes"]:
-        outstring += "\n    " + item["class"] + " - Lvl. " + str(item["level"])
-    outstring += "\n    " + c["height"] + ", " + c["weight"] + "\n    " + c["description"] + "\n"
-    outstring += getAbilityString(c)
-    return outstring
-    """
+    output = {}
+    output["name"] = json["name"]
+    output["race"] = json["race"]
+    output["classes"] = json["classes"]
+    output["alignment"] = json["alignment"]
+    output["description"] = json["description"]
+    output["height"] = json["height"]
+    output["weight"] = json["weight"]
+    output["abilities"] = json["abilities"]
+    output["hp"] = json["hp"]
+    return output
 
 # Formatted string of abilities
 def getAbilityString(c):
