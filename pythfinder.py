@@ -13,6 +13,10 @@ def readCharacter(path):
         character = json.load(f)
     return character
 
+# Read in json data from a string
+def readCharacterString(data):
+    return json.loads(data)
+
 # Write the given character data to the file in path
 def writeCharacter(character, path):
     with open(path, "w", encoding="utf-8") as f:
