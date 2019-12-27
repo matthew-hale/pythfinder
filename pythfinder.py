@@ -74,6 +74,16 @@ def getCharacter(json):
     output["hp"] = json["hp"]
     return output
 
+# Returns ability valies from given character object
+# If ability is specified, returns that ability's value directly
+def getAbility(json, ability=None):
+    if ability:
+        if not ability.lower() in ["str", "dex", "con", "int", "wis", "cha"]:
+            raise ValueError('getAbility: ability must be one of ["str", "dex", "con", "int", "wis", "cha"]')
+        return json["abilities"][ability.lower()]
+    else:
+        return json["abilities"]
+
 # Formatted string of abilities
 def getAbilityString(c):
     outstring = "\n    Abilities:\n\n    "
