@@ -4,6 +4,7 @@
 
 import sys
 import json
+from copy import deepcopy as cp
 
 ### FUNCTIONS ###
 
@@ -54,17 +55,54 @@ def getAbilityMod(ability):
         return 8
     elif ability in [28, 29]:
         return 9
+    elif ability in [30, 31]:
+        return 10
     else:
-        raise ValueError("getAbilityMod: ability must be within range of 1-29, inclusive.")
+        raise ValueError("getAbilityMod: ability must be within range of 1-31, inclusive.")
 
-# Formatted string of basic character info, including abilities
-def getCharacterString(c):
+# Returns the given character object, without long elements like skills, feats, 
+# traits, spells, and equipment.
+def getCharacter(json):
+    c = cp(json)
+    try:
+        del c["traits"]
+    except KeyError:
+        pass
+
+    try:
+        del c["feats"]
+    except KeyError:
+        pass
+
+    try:
+        del c["equipment"]
+    except KeyError:
+        pass
+
+    try:
+        del c["skills"]
+    except KeyError:
+        pass
+
+    try:
+        del c["spells"]
+    except KeyError:
+        pass
+
+    try:
+        del c["attacks"]
+    except KeyError:
+        pass
+
+    return c
+    """
     outstring = "\n    " + c["name"] + ", the " + c["alignment"] + " " + c["race"]
     for item in c["classes"]:
         outstring += "\n    " + item["class"] + " - Lvl. " + str(item["level"])
     outstring += "\n    " + c["height"] + ", " + c["weight"] + "\n    " + c["description"] + "\n"
     outstring += getAbilityString(c)
     return outstring
+    """
 
 # Formatted string of abilities
 def getAbilityString(c):
@@ -177,7 +215,8 @@ if __name__ == "__main__":
     while True:
         arg = getInput()
         if arg == "character":
-            print(getCharacterString(character))
+            c = getCharacter(character)
+            print(c)
         elif arg == "abilities":
             print(getAbilityString(character))
         elif arg == "skills":
