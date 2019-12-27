@@ -61,7 +61,7 @@ def getAbilityMod(ability):
 
 # Returns the given character object, without long elements like skills, feats, 
 # traits, spells, and equipment.
-def getCharacter(json):
+def getCharacterShort(json):
     output = {}
     output["name"] = json["name"]
     output["race"] = json["race"]
@@ -195,7 +195,7 @@ if __name__ == "__main__":
     while True:
         arg = getInput()
         if arg == "character":
-            c = getCharacter(character)
+            c = getCharacterShort(character)
             outstring = "\n    "
             outstring += c["name"] + ", " + c["alignment"] + " " + c["race"]
             for item in c["classes"]:
