@@ -14,8 +14,8 @@ def readCharacter(path):
     return character
 
 # Read in json data from a string
-def readCharacterString(data):
-    return json.loads(data)
+def readCharacterString(json):
+    return json.loads(json)
 
 # Write the given character data to the file in path
 def writeCharacter(character, path):
@@ -61,28 +61,28 @@ def getAbilityMod(ability):
 
 # Returns the given character object, without long elements like skills, feats, 
 # traits, spells, and equipment.
-def getCharacterShort(json):
+def getCharacterShort(data):
     output = {}
-    output["name"] = json["name"]
-    output["race"] = json["race"]
-    output["classes"] = json["classes"]
-    output["alignment"] = json["alignment"]
-    output["description"] = json["description"]
-    output["height"] = json["height"]
-    output["weight"] = json["weight"]
-    output["abilities"] = json["abilities"]
-    output["hp"] = json["hp"]
+    output["name"] = data["name"]
+    output["race"] = data["race"]
+    output["classes"] = data["classes"]
+    output["alignment"] = data["alignment"]
+    output["description"] = data["description"]
+    output["height"] = data["height"]
+    output["weight"] = data["weight"]
+    output["abilities"] = data["abilities"]
+    output["hp"] = data["hp"]
     return output
 
 # Returns ability valies from given character object
 # If ability is specified, returns that ability's value directly
-def getAbility(json, ability=None):
+def getAbility(data, ability=None):
     if ability:
         if not ability.lower() in ["str", "dex", "con", "int", "wis", "cha"]:
             raise ValueError('getAbility: ability must be one of ["str", "dex", "con", "int", "wis", "cha"]')
-        return json["abilities"][ability.lower()]
+        return data["abilities"][ability.lower()]
     else:
-        return json["abilities"]
+        return data["abilities"]
 
 # Formatted string of abilities
 def getAbilityString(c):
