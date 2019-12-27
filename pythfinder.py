@@ -22,26 +22,6 @@ def writeCharacter(character, path):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(character, f, indent=4)
 
-# Primary user input function
-def getInput():
-    arg = ""
-    args = ["character",
-            "abilities",
-            "skills",
-            "items",
-            "attacks",
-            "feats",
-            "traits",
-            "quit",
-            "q"]
-    inputString = ""
-    inputString += data + " (" + character["name"] + ") > "
-    arg = input(inputString)
-    while not arg in args:
-        print("\n    Usage:\n\n" + "    {" + "|".join(args[:-1]) + "}\n")
-        arg = input(inputString)
-    return arg
-
 # Get the modifier for a given ability value
 def getAbilityMod(ability):
     if ability == 1:
@@ -155,6 +135,26 @@ def getAttackString(c):
 ### MAIN ###
 
 if __name__ == "__main__":
+    # Primary user input function
+    def getInput():
+        arg = ""
+        args = ["character",
+                "abilities",
+                "skills",
+                "items",
+                "attacks",
+                "feats",
+                "traits",
+                "quit",
+                "q"]
+        inputString = ""
+        inputString += data + " (" + character["name"] + ") > "
+        arg = input(inputString)
+        while not arg in args:
+            print("\n    Usage:\n\n" + "    {" + "|".join(args[:-1]) + "}\n")
+            arg = input(inputString)
+        return arg
+
     # Paths to data file (for demo purposes)
     dataPath = "/home/matt/pythfinder/data/qofin-parora.json"
 
