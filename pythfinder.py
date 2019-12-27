@@ -186,7 +186,13 @@ if __name__ == "__main__":
         arg = getInput()
         if arg == "character":
             c = getCharacter(character)
-            print(c)
+            outstring = "\n    "
+            outstring += c["name"] + ", " + c["alignment"] + " " + c["race"]
+            for item in c["classes"]:
+                outstring += "\n    " + item["class"] + " - Lvl. " + str(item["level"])
+            outstring += "\n    " + c["description"] + "\n"
+            outstring += getAbilityString(character)
+            print(outstring)
         elif arg == "abilities":
             print(getAbilityString(character))
         elif arg == "skills":
