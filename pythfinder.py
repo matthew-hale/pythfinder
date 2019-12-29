@@ -116,14 +116,19 @@ def getSkillString(c):
 
 # Formatted string of items
 def getEquipmentString(c):
+    total = 0
+    totalCamp = 0
     outstring = "\n    Items:\n\n    "
     for item in sorted(c["equipment"], key = lambda i: i["name"]):
+        total += item["weight"] * item["count"]
         outstring += item["name"] + " - Unit Weight: " + str(item["weight"]) + " lbs, Count: " + str(item["count"])
         if item["notes"]:
             outstring += ", Notes: " + item["notes"]
         if item["pack"]:
             outstring += " (pack item)"
+            totalCamp += item["weight"] * item["count"]
         outstring += "\n    "
+    outstring += "\n    Total weight: " + str(total) + "\n    Total weight (with camp set up): " + str(totalCamp)
     return outstring
 
 # Formatted string of feats
