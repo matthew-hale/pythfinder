@@ -100,12 +100,18 @@ def getAbilityString(c):
 def getSkillString(c):
     outstring = "\n    Skills:\n\n    "
     for skill in c["skills"]:
-        outstring += skill["name"] + " - Ranks: " + str(skill["rank"])
+        total = 0
+        outstring += skill["name"] + " - " + str(skill["rank"]) + " (ranks) "
+        total += skill["rank"]
         if skill["isClass"]:
-            outstring += " (class), "
-        else:
-            outstring += ", "
-        outstring += "Mod: " + skill["mod"] + " (" + str(getAbilityMod(c["abilities"][skill["mod"]])) + ")\n    "
+            outstring += "+ 3 (class) "
+            total += 3
+        outstring += "+ " + str(getAbilityMod(c["abilities"][skill["mod"]])) + " (mod: " + skill["mod"] + ") "
+        total += getAbilityMod(c["abilities"][skill["mod"]])
+        if skill["misc"] > 0:
+            total += skill["misc"]
+            outstring += "+ " + str(skill["misc"]) + " (misc) "
+        outstring += "= " + str(total) + "\n    "
     return outstring
 
 # Formatted string of items
