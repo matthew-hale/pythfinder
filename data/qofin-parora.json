@@ -26,6 +26,13 @@
         "current": 13
     },
     "baseAttackBonus": [1],
+    "special": [
+        {
+            "name": "",
+            "description": "",
+            "notes": ""
+        }
+    ],
     "traits": [
         {
             "name": "On the payroll",
