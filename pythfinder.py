@@ -117,7 +117,7 @@ def getSkillString(c):
 # Formatted string of items
 def getEquipmentString(c):
     outstring = "\n    Items:\n\n    "
-    for item in c["equipment"]:
+    for item in sorted(c["equipment"], key = lambda i: i["name"]):
         outstring += item["name"] + " - Unit Weight: " + str(item["weight"]) + " lbs, Count: " + str(item["count"])
         if item["notes"]:
             outstring += ", Notes: " + item["notes"]
