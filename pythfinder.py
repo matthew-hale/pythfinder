@@ -206,6 +206,7 @@ if __name__ == "__main__":
             outstring += c["name"] + ", " + c["alignment"] + " " + c["race"]
             for item in c["classes"]:
                 outstring += "\n    " + item["class"] + " - Lvl. " + str(item["level"])
+            outstring += "\n    " + c["height"] + ", " + str(c["weight"]) + " lbs."
             outstring += "\n    " + c["description"] + "\n"
             outstring += getAbilityString(character)
             print(outstring)
