@@ -4,7 +4,7 @@
     "classes": [
         {
             "class": "Fighter",
-            "archetypes": [],
+            "archetypes": ["Pack mule"],
             "level": 1
         }
     ],
