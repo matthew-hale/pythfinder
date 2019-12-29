@@ -4,6 +4,7 @@
     "classes": [
         {
             "class": "Fighter",
+            "archetypes": [],
             "level": 1
         }
     ],
