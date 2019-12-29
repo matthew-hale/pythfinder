@@ -103,7 +103,7 @@ def getSkillString(c):
         total = 0
         outstring += skill["name"] + " - " + str(skill["rank"]) + " (ranks) "
         total += skill["rank"]
-        if skill["isClass"]:
+        if skill["isClass"] and skill["rank"] > 0:
             outstring += "+ 3 (class) "
             total += 3
         outstring += "+ " + str(getAbilityMod(c["abilities"][skill["mod"]])) + " (mod: " + skill["mod"] + ") "

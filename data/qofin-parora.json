@@ -23,7 +23,7 @@
     "hitDie": 10,
     "hp": {
         "max": 13,
-        "current": 13
+        "current": 14
     },
     "baseAttackBonus": [1],
     "special": [
@@ -227,7 +227,7 @@
         },
         {
             "name": "Sunrod",
-            "count": 8,
+            "count": 5,
             "weight": 1,
             "pack": true,
             "notes": ""
@@ -291,9 +291,9 @@
         {
             "name": "Crossbow, light",
             "weight": 4,
-            "count": 2,
+            "count": 1,
             "pack": true,
-            "notes": ""
+            "notes": "1 lent to gnomefoot"
         },
         {
             "name": "Bolts, crossbow x10",
@@ -318,7 +318,7 @@
         },
         {
             "name": "Darkwood case",
-            "weight": 9,
+            "weight": 6,
             "count": 1,
             "pack": true,
             "notes": "see notes"
