@@ -244,7 +244,10 @@ if __name__ == "__main__":
             outstring = "\n    "
             outstring += c["name"] + ", " + c["alignment"] + " " + c["race"]
             for item in c["classes"]:
-                outstring += "\n    " + item["name"] + " - Lvl. " + str(item["level"])
+                outstring += "\n    " + item["name"]
+                if item["archetypes"]:
+                    outstring += " (" + ", ".join(item["archetypes"]) + ")"
+                outstring += " - Lvl. " + str(item["level"])
             outstring += "\n    " + c["height"] + ", " + str(c["weight"]) + " lbs."
             outstring += "\n    " + c["description"] + "\n" + getAbilityString(character)
             print(outstring)
