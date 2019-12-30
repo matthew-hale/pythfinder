@@ -3,7 +3,7 @@
     "race": "Half-elf",
     "classes": [
         {
-            "class": "Fighter",
+            "name": "Fighter",
             "archetypes": ["Pack mule"],
             "level": 1
         }
