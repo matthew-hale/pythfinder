@@ -92,7 +92,7 @@ def getAbilityString(c):
         if modValue >= 0:
             modString = "+" + str(modValue)
         else:
-            modString = "-" + str(modValue)
+            modString = str(modValue)
         outstring += k + ": " + str(v) + " (" + modString + ")\n    "
     return outstring
 
@@ -184,9 +184,6 @@ if __name__ == "__main__":
             arg = input(inputString)
         return arg
 
-    # Paths to data file (for demo purposes)
-    dataPath = "/home/matt/pythfinder/data/qofin-parora.json"
-
     # Any functions that intend to change character data will flag this as True; at 
     # the end of the loop, if this is true, data will be written to the data 
     # argument given as input.
@@ -199,8 +196,7 @@ if __name__ == "__main__":
 
     data = sys.argv[1]
 
-    # Will be changed to data in future
-    character = readCharacter(dataPath)
+    character = readCharacter(data)
 
     # Main loop
     while True:
