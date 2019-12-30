@@ -12,6 +12,10 @@
     "description": "A half-elf pack mule. Works closely with traveling merchants of the area. Skilled at smuggling, concealing daggers, etc.",
     "height": "5'11\"",
     "weight": "160",
+    "age": 28,
+    "languages": [
+        "Common"
+    ],
     "abilities": {
         "str": 17,
         "dex": 16,
@@ -23,7 +27,7 @@
     "hitDie": 10,
     "hp": {
         "max": 13,
-        "current": 14
+        "current": 9
     },
     "baseAttackBonus": [1],
     "special": [
@@ -34,6 +38,10 @@
         }
     ],
     "traits": [
+        {
+            "name": "Keen Senses",
+            "description": "+2 to Perception checks"
+        },
         {
             "name": "On the payroll",
             "description": "+150 starting gold"
@@ -55,7 +63,7 @@
             "notes": ""
         }
     ],
-    "gold": 10.88,
+    "gold": 5.88,
     "equipment": [
         {
             "name": "Tent, hanging",
@@ -68,7 +76,7 @@
             "name": "Piton",
             "weight": 0.5,
             "count": 2,
-            "pack": false,
+            "pack": true,
             "notes": ""
         },
         {
@@ -80,8 +88,8 @@
         },
         {
             "name": "Chalk",
-            "weight": 0,
-            "count": 5,
+            "weight": 0.03,
+            "count": 30,
             "pack": true,
             "notes": ""
         },
@@ -237,7 +245,7 @@
             "count": 1,
             "weight": 0,
             "pack": true,
-            "notes": "+1 to survival checks made to avoid becoming lost, and +1 to KnowledgeDungeoneering checks made underground for navigation"
+            "notes": "+1 to Survival checks made to avoid becoming lost, and +1 to Knowledge (Dungeoneering) checks made underground for navigation"
         },
         {
             "name": "Rations, trail",
@@ -311,7 +319,7 @@
         },
         {
             "name": "Arrows, ghost",
-            "weight": 3,
+            "weight": 2,
             "count": 1,
             "pack": true,
             "notes": "see notes"
@@ -430,7 +438,7 @@
             "misc": 0
         },
         {
-            "name": "Knowledge Arcana",
+            "name": "Knowledge (Arcana)",
             "rank": 0,
             "isClass": false,
             "mod": "int",
@@ -522,8 +530,8 @@
             "rank": 0,
             "isClass": false,
             "mod": "wis",
-            "notes": "",
-            "misc": 0
+            "notes": "Keen Senses",
+            "misc": 2
         },
         {
             "name": "Perform",
