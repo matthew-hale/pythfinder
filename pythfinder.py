@@ -5,6 +5,95 @@
 import sys
 import json
 
+### CLASSES ###
+
+class Character:
+    def __init__(self, data = {}):
+        if data is None:
+            self.name = ""
+            self.race = ""
+            self.classes = []
+            self.alignment = ""
+            self.description = ""
+            self.height = ""
+            self.weight = 0
+            self.age = 0
+            self.languages = []
+            self.abilities = {}
+            self.hitDie = 0
+            self.hp = {}
+            self.baseAttackBonus = []
+            self.special = []
+            self.traits = []
+            self.feats = []
+            self.gold = 0
+            self.equipment = []
+            self.skills = []
+            self.attacks = []
+        else:
+            keys = data.keys()
+            self.name = data["name"] if "name" in keys else ""
+            self.race = data["race"] if "race" in keys else ""
+            self.classes = data["classes"] if "classes" in keys else []
+            self.alignment = data["alignment"] if "alignment" in keys else ""
+            self.description = data["description"] if "description" in keys else ""
+            self.height = data["height"] if "height" in keys else ""
+            self.weight = data["weight"] if "weight" in keys else 0
+            self.age = data["age"] if "age" in keys else 0
+            self.languages = data["languages"] if "languages" in keys else []
+            self.abilities = data["abilities"] if "abilities" in keys else {}
+            self.hitDie = data["hitDie"] if "hitDie" in keys else 0
+            self.hp = data["hp"] if "hp" in keys else {}
+            self.baseAttackBonus = data["baseAttackBonus"] if "baseAttackBonus" in keys else []
+            self.special = data["special"] if "special" in keys else []
+            self.traits = data["traits"] if "traits" in keys else []
+            self.feats = data["feats"] if "feats" in keys else []
+            self.gold = data["gold"] if "gold" in keys else 0
+            self.equipment = data["equipment"] if "equipment" in keys else []
+            self.skills = data["skills"] if "skills" in keys else []
+            self.attacks = data["attacks"] if "attacks" in keys else []
+
+    def getCharacterShort(self):
+        return self.name
+
+    def getAbilityMod(self, ability):
+        value = self.abilities[ability]
+        if value == 1:
+            return -5
+        elif value in [2, 3]:
+            return -4
+        elif value in [4, 5]:
+            return -3
+        elif value in [6, 7]:
+            return -2
+        elif value in [8, 9]:
+            return -1
+        elif value in [10, 11]:
+            return 0
+        elif value in [12, 13]:
+            return 1
+        elif value in [14, 15]:
+            return 2
+        elif value in [16, 17]:
+            return 3
+        elif value in [18, 19]:
+            return 4
+        elif value in [20, 21]:
+            return 5
+        elif value in [22, 23]:
+            return 6
+        elif value in [24, 25]:
+            return 7
+        elif value in [26, 27]:
+            return 8
+        elif value in [28, 29]:
+            return 9
+        elif value in [30, 31]:
+            return 10
+        else:
+            raise ValueError("getAbilityMod: ability must be within range of 1-31, inclusive.")
+
+
 ### FUNCTIONS ###
 
 # Read the json data from path
