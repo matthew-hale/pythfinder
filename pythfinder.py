@@ -96,20 +96,10 @@ class Character:
 
 ### FUNCTIONS ###
 
-# Read the json data from path
-def readCharacter(path):
-    with open(path) as f:
-        character = json.load(f)
-    return character
-
-# Read in json data from a string
-def readCharacterString(j):
-    return json.loads(j)
-
 # Write the given character data to the file in path
 def writeCharacter(character, path):
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(character, f, indent=4)
+        json.dump(character.__dict__, f, indent=4)
 
 # Get the modifier for a given ability value
 def getAbilityMod(ability):
