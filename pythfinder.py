@@ -106,28 +106,28 @@ if __name__ == "__main__":
         outstring = "\n    Items:\n\n    "
         for item in sorted(c.equipment, key = lambda i: i["name"]):
             total += item["weight"] * item["count"]
-            outstring += item["name"] + " - Unit Weight: " + str(item["weight"]) + " lbs, Count: " + str(item["count"])
+            outstring += "{} - Unit Weight: {} lbs, Count: {}".format(item["name"],str(item["weight"]),str(item["count"]))
             if item["notes"]:
-                outstring += ", Notes: " + item["notes"]
+                outstring += ", Notes: {}".format(item["notes"])
             if item["pack"]:
                 outstring += " (pack item)"
                 totalCamp += item["weight"] * item["count"]
             outstring += "\n    "
-        outstring += "\n    Total weight: " + str(total) + "\n    Total weight (with camp set up): " + str(totalCamp)
+        outstring += "\n    Total weight: {}\n    Total weight (with camp set up): {}".format(str(total),str(totalCamp))
         return outstring
 
     # Formatted string of feats
     def getFeatString(c):
         outstring = "\n    Feats:\n\n    "
         for feat in c.feats:
-            outstring += feat["name"] + ":\n        " + feat["description"] + "\n        " + feat["notes"] + "\n    "
+            outstring += "{}:\n        {}\n        {}\n    ".format(feat["name"],feat["description"],feat["notes"])
         return outstring
 
     # Formatted string of traits
     def getTraitString(c):
         outstring = "\n    Traits:\n\n    "
         for trait in c.traits:
-            outstring += trait["name"] + ":\n        " + trait["description"] + "\n    "
+            outstring +=  "{}:\n        {}\n    ".format(trait["name"],trait["description"])
         return outstring
 
     # Formatted string of skills
