@@ -156,7 +156,10 @@ if __name__ == "__main__":
         outstring = "\n    Skills:\n\n    "
         for skill in c.skills:
             total = 0
-            outstring += skill["name"] + " - " + str(skill["rank"]) + " (ranks) "
+            if not skill["useUntrained"]:
+                outstring += "*"
+            outstring += skill["name"] 
+            outstring += " - " + str(skill["rank"]) + " (ranks) "
             total += skill["rank"]
             if skill["isClass"] and skill["rank"] > 0:
                 outstring += "+ 3 (class) "

@@ -67,6 +67,7 @@
             "isClass": false,
             "mod": "dex",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -75,6 +76,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -83,6 +85,7 @@
             "isClass": false,
             "mod": "cha",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -91,6 +94,7 @@
             "isClass": false,
             "mod": "str",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -99,6 +103,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -107,6 +112,7 @@
             "isClass": false,
             "mod": "cha",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -115,6 +121,7 @@
             "isClass": false,
             "mod": "dex",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -123,6 +130,7 @@
             "isClass": false,
             "mod": "cha",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -131,6 +139,7 @@
             "isClass": false,
             "mod": "dex",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -139,6 +148,7 @@
             "isClass": false,
             "mod": "dex",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -147,6 +157,7 @@
             "isClass": false,
             "mod": "cha",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -155,6 +166,7 @@
             "isClass": false,
             "mod": "wis",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -163,6 +175,7 @@
             "isClass": false,
             "mod": "cha",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -171,6 +184,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -179,6 +193,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -187,6 +202,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -195,6 +211,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -203,6 +220,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -211,6 +229,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -219,6 +238,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -227,6 +247,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -235,6 +256,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -243,6 +265,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -251,6 +274,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -259,6 +283,7 @@
             "isClass": false,
             "mod": "wis",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -267,6 +292,7 @@
             "isClass": false,
             "mod": "cha",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -275,6 +301,7 @@
             "isClass": false,
             "mod": "wis",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -283,6 +310,7 @@
             "isClass": false,
             "mod": "dex",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -291,6 +319,7 @@
             "isClass": false,
             "mod": "wis",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -299,6 +328,7 @@
             "isClass": false,
             "mod": "dex",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -307,6 +337,7 @@
             "isClass": false,
             "mod": "int",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         },
         {
@@ -315,6 +346,7 @@
             "isClass": false,
             "mod": "dex",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -323,6 +355,7 @@
             "isClass": false,
             "mod": "wis",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -331,6 +364,7 @@
             "isClass": false,
             "mod": "str",
             "notes": "",
+            "useUntrained": true,
             "misc": 0
         },
         {
@@ -339,6 +373,7 @@
             "isClass": false,
             "mod": "cha",
             "notes": "",
+            "useUntrained": false,
             "misc": 0
         }
     ],
