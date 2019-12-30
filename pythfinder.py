@@ -7,51 +7,30 @@ import json
 
 ### CLASSES ###
 
+# Main character class
 class Character:
     def __init__(self, data = {}):
-        if data is None:
-            self.name = ""
-            self.race = ""
-            self.classes = []
-            self.alignment = ""
-            self.description = ""
-            self.height = ""
-            self.weight = 0
-            self.age = 0
-            self.languages = []
-            self.abilities = {}
-            self.hitDie = 0
-            self.hp = {}
-            self.baseAttackBonus = []
-            self.special = []
-            self.traits = []
-            self.feats = []
-            self.gold = 0
-            self.equipment = []
-            self.skills = []
-            self.attacks = []
-        else:
-            keys = data.keys()
-            self.name = data["name"] if "name" in keys else ""
-            self.race = data["race"] if "race" in keys else ""
-            self.classes = data["classes"] if "classes" in keys else []
-            self.alignment = data["alignment"] if "alignment" in keys else ""
-            self.description = data["description"] if "description" in keys else ""
-            self.height = data["height"] if "height" in keys else ""
-            self.weight = data["weight"] if "weight" in keys else 0
-            self.age = data["age"] if "age" in keys else 0
-            self.languages = data["languages"] if "languages" in keys else []
-            self.abilities = data["abilities"] if "abilities" in keys else {}
-            self.hitDie = data["hitDie"] if "hitDie" in keys else 0
-            self.hp = data["hp"] if "hp" in keys else {}
-            self.baseAttackBonus = data["baseAttackBonus"] if "baseAttackBonus" in keys else []
-            self.special = data["special"] if "special" in keys else []
-            self.traits = data["traits"] if "traits" in keys else []
-            self.feats = data["feats"] if "feats" in keys else []
-            self.gold = data["gold"] if "gold" in keys else 0
-            self.equipment = data["equipment"] if "equipment" in keys else []
-            self.skills = data["skills"] if "skills" in keys else []
-            self.attacks = data["attacks"] if "attacks" in keys else []
+        keys = data.keys() if data else []
+        self.name = data["name"] if "name" in keys else ""
+        self.race = data["race"] if "race" in keys else ""
+        self.classes = data["classes"] if "classes" in keys else []
+        self.alignment = data["alignment"] if "alignment" in keys else ""
+        self.description = data["description"] if "description" in keys else ""
+        self.height = data["height"] if "height" in keys else ""
+        self.weight = data["weight"] if "weight" in keys else 0
+        self.age = data["age"] if "age" in keys else 0
+        self.languages = data["languages"] if "languages" in keys else []
+        self.abilities = data["abilities"] if "abilities" in keys else {}
+        self.hitDie = data["hitDie"] if "hitDie" in keys else 0
+        self.hp = data["hp"] if "hp" in keys else {}
+        self.baseAttackBonus = data["baseAttackBonus"] if "baseAttackBonus" in keys else []
+        self.special = data["special"] if "special" in keys else []
+        self.traits = data["traits"] if "traits" in keys else []
+        self.feats = data["feats"] if "feats" in keys else []
+        self.gold = data["gold"] if "gold" in keys else 0
+        self.equipment = data["equipment"] if "equipment" in keys else []
+        self.skills = data["skills"] if "skills" in keys else []
+        self.attacks = data["attacks"] if "attacks" in keys else []
 
     # Get the modifier for a given ability
     def getAbilityMod(self, ability):
