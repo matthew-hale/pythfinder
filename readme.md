@@ -28,7 +28,8 @@ got lots of rough edges.
     + traits
     + spells
 + New character creation walkthrough process
-+ Character sheet JSON format enforcement
++ ~~Character sheet JSON format enforcement~~
+    + This is partially done with the Character class, but I'll eventually have classes for other complex objects within the character, like items, attacks, spells, etc. Makes it easier to import json; just grab values if they're there, if not use the defaults, and for extra values just ignore them.
 + Eventually:
     + Decoupling of input and data processing, converting outputs to json format
     + Option to have outputs be served via restful API (in addition to CLI)
