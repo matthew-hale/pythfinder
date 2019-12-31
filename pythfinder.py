@@ -124,9 +124,97 @@ class CharacterClass:
                  level = 0,
                  data = {}):
         keys = data.keys()
-        self.name = item["name"] if "name" in keys else name
-        self.archetypes = item["archetypes"] if "archetypes" in keys else archetypes
-        self.level = item["level"] if "level" in keys else level
+        self.name = data["name"] if "name" in keys else name
+        self.archetypes = data["archetypes"] if "archetypes" in keys else archetypes
+        self.level = data["level"] if "level" in keys else level
+
+class CharacterAbilities:
+    def __init__(self,
+                 str_ = 10,
+                 dex = 10,
+                 con = 10,
+                 int_ = 10,
+                 wis = 10,
+                 cha = 10,
+                 data = {}):
+        keys = data.keys()
+        self.str = data["str"] if "str" in keys else str_
+        self.dex = data["dex"] if "dex" in keys else dex
+        self.con = data["con"] if "con" in keys else con
+        self.int = data["int"] if "int" in keys else int_
+        self.wis = data["wis"] if "wis" in keys else wis
+        self.cha = data["cha"] if "cha" in keys else cha
+
+class CharacterHP:
+    def __init__(self,
+                 max_ = 0,
+                 current = 0,
+                 temporary = 0,
+                 data = {}):
+        keys = data.keys()
+        self.max = data["max"] if "max" in keys else max_
+        self.current = data["current"] if "current" in keys else current
+        self.temporary = data["temporary"] if "temporary" in keys else temporary
+
+class CharacterSpecial:
+    def __init__(self,
+                 name = "",
+                 description = "",
+                 notes = "",
+                 data = {}):
+        keys = data.keys()
+        self.name = data["name"] if "name" in keys else name
+        self.description = data["description"] if "description" in keys else description
+        self.notes = data["notes"] if "notes" in keys else notes
+
+class CharacterSavingThrow:
+    def __init__(self,
+                 base = 0,
+                 bonuses = [],
+                 data = {}):
+        keys = data.keys()
+        self.base = data["base"] if "base" in keys else base
+        self.bonuses = data["bonuses"] if "bonuses" in keys else bonuses
+
+class CharacterSkill:
+    def __init__(self,
+                 name = "",
+                 rank = 0,
+                 isClass = False,
+                 mod = "",
+                 notes = "",
+                 useUntrained = True,
+                 misc = 0,
+                 data = {}):
+        keys = data.keys()
+        self.name = data["name"] if "name" in keys else name
+        self.rank = data["rank"] if "rank" in keys else rank
+        self.isClass = data["isClass"] if "isClass" in keys else isClass
+        self.mod = data["mod"] if "mod" in keys else mod
+        self.notes = data["notes"] if "notes" in keys else notes
+        self.useUntrained = data["useUntrained"] if "useUntrained" in keys else useUntrained
+        self.misc = data["misc"] if "misc" in keys else misc
+
+class CharacterAttack:
+    def __init__(self,
+                 weapon = "",
+                 attackType = "",
+                 damageType = [],
+                 damage = "",
+                 critRoll = 0,
+                 critMulti = 0,
+                 range_ = 0,
+                 notes = 0,
+                 data = {}):
+        keys = data.keys()
+        self.weapon = data["weapon"] if "weapon" in keys else weapon
+        self.attackType = data["attackType"] if "attackType" in keys else attackType
+        self.damageType = data["damageType"] if "damageType" in keys else damageType
+        self.damage = data["damage"] if "damage" in keys else damage
+        self.critRoll = data["critRoll"] if "critRoll" in keys else critRoll
+        self.critMulti = data["critMulti"] if "critMulti" in keys else critMulti
+        self.range = data["range"] if "range" in keys else range_
+        self.notes = data["notes"] if "notes" in keys else notes
 
 ### FUNCTIONS ###
 
