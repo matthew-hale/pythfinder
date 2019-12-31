@@ -10,25 +10,40 @@ import json
 # Main character class
 class Character:
     def __init__(self, data = {}):
-        keys = data.keys() if data else []
+        # Grab keys from imported json data
+        keys = data.keys()
+
+        # These are the simple values (those of a type like string, int, etc.). 
+        # More complex values will get their own objects initialized.
         self.name = data["name"] if "name" in keys else ""
         self.race = data["race"] if "race" in keys else ""
-        self.classes = data["classes"] if "classes" in keys else []
+        self.deity = data["deity"] if "deity" in keys else ""
+        self.homeland = data["homeland"] if "homeland" in keys else ""
+        self.CMB = data["CMB"] if "CMB" in keys else 0
+        self.CMD = data["CMD"] if "CMD" in keys else 10
+        self.initiativeMods = data["initiativeMods"] if "initiativeMods" in keys else []
         self.alignment = data["alignment"] if "alignment" in keys else ""
         self.description = data["description"] if "description" in keys else ""
         self.height = data["height"] if "height" in keys else ""
         self.weight = data["weight"] if "weight" in keys else 0
+        self.size = data["size"] if "size" in keys else ""
         self.age = data["age"] if "age" in keys else 0
+        self.hair = data["hair"] if "hair" in keys else ""
+        self.eyes = data["eyes"] if "eyes" in keys else ""
         self.languages = data["languages"] if "languages" in keys else []
-        self.abilities = data["abilities"] if "abilities" in keys else {}
-        self.hitDie = data["hitDie"] if "hitDie" in keys else 0
-        self.hp = data["hp"] if "hp" in keys else {}
         self.baseAttackBonus = data["baseAttackBonus"] if "baseAttackBonus" in keys else []
+        self.gold = data["gold"] if "gold" in keys else 0
+
+        # Complex object members
+        self.speed = data["speed"] if "speed" in keys else {}
+        self.classes = data["classes"] if "classes" in keys else []
+        self.abilities = data["abilities"] if "abilities" in keys else {}
+        self.hp = data["hp"] if "hp" in keys else {}
         self.special = data["special"] if "special" in keys else []
         self.traits = data["traits"] if "traits" in keys else []
         self.feats = data["feats"] if "feats" in keys else []
-        self.gold = data["gold"] if "gold" in keys else 0
         self.equipment = data["equipment"] if "equipment" in keys else []
+        self.savingThrows = data["savingThrows"] if "savingThrows" in keys else {}
         self.skills = data["skills"] if "skills" in keys else []
         self.attacks = data["attacks"] if "attacks" in keys else []
 
@@ -85,6 +100,33 @@ class Character:
         output["hp"] = self.hp
         return output
 
+class CharacterSpeed:
+    def __init__(self,
+                 base = 0,
+                 armor = 0,
+                 fly = 0,
+                 swim = 0,
+                 climb = 0,
+                 burrow = 0,
+                 data = {}):
+        keys = data.keys()
+        self.base = data["base"] if "base" in keys else base
+        self.armor = data["armor"] if "armor" in keys else armor
+        self.fly = data["fly"] if "fly" in keys else fly
+        self.swim = data["swim"] if "swim" in keys else swim
+        self.climb = data["climb"] if "climb" in keys else climb
+        self.burrow = data["burrow"] if "burrow" in keys else burrow
+
+class CharacterClass:
+    def __init__(self,
+                 name = "",
+                 archetypes = [],
+                 level = 0,
+                 data = {}):
+        keys = data.keys()
+        self.name = item["name"] if "name" in keys else name
+        self.archetypes = item["archetypes"] if "archetypes" in keys else archetypes
+        self.level = item["level"] if "level" in keys else level
 
 ### FUNCTIONS ###
 

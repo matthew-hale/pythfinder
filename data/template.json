@@ -1,6 +1,19 @@
 {
     "name": "",
     "race": "",
+    "deity": "",
+    "homeland": "",
+    "speed": {
+        "base": 0,
+        "armor": 0,
+        "fly": 0,
+        "swim": 0,
+        "climb": 0,
+        "burrow": 0
+    },
+    "CMB": 0,
+    "CMD": 0,
+    "initiativeMods": [0],
     "classes": [
         {
             "name": "",
@@ -12,10 +25,11 @@
     "description": "",
     "height": "",
     "weight": 0,
+    "size": "",
     "age": 0,
-    "languages": [
-        ""
-    ],
+    "hair": "",
+    "eyes": "",
+    "languages": [""],
     "abilities": {
         "str": 0,
         "dex": 0,
@@ -27,7 +41,8 @@
     "hitDie": 0,
     "hp": {
         "max": 0,
-        "current": 0
+        "current": 0,
+        "temporary": 0
     },
     "baseAttackBonus": [0],
     "special": [
@@ -60,6 +75,20 @@
             "notes": ""
         }
     ],
+    "savingThrows": {
+        "fortitude": {
+            "base": 0,
+            "bonuses": []
+        },
+        "reflex": {
+            "base": 0,
+            "bonuses": []
+        },
+        "will": {
+            "base": 0,
+            "bonuses": []
+        }
+    },
     "skills": [
         {
             "name": "Acrobatics",
