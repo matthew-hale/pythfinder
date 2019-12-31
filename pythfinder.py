@@ -179,6 +179,13 @@ if __name__ == "__main__":
             outstring += k + ": " + str(v) + " (" + modString + ")\n    "
         return outstring
 
+    # Formatted string of special abilities
+    def getSpecialString(c):
+        outstring = "\n    Special:\n\n"
+        for item in c.special:
+            outstring += "    {}:\n    {}\n    {}\n\n".format(item["name"],item["description"],item["notes"])
+        return outstring
+
     # Primary user input function
     def getInput():
         arg = ""
@@ -187,6 +194,7 @@ if __name__ == "__main__":
                 "skills",
                 "items",
                 "attacks",
+                "special",
                 "feats",
                 "traits",
                 "quit",
@@ -245,6 +253,8 @@ if __name__ == "__main__":
             print(getFeatString(character))
         elif arg == "traits":
             print(getTraitString(character))
+        elif arg == "special":
+            print(getSpecialString(character))
         elif arg == "q" or arg == "quit":
             break
 
