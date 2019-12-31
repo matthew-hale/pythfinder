@@ -35,14 +35,38 @@ class Character:
         self.gold = data["gold"] if "gold" in keys else 0
 
         # Complex object members
-        self.speed = data["speed"] if "speed" in keys else {}
-        self.classes = data["classes"] if "classes" in keys else []
-        self.abilities = data["abilities"] if "abilities" in keys else {}
-        self.hp = data["hp"] if "hp" in keys else {}
-        self.special = data["special"] if "special" in keys else []
+        if "speed" in keys:
+            self.speed = CharacterSpeed(data = data["speed"])
+        else:
+            self.speed = CharacterSpeed() 
+
+        self.classes = []
+        if "classes" in keys:
+            for item in data["classes"]:
+                self.classes += CharacterClass(item)
+
+        if "abilities" in keys:
+            self.abilities = CharacterAbilities(data = data["abilities"])
+        else:
+            self.abilities = CharacterAbilities()
+
+        if "hp" in keys:
+            self.hp = CharacterHP(data = data["hp"])
+        else:
+            self.hp = CharacterHP()
+
+        self.special = []
+        if "special" in keys:
+            for item in data["special"]:
+                self.special += CharacterSpecial(item)
+
         self.traits = data["traits"] if "traits" in keys else []
         self.feats = data["feats"] if "feats" in keys else []
         self.equipment = data["equipment"] if "equipment" in keys else []
+
+        # saving throws are unique; check class definition and template
+        self.savingThrows = {}
+        
         self.savingThrows = data["savingThrows"] if "savingThrows" in keys else {}
         self.skills = data["skills"] if "skills" in keys else []
         self.attacks = data["attacks"] if "attacks" in keys else []
