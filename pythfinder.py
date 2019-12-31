@@ -103,7 +103,7 @@ if __name__ == "__main__":
     def getEquipmentString(c):
         total = 0
         totalCamp = 0
-        outstring = "\n    Items:\n\n    "
+        outstring = "\n    Items:\n\n    Gold: {}\n\n    ".format(str(c.gold))
         for item in sorted(c.equipment, key = lambda i: i["name"]):
             total += item["weight"] * item["count"]
             outstring += "{} - Unit Weight: {} lbs, Count: {}".format(item["name"],str(item["weight"]),str(item["count"]))
