@@ -1,11 +1,8 @@
 import pythfinder as pf
 import json
-from flask import Flask, session, request, render_template, make_response
+from flask import Flask, request, render_template, make_response
 
 app = Flask(__name__)
-
-# Obviously not going to stay like this; this is for local dev only
-app.secret_key = "temporary_dev_secret_key"
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -16,10 +13,12 @@ def index():
         character = pf.Character(data = characterData)
         characterShort = character.getCharacterShort()
         response = make_response(render_template("index.html", character = characterShort))
-        session["character"] = characterData
+        cookie_str = character.getJson()
+        response.set_cookie(key = "character", value = cookie_str)
 
         return response
 
 @app.route('/character/')
 def get_character():
-    return session["character"]
+    response = make_response("Character cookie:\n{}".format(request.cookies.get('character')))
+    return response
