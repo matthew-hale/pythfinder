@@ -43,7 +43,7 @@ class Character:
         self.classes = []
         if "classes" in keys:
             for item in data["classes"]:
-                self.classes += CharacterClass(item)
+                self.classes += [CharacterClass(item)]
 
         if "abilities" in keys:
             self.abilities = CharacterAbilities(data = data["abilities"])
@@ -58,10 +58,19 @@ class Character:
         self.special = []
         if "special" in keys:
             for item in data["special"]:
-                self.special += CharacterSpecial(item)
+                self.special += [CharacterBasicItem(item)]
 
-        self.traits = data["traits"] if "traits" in keys else []
-        self.feats = data["feats"] if "feats" in keys else []
+        self.traits = []
+        if "traits" in keys:
+            for item in data["traits"]:
+                self.traits += [CharacterBasicItem(item)]
+
+        self.feats = []
+        if "feats" in keys:
+            for item in data["feats"]:
+                self.feats += [CharacterBasicItem(item)]
+
+
         self.equipment = data["equipment"] if "equipment" in keys else []
 
         # saving throws are unique; check class definition and template
@@ -73,6 +82,9 @@ class Character:
 
     # Get the modifier for a given ability
     def getAbilityMod(self, ability):
+        abilityRange = ["str","dex","con","int","wis","cha"]
+        if ability not in abilityRange:
+            raise ValueError("getAbilityMod: ability must be one of " + abilityRange)
         value = self.abilities[ability]
         if value == 1:
             return -5
@@ -180,7 +192,7 @@ class CharacterHP:
         self.current = data["current"] if "current" in keys else current
         self.temporary = data["temporary"] if "temporary" in keys else temporary
 
-class CharacterSpecial:
+class CharacterBasicItem:
     def __init__(self,
                  name = "",
                  description = "",
