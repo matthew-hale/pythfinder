@@ -2,8 +2,37 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <script type="text/javascript">
+            function getData() {
+                var xmlHttp = new XMLHttpRequest();
+
+                xmlHttp.open("GET", "{{url_for('get_name', _external = True)}}", false);
+                xmlHttp.send(null);
+                document.getElementById("name").innerHTML = xmlHttp.responseText;
+
+                xmlHttp.open("GET", "{{url_for('get_race', _external = True)}}", false);
+                xmlHttp.send(null);
+                document.getElementById("race").innerHTML = xmlHttp.responseText;
+
+                xmlHttp.open("GET", "{{url_for('get_homeland', _external = True)}}", false);
+                xmlHttp.send(null);
+                document.getElementById("homeland").innerHTML = xmlHttp.responseText;
+
+            }
+        </script>
     </head>
-    <body>
-        {{ character }}
+    <body onload="getData();">
+        <div class="input">
+            <form method="POST">
+                <textarea name="character" placeholder="Paste character json here..."></textarea>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <h2>Name</h2>
+        <p id="name"></p>
+        <h2>Race</h2>
+        <p id="race"></p>
+        <h2>Homeland</h2>
+        <p id="homeland"></p>
     </body>
 </html>
