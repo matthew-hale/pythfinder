@@ -1,5 +1,14 @@
+.input {
+    padding-top: 2em;
+    display: flex;
+    width: 75%;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0px auto;
+}
+
 textarea {
-    width: 50%;
+    width: 100%;
     height: 500px;
     padding: 12px;
     box-sizing: border-box;

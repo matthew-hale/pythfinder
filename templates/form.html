@@ -3,9 +3,11 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
-        <form method="POST">
-            <textarea name="character" placeholder="Paste character json here..."></textarea>
-            <input type="submit" value="Submit">
-        </form>
+        <div class="input">
+            <form method="POST">
+                <textarea name="character" placeholder="Paste character json here..."></textarea>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
     </body>
 </html>
