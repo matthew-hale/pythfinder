@@ -127,14 +127,26 @@ class Character:
         output = {}
         output["name"] = self.name
         output["race"] = self.race
-        output["classes"] = self.classes
+        output["classes"] = []
+        for item in self.classes:
+            output["classes"].append(item.__dict__)
         output["alignment"] = self.alignment
         output["description"] = self.description
         output["height"] = self.height
         output["weight"] = self.weight
-        output["abilities"] = self.abilities
-        output["hp"] = self.hp
+        output["abilities"] = self.abilities.__dict__
+        output["hp"] = self.hp.__dict__
         return output
+
+    # Returns a dict of the entire character
+    def getDict(self):
+        return json.loads(
+            json.dumps(self, default = lambda o: getattr(o, '__dict__', str(o)))
+        )
+
+    # Returns a JSON string representation of the entire character
+    def getJson(self):
+        return json.dumps(self, default = lambda o: getattr(o, '__dict__', str(o)))
 
 class CharacterSpeed:
     def __init__(self,
