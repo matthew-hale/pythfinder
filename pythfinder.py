@@ -43,7 +43,7 @@ class Character:
         self.classes = []
         if "classes" in keys:
             for item in data["classes"]:
-                self.classes += [CharacterClass(item)]
+                self.classes.append(CharacterClass(data = item))
 
         if "abilities" in keys:
             self.abilities = CharacterAbilities(data = data["abilities"])
@@ -58,17 +58,17 @@ class Character:
         self.special = []
         if "special" in keys:
             for item in data["special"]:
-                self.special += [CharacterBasicItem(item)]
+                self.special.append(CharacterBasicItem(data = item))
 
         self.traits = []
         if "traits" in keys:
             for item in data["traits"]:
-                self.traits += [CharacterBasicItem(item)]
+                self.traits.append(CharacterBasicItem(data = item))
 
         self.feats = []
         if "feats" in keys:
             for item in data["feats"]:
-                self.feats += [CharacterBasicItem(item)]
+                self.feats.append(CharacterBasicItem(data = item))
 
 
         self.equipment = data["equipment"] if "equipment" in keys else []
@@ -85,7 +85,7 @@ class Character:
         abilityRange = ["str","dex","con","int","wis","cha"]
         if ability not in abilityRange:
             raise ValueError("getAbilityMod: ability must be one of " + abilityRange)
-        value = self.abilities[ability]
+        value = getattr(self.abilities, ability)
         if value == 1:
             return -5
         elif value in [2, 3]:
@@ -163,6 +163,10 @@ class CharacterClass:
         self.name = data["name"] if "name" in keys else name
         self.archetypes = data["archetypes"] if "archetypes" in keys else archetypes
         self.level = data["level"] if "level" in keys else level
+
+    # Returns dict of the class
+    def getClassDict(self):
+        return self.__dict__
 
 class CharacterAbilities:
     def __init__(self,
@@ -286,14 +290,14 @@ if __name__ == "__main__":
     def getFeatString(c):
         outstring = "\n    Feats:\n\n    "
         for feat in c.feats:
-            outstring += "{}:\n        {}\n        {}\n    ".format(feat["name"],feat["description"],feat["notes"])
+            outstring += "{}:\n        {}\n        {}\n    ".format(feat.name,feat.description,feat.notes)
         return outstring
 
     # Formatted string of traits
     def getTraitString(c):
         outstring = "\n    Traits:\n\n    "
         for trait in c.traits:
-            outstring +=  "{}:\n        {}\n    ".format(trait["name"],trait["description"])
+            outstring +=  "{}:\n        {}\n        {}\n    ".format(trait.name,trait.description,trait.notes)
         return outstring
 
     # Formatted string of skills
@@ -336,7 +340,7 @@ if __name__ == "__main__":
     # Returns a formatted string of abilities
     def getAbilityString(c):
         outstring = "\n    Abilities:\n\n    "
-        for k, v in c.abilities.items():
+        for k, v in c.abilities.__dict__.items():
             modValue = c.getAbilityMod(k)
             if modValue >= 0:
                 modString = "+" + str(modValue)
@@ -349,7 +353,7 @@ if __name__ == "__main__":
     def getSpecialString(c):
         outstring = "\n    Special:\n\n"
         for item in c.special:
-            outstring += "    {}:\n    {}\n    {}\n\n".format(item["name"],item["description"],item["notes"])
+            outstring += "    {}:\n    {}\n    {}\n\n".format(item.name,item.description,item.notes)
         return outstring
 
     # Primary user input function
@@ -399,11 +403,12 @@ if __name__ == "__main__":
             c = character.getCharacterShort()
             outstring = "\n    "
             outstring += c["name"] + ", " + c["alignment"] + " " + c["race"]
-            for item in c["classes"]:
-                outstring += "\n    " + item["name"]
-                if item["archetypes"]:
-                    outstring += " (" + ", ".join(item["archetypes"]) + ")"
-                outstring += " - Lvl. " + str(item["level"])
+            for item in character.classes:
+                cClass = item.getClassDict()
+                outstring += "\n    " + cClass["name"]
+                if cClass["archetypes"]:
+                    outstring += " (" + ", ".join(cClass["archetypes"]) + ")"
+                outstring += " - Lvl. " + str(cClass["level"])
             outstring += "\n    " + c["height"] + ", " + str(c["weight"]) + " lbs."
             outstring += "\n    " + c["description"] + "\n" + getAbilityString(character)
             print(outstring)
