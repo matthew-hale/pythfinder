@@ -71,7 +71,10 @@ class Character:
                 self.feats.append(CharacterBasicItem(data = item))
 
 
-        self.equipment = data["equipment"] if "equipment" in keys else []
+        self.equipment = []
+        if "equipment" in keys:
+            for item in data["equipment"]:
+                self.equipment.append(CharacterEquipment(data = item))
 
         self.savingThrows = {}
         if "savingThrows" in keys:
