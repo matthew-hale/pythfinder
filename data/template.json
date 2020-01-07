@@ -77,15 +77,15 @@
     "savingThrows": {
         "fortitude": {
             "base": 0,
-            "bonuses": []
+            "misc": 0
         },
         "reflex": {
             "base": 0,
-            "bonuses": []
+            "misc": 0
         },
         "will": {
             "base": 0,
-            "bonuses": []
+            "misc": 0
         }
     },
     "skills": [
@@ -415,6 +415,15 @@
             "critMulti": 0,
             "range": 0,
             "notes": ""
+        }
+    ],
+    "armor": [
+        {
+            "name": "",
+            "acBonus": 0,
+            "acPenalty": 0,
+            "maxDexBonus": 0,
+            "type": ""
         }
     ]
 }

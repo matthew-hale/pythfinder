@@ -73,10 +73,11 @@ class Character:
 
         self.equipment = data["equipment"] if "equipment" in keys else []
 
-        # saving throws are unique; check class definition and template
         self.savingThrows = {}
+        if "savingThrows" in keys:
+            for item in data["savingThrows"].keys():
+                self.savingThrows[item] = CharacterSavingThrow(data = data["savingThrows"][item])
         
-        self.savingThrows = data["savingThrows"] if "savingThrows" in keys else {}
         self.skills = data["skills"] if "skills" in keys else []
         self.attacks = data["attacks"] if "attacks" in keys else []
 
@@ -219,14 +220,29 @@ class CharacterBasicItem:
         self.description = data["description"] if "description" in keys else description
         self.notes = data["notes"] if "notes" in keys else notes
 
+class CharacterEquipment:
+    def __init__(self,
+                 name = "",
+                 weight = 0,
+                 count = 0,
+                 pack = false,
+                 notes = "",
+                 data = {}):
+        keys = data.keys()
+        self.name = data["name"] if "name" in keys else name
+        self.weight = data["weight"] if "weight" in keys else weight
+        self.count = data["count"] if "count" in keys else count
+        self.pack = data["pack"] if "pack" in keys else pack
+        self.notes = data["notes"] if "notes" in keys else notes
+
 class CharacterSavingThrow:
     def __init__(self,
                  base = 0,
-                 bonuses = [],
+                 misc = 0,
                  data = {}):
         keys = data.keys()
         self.base = data["base"] if "base" in keys else base
-        self.bonuses = data["bonuses"] if "bonuses" in keys else bonuses
+        self.misc = data["misc"] if "misc" in keys else misc
 
 class CharacterSkill:
     def __init__(self,
