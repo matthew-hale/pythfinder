@@ -165,3 +165,20 @@ def get_gold():
     else:
         return ""
 
+@app.route("/speed")
+def get_speed():
+    if "character" in session:
+        character = pf.Character(json.loads(session["character"]))
+        type_ = request.args.get("type", None)
+        if type_:
+            typeList = type_.split(",")
+            output = {}
+            keys = character.speed.__dict__.keys()
+            for item in typeList:
+                if item in keys:
+                    output[item] = getattr(character.speed, item)
+            return output
+        else:
+            return character.speed.__dict__
+    else:
+        return ""
