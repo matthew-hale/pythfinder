@@ -232,7 +232,7 @@ class CharacterEquipment:
                  name = "",
                  weight = 0,
                  count = 0,
-                 pack = false,
+                 pack = False,
                  notes = "",
                  data = {}):
         keys = data.keys()
@@ -370,14 +370,14 @@ if __name__ == "__main__":
         total = 0
         totalCamp = 0
         outstring = "\n    Items:\n\n    Gold: {}\n\n    ".format(str(c.gold))
-        for item in sorted(c.equipment, key = lambda i: i["name"]):
-            total += item["weight"] * item["count"]
-            outstring += "{} - Unit Weight: {} lbs, Count: {}".format(item["name"],str(item["weight"]),str(item["count"]))
-            if item["notes"]:
-                outstring += ", Notes: {}".format(item["notes"])
-            if item["pack"]:
+        for item in sorted(c.equipment, key = lambda i: i.name):
+            total += item.weight * item.count
+            outstring += "{} - Unit Weight: {} lbs, Count: {}".format(item.name,str(item.weight),str(item.count))
+            if item.notes:
+                outstring += ", Notes: {}".format(item.notes)
+            if item.pack:
                 outstring += " (pack item)"
-                totalCamp += item["weight"] * item["count"]
+                totalCamp += item.weight * item.count
             outstring += "\n    "
         outstring += "\n    Total weight: {}\n    Total weight (with camp set up): {}".format(str(total),str(totalCamp))
         return outstring
@@ -401,19 +401,19 @@ if __name__ == "__main__":
         outstring = "\n    Skills:\n\n    "
         for skill in c.skills:
             total = 0
-            if not skill["useUntrained"]:
+            if not skill.useUntrained:
                 outstring += "*"
-            outstring += skill["name"] 
-            outstring += " - " + str(skill["rank"]) + " (ranks) "
-            total += skill["rank"]
-            if skill["isClass"] and skill["rank"] > 0:
+            outstring += skill.name 
+            outstring += " - " + str(skill.rank) + " (ranks) "
+            total += skill.rank
+            if skill.isClass and skill.rank > 0:
                 outstring += "+ 3 (class) "
                 total += 3
-            outstring += "+ " + str(c.getAbilityMod(skill["mod"])) + " (mod: " + skill["mod"] + ") "
-            total += c.getAbilityMod(skill["mod"])
-            if skill["misc"] > 0:
-                total += skill["misc"]
-                outstring += "+ " + str(skill["misc"]) + " (misc) "
+            outstring += "+ " + str(c.getAbilityMod(skill.mod)) + " (mod: " + skill.mod + ") "
+            total += c.getAbilityMod(skill.mod)
+            if skill.misc > 0:
+                total += skill.misc
+                outstring += "+ " + str(skill.misc) + " (misc) "
             outstring += "= " + str(total) + "\n    "
         return outstring
 
