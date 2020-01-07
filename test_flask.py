@@ -182,3 +182,14 @@ def get_speed():
             return character.speed.__dict__
     else:
         return ""
+
+@app.route("/class")
+def get_class():
+    if "character" in session:
+        character = pf.Character(json.loads(session["character"]))
+        result = []
+        for item in character.classes:
+            result.append(item.getClassDict())
+        return json.dumps(result)
+    else:
+        return ""
