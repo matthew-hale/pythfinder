@@ -2,7 +2,6 @@
 #
 # pythfinder.py
 
-import sys
 import json
 
 ### CLASSES ###
@@ -86,7 +85,15 @@ class Character:
             for item in data["skills"]:
                 self.skills.append(CharacterSkill(data = item))
 
-        self.attacks = data["attacks"] if "attacks" in keys else []
+        self.spells = []
+        if "spells" in keys:
+            for item in data["spells"]:
+                self.spells.append(CharacterSpell(data = item))
+
+        self.attacks = []
+        if "attacks" in keys:
+            for item in data["attacks"]:
+                self.attacks.append(CharacterAttack(data = item))
 
     # Get the modifier for a given ability
     def getAbilityMod(self, ability):
@@ -144,6 +151,30 @@ class Character:
         output["weight"] = self.weight
         output["abilities"] = self.abilities.__dict__
         output["hp"] = self.hp.__dict__
+        return output
+
+    # Returns a dict containing keys for each level of spell present in the 
+    # character's list of spells. Within each key, the spells are sorted by 
+    # name.
+    def getSortedSpells(self):
+        output = {}
+        spellLevels = []
+
+        # We're doing this because we don't want to end up with empty keys 
+        # (makes things easier later)
+        for spell in self.spells:
+            spellLevels.append(spell.level)
+
+        spellLevelsUnique = sorted(set(spellLevels))
+
+        # Initializing an empty list for each spell level present in th espell 
+        # list
+        for level in spellLevelsUnique:
+            output[level] = []
+
+        for spell in self.spells:
+            output[spell.level].append(spell)
+
         return output
 
     # Returns a dict of the entire character
@@ -204,6 +235,21 @@ class CharacterAbilities:
         self.int = data["int"] if "int" in keys else int_
         self.wis = data["wis"] if "wis" in keys else wis
         self.cha = data["cha"] if "cha" in keys else cha
+
+class CharacterSpell:
+    def __init__(self,
+                 name = "",
+                 level = 0,
+                 description = "",
+                 prepared = 0,
+                 cast = 0,
+                 data = {}):
+        keys = data.keys()
+        self.name = data["name"] if "name" in keys else name
+        self.level = data["level"] if "level" in keys else level
+        self.description = data["description"] if "description" in keys else description
+        self.prepared = data["prepared"] if "prepared" in keys else prepared
+        self.cast = data["cast"] if "cast" in keys else cast
 
 class CharacterHP:
     def __init__(self,
@@ -337,10 +383,10 @@ class CharacterAttack:
                  attackType = "",
                  damageType = [],
                  damage = "",
-                 critRoll = 0,
-                 critMulti = 0,
+                 critRoll = 20,
+                 critMulti = 2,
                  range_ = 0,
-                 notes = 0,
+                 notes = "",
                  data = {}):
         keys = data.keys()
         self.weapon = data["weapon"] if "weapon" in keys else weapon
@@ -357,174 +403,4 @@ class CharacterAttack:
 # Write the given character data to the file in path
 def writeCharacter(character, path):
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(character.__dict__, f, indent=4)
-
-### MAIN ###
-
-if __name__ == "__main__":
-    # These inner functions are just for the CLI; the API will utilize its own 
-    # functions to format the elements of the object.
-
-    # Formatted string of items
-    def getEquipmentString(c):
-        total = 0
-        totalCamp = 0
-        outstring = "\n    Items:\n\n    Gold: {}\n\n    ".format(str(c.gold))
-        for item in sorted(c.equipment, key = lambda i: i.name):
-            total += item.weight * item.count
-            outstring += "{} - Unit Weight: {} lbs, Count: {}".format(item.name,str(item.weight),str(item.count))
-            if item.notes:
-                outstring += ", Notes: {}".format(item.notes)
-            if item.pack:
-                outstring += " (pack item)"
-                totalCamp += item.weight * item.count
-            outstring += "\n    "
-        outstring += "\n    Total weight: {}\n    Total weight (with camp set up): {}".format(str(total),str(totalCamp))
-        return outstring
-
-    # Formatted string of feats
-    def getFeatString(c):
-        outstring = "\n    Feats:\n\n    "
-        for feat in c.feats:
-            outstring += "{}:\n        {}\n        {}\n    ".format(feat.name,feat.description,feat.notes)
-        return outstring
-
-    # Formatted string of traits
-    def getTraitString(c):
-        outstring = "\n    Traits:\n\n    "
-        for trait in c.traits:
-            outstring +=  "{}:\n        {}\n        {}\n    ".format(trait.name,trait.description,trait.notes)
-        return outstring
-
-    # Formatted string of skills
-    def getSkillString(c):
-        outstring = "\n    Skills:\n\n    "
-        for skill in c.skills:
-            total = 0
-            if not skill.useUntrained:
-                outstring += "*"
-            outstring += skill.name 
-            outstring += " - " + str(skill.rank) + " (ranks) "
-            total += skill.rank
-            if skill.isClass and skill.rank > 0:
-                outstring += "+ 3 (class) "
-                total += 3
-            outstring += "+ " + str(c.getAbilityMod(skill.mod)) + " (mod: " + skill.mod + ") "
-            total += c.getAbilityMod(skill.mod)
-            if skill.misc > 0:
-                total += skill.misc
-                outstring += "+ " + str(skill.misc) + " (misc) "
-            outstring += "= " + str(total) + "\n    "
-        return outstring
-
-    # Formatted string of attacks
-    def getAttackString(c):
-        outstring = "\n    Attacks:\n    "
-        for attack in c.attacks:
-            outstring += "\n    " + attack["weapon"] + " (" + attack["attackType"] + ")\n        "
-            outstring += "Damage: " + attack["damage"] + " " + str(attack["critRoll"])
-            if attack["critRoll"] < 20:
-                outstring += "-20"
-            outstring += " x" + str(attack["critMulti"]) + " (" + ",".join(attack["damageType"]) + ") "
-            if attack["range"] > 0:
-                outstring += "\n        " + str(attack["range"]) + " ft. range increment"
-            if attack["notes"]:
-                outstring += "\n        " + attack["notes"]
-            outstring += "\n    "
-        return outstring
-
-    # Returns a formatted string of abilities
-    def getAbilityString(c):
-        outstring = "\n    Abilities:\n\n    "
-        for k, v in c.abilities.__dict__.items():
-            modValue = c.getAbilityMod(k)
-            if modValue >= 0:
-                modString = "+" + str(modValue)
-            else:
-                modString = str(modValue)
-            outstring += k + ": " + str(v) + " (" + modString + ")\n    "
-        return outstring
-
-    # Formatted string of special abilities
-    def getSpecialString(c):
-        outstring = "\n    Special:\n\n"
-        for item in c.special:
-            outstring += "    {}:\n    {}\n    {}\n\n".format(item.name,item.description,item.notes)
-        return outstring
-
-    # Primary user input function
-    def getInput():
-        arg = ""
-        args = ["character",
-                "abilities",
-                "skills",
-                "items",
-                "attacks",
-                "special",
-                "feats",
-                "traits",
-                "quit",
-                "q"]
-        inputString = ""
-        inputString += data + " (" + character.name + ") > "
-        arg = input(inputString)
-        while not arg in args:
-            print("\n    Usage:\n\n" + "    {" + "|".join(args[:-1]) + "}\n")
-            arg = input(inputString)
-        return arg
-
-    # Any functions that intend to change character data will flag this as True; at 
-    # the end of the loop, if this is true, data will be written to the data 
-    # argument given as input.
-    dataChanged = False
-
-    # Check for argument
-    if not (len(sys.argv) >= 2):
-        print("Usage: " + sys.argv[0] + " <data_path>")
-        sys.exit()
-
-    data = sys.argv[1]
-
-    try:
-        with open(data) as f:
-            character = Character(json.load(f))
-    except FileNotFoundError:
-        print("File not found.")
-        sys.exit()
-
-    # Main loop
-    while True:
-        arg = getInput()
-        if arg == "character":
-            c = character.getCharacterShort()
-            outstring = "\n    "
-            outstring += c["name"] + ", " + c["alignment"] + " " + c["race"]
-            for item in character.classes:
-                cClass = item.getClassDict()
-                outstring += "\n    " + cClass["name"]
-                if cClass["archetypes"]:
-                    outstring += " (" + ", ".join(cClass["archetypes"]) + ")"
-                outstring += " - Lvl. " + str(cClass["level"])
-            outstring += "\n    " + c["height"] + ", " + str(c["weight"]) + " lbs."
-            outstring += "\n    " + c["description"] + "\n" + getAbilityString(character)
-            print(outstring)
-        elif arg == "abilities":
-            print(getAbilityString(character))
-        elif arg == "skills":
-            print(getSkillString(character))
-        elif arg == "items":
-            print(getEquipmentString(character))
-        elif arg == "attacks":
-            print(getAttackString(character))
-        elif arg == "feats":
-            print(getFeatString(character))
-        elif arg == "traits":
-            print(getTraitString(character))
-        elif arg == "special":
-            print(getSpecialString(character))
-        elif arg == "q" or arg == "quit":
-            break
-
-    if dataChanged:
-        writeCharacter(character, data)
-    sys.exit()
+        json.dump(character.getDict, f, indent=4)
