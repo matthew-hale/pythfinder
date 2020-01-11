@@ -16,9 +16,10 @@ def getEquipmentString(c):
         outstring += "{} - Unit Weight: {} lbs, Count: {}".format(item.name,str(item.weight),str(item.count))
         if item.notes:
             outstring += ", Notes: {}".format(item.notes)
-        if not item.pack:
-            outstring += " (camp item)"
+        if item.pack:
             totalCamp += item.weight * item.count
+        else:
+            outstring += " (camp item)"
         outstring += "\n    "
     outstring += "\n    Total weight: {}\n    Total weight (with camp set up): {}".format(str(total),str(totalCamp))
     return outstring
