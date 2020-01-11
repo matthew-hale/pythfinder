@@ -109,6 +109,13 @@ def getSpecialString(c):
         outstring += "    {}:\n    {}\n    {}\n\n".format(item.name,item.description,item.notes)
     return outstring
 
+def getArmorString(c):
+    outstring = "\n    Armor:\n\n"
+    for item in c.armor:
+        outstring += "    {}: ({} armor)\n        AC Bonus: {}, Max Dex Bonus: {}, Armor Check Penalty: {}, Spell Failure Chance: {}%\n\n".format(item.name,item.type,item.acBonus,item.maxDexBonus,item.acPenalty,item.arcaneFailureChance)
+    outstring += "    AC Calculation: 10 + Dex Bonus + AC Bonus\n"
+    return outstring
+
 # Primary user input function
 def getInput():
     arg = ""
@@ -117,6 +124,7 @@ def getInput():
             "skills",
             "items",
             "attacks",
+            "armor",
             "spells",
             "special",
             "feats",
@@ -174,6 +182,8 @@ while True:
         print(getEquipmentString(character))
     elif arg == "attacks":
         print(getAttackString(character))
+    elif arg == "armor":
+        print(getArmorString(character))
     elif arg == "feats":
         print(getFeatString(character))
     elif arg == "spells":

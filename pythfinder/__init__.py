@@ -410,7 +410,7 @@ class CharacterArmor:
                  acPenalty = 0,
                  maxDexBonus = 0,
                  arcaneFailureChance = 0,
-                 type_,
+                 type_ = "",
                  data = {}):
         keys = data.keys()
         self.name = data["name"] if "name" in keys else name
