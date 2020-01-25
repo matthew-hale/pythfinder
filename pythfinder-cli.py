@@ -59,9 +59,14 @@ def getSkillString(c):
         outstring += "= " + str(total) + "\n    "
     return outstring
 
-# Formatted string of attacks
-def getAttackString(c):
-    outstring = "\n    Attacks:\n    "
+# Formatted string of combat elements
+def getCombatString(c):
+    outstring = "    Combat:\n\n"
+    outstring += "    Attacks:\n"
+    outstring += "    BAB: " + "/".join(map(str, c.baseAttackBonus)) + "\n"
+    outstring += "    Melee mod: " + str(c.getAbilityMod("str")) + "\n"
+    outstring += "    Ranged mod: " + str(c.getAbilityMod("dex")) + "\n"
+
     for attack in c.attacks:
         outstring += "\n    " + attack.weapon + " (" + attack.attackType + ")\n        "
         outstring += "Damage: " + attack.damage + " " + str(attack.critRoll)
@@ -73,6 +78,14 @@ def getAttackString(c):
         if attack.notes:
             outstring += "\n        " + attack.notes
         outstring += "\n    "
+    outstring += "\n    Armor:\n\n"
+
+    for item in c.armor:
+        outstring += "    {}: ({} armor)\n        AC Bonus: {}, Max Dex Bonus: {}, Armor Check Penalty: {}, Spell Failure Chance: {}%\n\n".format(item.name,item.type,item.acBonus,item.maxDexBonus,item.acPenalty,item.arcaneFailureChance)
+    outstring += "    AC Calculation: 10 + Dex Bonus + AC Bonus\n\n"
+
+    outstring += "    CMD: {}".format(str(sum([10, c.baseAttackBonus[0], c.getAbilityMod("str"), c.getAbilityMod("dex")]))) + "\n"
+    outstring += "    CMB: {}".format(str(sum([c.baseAttackBonus[0], c.getAbilityMod("str")]))) + "\n\n"
     return outstring
 
 # Returns a formatted string of abilities
@@ -119,14 +132,6 @@ def getThrowString(c):
     outstring += "    Fortitude: {}\n\n    Reflex: {}\n\n    Will: {}\n\n".format(str(fort_total), str(ref_total), str(will_total))
     return outstring
 
-# Formatted string of armor class
-def getArmorString(c):
-    outstring = "\n    Armor:\n\n"
-    for item in c.armor:
-        outstring += "    {}: ({} armor)\n        AC Bonus: {}, Max Dex Bonus: {}, Armor Check Penalty: {}, Spell Failure Chance: {}%\n\n".format(item.name,item.type,item.acBonus,item.maxDexBonus,item.acPenalty,item.arcaneFailureChance)
-    outstring += "    AC Calculation: 10 + Dex Bonus + AC Bonus\n"
-    return outstring
-
 # Primary user input function
 def getInput():
     arg = ""
@@ -134,8 +139,7 @@ def getInput():
             "abilities",
             "skills",
             "items",
-            "attacks",
-            "armor",
+            "combat",
             "spells",
             "special",
             "throws",
@@ -192,10 +196,8 @@ while True:
         print(getSkillString(character))
     elif arg == "items":
         print(getEquipmentString(character))
-    elif arg == "attacks":
-        print(getAttackString(character))
-    elif arg == "armor":
-        print(getArmorString(character))
+    elif arg == "combat":
+        print(getCombatString(character))
     elif arg == "feats":
         print(getFeatString(character))
     elif arg == "throws":
