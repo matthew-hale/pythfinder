@@ -110,6 +110,16 @@ def getSpecialString(c):
         outstring += "    {}:\n    {}\n    {}\n\n".format(item.name,item.description,item.notes)
     return outstring
 
+# Formatted string of saving throws
+def getThrowString(c):
+    outstring = "\n    Saving throws:\n\n"
+    fort_total = sum([c.savingThrows["fortitude"].base, sum(c.savingThrows["fortitude"].misc), c.getAbilityMod("con")])
+    ref_total = sum([c.savingThrows["reflex"].base, sum(c.savingThrows["reflex"].misc), c.getAbilityMod("dex")])
+    will_total = sum([c.savingThrows["will"].base, sum(c.savingThrows["will"].misc), c.getAbilityMod("wis")])
+    outstring += "    Fortitude: {}\n\n    Reflex: {}\n\n    Will: {}\n\n".format(str(fort_total), str(ref_total), str(will_total))
+    return outstring
+
+# Formatted string of armor class
 def getArmorString(c):
     outstring = "\n    Armor:\n\n"
     for item in c.armor:
@@ -128,6 +138,7 @@ def getInput():
             "armor",
             "spells",
             "special",
+            "throws",
             "feats",
             "traits",
             "quit",
@@ -187,6 +198,8 @@ while True:
         print(getArmorString(character))
     elif arg == "feats":
         print(getFeatString(character))
+    elif arg == "throws":
+        print(getThrowString(character))
     elif arg == "spells":
         print(getSpellString(character))
     elif arg == "traits":
