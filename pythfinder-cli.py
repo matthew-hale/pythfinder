@@ -62,6 +62,7 @@ def getSkillString(c):
 # Formatted string of combat elements
 def getCombatString(c):
     outstring = "    Combat:\n\n"
+    outstring += "    HP: " + str(c.hp.current) + "/" + str(c.hp.max) + "\n\n"
     outstring += "    Attacks:\n"
     outstring += "    BAB: " + "/".join(map(str, c.baseAttackBonus)) + "\n"
     outstring += "    Melee mod: " + str(c.getAbilityMod("str")) + "\n"
