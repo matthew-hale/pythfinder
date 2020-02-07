@@ -2,6 +2,7 @@
 #
 # pythfinder-cli.py
 
+import argparse
 import pythfinder as pf
 import json
 import sys
@@ -154,27 +155,48 @@ def getInput():
         arg = input(inputString)
     return arg
 
-# Any functions that intend to change character data will flag this as True; at 
-# the end of the loop, if this is true, data will be written to the data 
-# argument given as input.
+# Any functions that intend to change character data will flag this as 
+# True; at the end of execution, if this is true, data will be written 
+# to the data argument given as input.
 dataChanged = False
 
-# Check for argument
-if not (len(sys.argv) >= 2):
-    print("Usage: " + sys.argv[0] + " <data_path>")
-    sys.exit()
+# Argument parsing
+parser = argparse.ArgumentParser(description = "pathfinder 1E character sheet")
 
-data = sys.argv[1]
+# Subparsers for subcommands
+subparsers = parser.add_subparsers(help = "subcommand")
+parser_list = subparsers.add_parser("list", help = "list character details")
+parser_list.add_argument("target",
+                         choices = ["character",
+                                    "abilities",
+                                    "skills",
+                                    "items",
+                                    "combat",
+                                    "spells",
+                                    "special",
+                                    "throws",
+                                    "feats"],
+                         help = "list target",
+                         type = str
+                         )
+
+# File path (positional)
+parser.add_argument("file",
+                    metavar = "filepath",
+                    type = str,
+                    help = "path to character sheet file")
+
+args = parser.parse_args()
 
 try:
-    with open(data) as f:
+    with open(args.file) as f:
         character = pf.Character(json.load(f))
 except FileNotFoundError:
     print("File not found.")
     sys.exit()
 
 # Main execution
-arg = getInput()
+arg = args.target
 if arg == "character":
     c = character.getCharacterShort()
     outstring = "\n    "
