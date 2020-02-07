@@ -34,6 +34,18 @@ class Character:
         self.hair = data["hair"] if "hair" in keys else ""
         self.eyes = data["eyes"] if "eyes" in keys else ""
         self.languages = data["languages"] if "languages" in keys else []
+        self.spellsPerDay = data["spellsPerDay"] if "spellsPerDay" in keys else {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+        }
         self.baseAttackBonus = data["baseAttackBonus"] if "baseAttackBonus" in keys else []
         self.gold = data["gold"] if "gold" in keys else 0
 
