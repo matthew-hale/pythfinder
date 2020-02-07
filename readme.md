@@ -17,6 +17,8 @@ enforcement)
 
 ## Roadmap
 
++ Rework script arguments into subcommand + argument
++ Add interactive flag for old behavior
 + Basic tracking of, and output for:
     + ~~attacks~~
     + ~~feats~~
