@@ -233,5 +233,6 @@ elif arg == "special":
     print(getSpecialString(character))
 
 if dataChanged:
-    pf.writeCharacter(character, data)
+    pf.writeCharacter(character, args.file)
+    print("Changes saved to " + args.file)
 sys.exit()
