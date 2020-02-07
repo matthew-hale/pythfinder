@@ -145,9 +145,7 @@ def getInput():
             "special",
             "throws",
             "feats",
-            "traits",
-            "quit",
-            "q"]
+            "traits"]
     inputString = ""
     inputString += data + " (" + character.name + ") > "
     arg = input(inputString)
@@ -175,42 +173,39 @@ except FileNotFoundError:
     print("File not found.")
     sys.exit()
 
-# Main loop
-while True:
-    arg = getInput()
-    if arg == "character":
-        c = character.getCharacterShort()
-        outstring = "\n    "
-        outstring += c["name"] + ", " + c["alignment"] + " " + c["race"]
-        for item in character.classes:
-            cClass = item.getClassDict()
-            outstring += "\n    " + cClass["name"]
-            if cClass["archetypes"]:
-                outstring += " (" + ", ".join(cClass["archetypes"]) + ")"
-            outstring += " - Lvl. " + str(cClass["level"])
-        outstring += "\n    " + c["height"] + ", " + str(c["weight"]) + " lbs."
-        outstring += "\n    " + c["description"] + "\n" + getAbilityString(character)
-        print(outstring)
-    elif arg == "abilities":
-        print(getAbilityString(character))
-    elif arg == "skills":
-        print(getSkillString(character))
-    elif arg == "items":
-        print(getEquipmentString(character))
-    elif arg == "combat":
-        print(getCombatString(character))
-    elif arg == "feats":
-        print(getFeatString(character))
-    elif arg == "throws":
-        print(getThrowString(character))
-    elif arg == "spells":
-        print(getSpellString(character))
-    elif arg == "traits":
-        print(getTraitString(character))
-    elif arg == "special":
-        print(getSpecialString(character))
-    elif arg == "q" or arg == "quit":
-        break
+# Main execution
+arg = getInput()
+if arg == "character":
+    c = character.getCharacterShort()
+    outstring = "\n    "
+    outstring += c["name"] + ", " + c["alignment"] + " " + c["race"]
+    for item in character.classes:
+        cClass = item.getClassDict()
+        outstring += "\n    " + cClass["name"]
+        if cClass["archetypes"]:
+            outstring += " (" + ", ".join(cClass["archetypes"]) + ")"
+        outstring += " - Lvl. " + str(cClass["level"])
+    outstring += "\n    " + c["height"] + ", " + str(c["weight"]) + " lbs."
+    outstring += "\n    " + c["description"] + "\n" + getAbilityString(character)
+    print(outstring)
+elif arg == "abilities":
+    print(getAbilityString(character))
+elif arg == "skills":
+    print(getSkillString(character))
+elif arg == "items":
+    print(getEquipmentString(character))
+elif arg == "combat":
+    print(getCombatString(character))
+elif arg == "feats":
+    print(getFeatString(character))
+elif arg == "throws":
+    print(getThrowString(character))
+elif arg == "spells":
+    print(getSpellString(character))
+elif arg == "traits":
+    print(getTraitString(character))
+elif arg == "special":
+    print(getSpecialString(character))
 
 if dataChanged:
     pf.writeCharacter(character, data)
