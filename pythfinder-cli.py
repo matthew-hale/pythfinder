@@ -164,7 +164,8 @@ dataChanged = False
 parser = argparse.ArgumentParser(description = "pathfinder 1E character sheet")
 
 # Subparsers for subcommands
-subparsers = parser.add_subparsers(help = "subcommand")
+subparsers = parser.add_subparsers(help = "subcommand",
+                                   dest = "subparser_name")
 parser_list = subparsers.add_parser("list",
                                     help = "list character details",
                                     aliases = ["ls"])
@@ -199,7 +200,6 @@ except FileNotFoundError:
 
 # Main execution
 arg = args.target
-print(args)
 if arg == "character":
     c = character.getCharacterShort()
     outstring = "\n    "
