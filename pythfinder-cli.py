@@ -103,13 +103,13 @@ def getAbilityString(c):
 
 # Formatted string of spells
 def getSpellString(c):
-    outstring = "\n    Spells:\n\n    "
+    outstring = "\n    Spells:\n\n"
     spells = c.getSortedSpells()
     spellLevels = spells.keys()
     for level in spellLevels:
-        outstring += "Level {}:\n\n    ".format(level)
+        outstring += "Level {}:\n\n".format(level)
         for spell in spells[level]:
-            outstring += "{}:\n        {}\n\n        Prepared: {}  - Cast: {}\n\n    ".format(
+            outstring += "    {}:\n        {}\n\n        Prepared: {}  - Cast: {}\n\n".format(
                 spell.name,
                 spell.description,
                 spell.prepared,
