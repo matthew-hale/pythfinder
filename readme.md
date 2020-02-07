@@ -18,7 +18,7 @@ got lots of rough edges.
     + ~~attacks~~
     + ~~feats~~
     + ~~traits~~
-    + spells
+    + ~~spells~~
 + Functionality to edit/update values of:
     + ability scores
     + skill ranks/class status/notes
