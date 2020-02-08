@@ -43,6 +43,21 @@ enforcement)
     import json; just grab values if they're there, if not use the 
     defaults, and for extra values just ignore them.~~ this is now 
     pretty much finished, nearly everything is an object
++ add ability modifiers (for temp increases/damage)
++ rework hp:
+    + add wounds, temp hp, temporary max hp increases
+    + essentially make current hp a calculated value
++ add full armor class components
++ expand on attacks and armor class:
+    + display all modifiers
+    + show the rolls and modifiers for hits and damage
+    + track enhancement bonus / masterwork status
+    + (AC) show touch/flat footed and all the modifiers
++ implement spells like equipment and attacks:
+    + ~~spells get tracked in the character.spells list~~
+    + damaging spells can get added to the spell attack list, like 
+    weapon attacks
+    + show damage, cast time, duration (if applicable)
 + Eventually:
     + Decoupling of input and data processing, converting outputs to 
     json format
