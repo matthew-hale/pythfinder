@@ -18,7 +18,10 @@ enforcement)
 ## Roadmap
 
 + ~~Rework script arguments into subcommand + argument~~
-+ Add interactive flag for old behavior
++ ~~Add interactive flag for old behavior~~
+    I'm going to get rid of this for now; it might end up being too 
+    much effort to implement an interactive prompt with the new 
+    argument structure.
 + ~~Basic tracking of, and output for:~~
     + ~~attacks~~
     + ~~feats~~
