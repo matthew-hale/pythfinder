@@ -172,15 +172,16 @@ parser_list = subparsers.add_parser("list",
                                     help = "list character details",
                                     aliases = ["ls"])
 parser_list.add_argument("target",
-                         choices = ["character",
-                                    "abilities",
-                                    "skills",
-                                    "items",
+                         choices = ["abilities",
+                                    "character",
                                     "combat",
-                                    "spells",
+                                    "feats",
+                                    "items",
+                                    "skills",
                                     "special",
+                                    "spells",
                                     "throws",
-                                    "feats"],
+                                    "traits"],
                          help = "list target",
                          type = str
                          )
@@ -263,17 +264,26 @@ if subcommand == "list":
         print(getSpecialString(character))
 elif subcommand == "add":
     if target == "feat":
-        new_name = args.name
-        new_description = args.description
-        new_notes = args.notes
+        new_name = args.name if args.name != None else ""
+        new_description = args.description if args.description != None else ""
+        new_notes = args.notes if args.notes != None else ""
         new_feat = pf.CharacterBasicItem.CharacterBasicItem(name = new_name,
                                          description = new_description,
                                          notes = new_notes)
         character.feats.append(new_feat)
         dataChanged = True
         print("\n    Feat added\n")
-    """
     elif target == "trait":
+        new_name = args.name if args.name != None else ""
+        new_description = args.description if args.description != None else ""
+        new_notes = args.notes if args.notes != None else ""
+        new_trait = pf.CharacterBasicItem.CharacterBasicItem(name = new_name,
+                                         description = new_description,
+                                         notes = new_notes)
+        character.traits.append(new_trait)
+        dataChanged = True
+        print("\n    Trait added\n")
+    """
     elif target == "special":
     elif target == "item":
     elif target == "attack":
@@ -284,5 +294,5 @@ elif subcommand == "add":
 # Write check
 if dataChanged:
     pf.writeCharacter(character, args.file)
-    print("Changes saved to " + args.file)
+    print("\n    Changes saved to " + args.file + "\n")
 sys.exit()
