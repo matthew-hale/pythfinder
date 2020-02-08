@@ -1,3 +1,4 @@
+import json
 from pythfinder.CharacterAbilities import CharacterAbilities
 from pythfinder.CharacterArmor import CharacterArmor
 from pythfinder.CharacterAttack import CharacterAttack
