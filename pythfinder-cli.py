@@ -198,6 +198,18 @@ parser_add.add_argument("target",
                                    "spell"],
                         help = "add target",
                         type = str)
+parser_add.add_argument("-n","--name",
+                        dest = "name",
+                        help = "name of entry",
+                        type = str)
+parser_add.add_argument("-d","--description",
+                        dest = "description",
+                        help = "description of entry",
+                        type = str)
+parser_add.add_argument("-o","--notes",
+                        dest = "notes",
+                        help = "entry notes",
+                        type = str)
 
 # File path (positional)
 parser.add_argument("file",
@@ -216,8 +228,8 @@ except FileNotFoundError:
 
 # Main execution
 subcommand = args.subcommand_name
+target = args.target
 if subcommand == "list":
-    target = args.target
     if target == "character":
         c = character.getCharacterShort()
         outstring = "\n    "
@@ -249,7 +261,27 @@ if subcommand == "list":
         print(getTraitString(character))
     elif target == "special":
         print(getSpecialString(character))
+elif subcommand == "add":
+    if target == "feat":
+        new_name = args.name
+        new_description = args.description
+        new_notes = args.notes
+        new_feat = pf.CharacterBasicItem.CharacterBasicItem(name = new_name,
+                                         description = new_description,
+                                         notes = new_notes)
+        character.feats.append(new_feat)
+        dataChanged = True
+        print("\n    Feat added\n")
+    """
+    elif target == "trait":
+    elif target == "special":
+    elif target == "item":
+    elif target == "attack":
+    elif target == "armor":
+    elif target == "spell":
+    """
 
+# Write check
 if dataChanged:
     pf.writeCharacter(character, args.file)
     print("Changes saved to " + args.file)
