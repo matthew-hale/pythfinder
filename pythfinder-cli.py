@@ -172,6 +172,7 @@ parser_list = subparsers.add_parser("list",
                                     help = "list character details",
                                     aliases = ["ls"])
 parser_list.add_argument("target",
+                         metavar = "target",
                          choices = ["abilities",
                                     "character",
                                     "combat",
