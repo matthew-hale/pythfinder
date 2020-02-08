@@ -10,4 +10,4 @@ from pythfinder.Character import Character
 # Write the given character data to the file in path
 def writeCharacter(character, path):
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(character.getDict, f, indent=4)
+        json.dump(character.getDict(), f, indent=4)
