@@ -211,6 +211,18 @@ parser_add.add_argument("-o","--notes",
                         dest = "notes",
                         help = "entry notes",
                         type = str)
+parser_add.add_argument("-k", "--pack",
+                        dest = "pack",
+                        action = "store_true",
+                        help = "(items) pack item if true")
+parser_add.add_argument("-c", "--count",
+                        dest = "count",
+                        help = "(items) number of items",
+                        type = int)
+parser_add.add_argument("-w", "--weight",
+                        dest = "weight",
+                        help = "(items) item unit weight",
+                        type = float)
 
 # File path (positional)
 parser.add_argument("file",
@@ -268,8 +280,8 @@ elif subcommand == "add":
         new_description = args.description if args.description != None else ""
         new_notes = args.notes if args.notes != None else ""
         new_feat = pf.CharacterBasicItem.CharacterBasicItem(name = new_name,
-                                         description = new_description,
-                                         notes = new_notes)
+                                                            description = new_description,
+                                                            notes = new_notes)
         character.feats.append(new_feat)
         dataChanged = True
         print("\n    Feat added\n")
@@ -278,8 +290,8 @@ elif subcommand == "add":
         new_description = args.description if args.description != None else ""
         new_notes = args.notes if args.notes != None else ""
         new_trait = pf.CharacterBasicItem.CharacterBasicItem(name = new_name,
-                                         description = new_description,
-                                         notes = new_notes)
+                                                             description = new_description,
+                                                             notes = new_notes)
         character.traits.append(new_trait)
         dataChanged = True
         print("\n    Trait added\n")
@@ -288,13 +300,26 @@ elif subcommand == "add":
         new_description = args.description if args.description != None else ""
         new_notes = args.notes if args.notes != None else ""
         new_special = pf.CharacterBasicItem.CharacterBasicItem(name = new_name,
-                                         description = new_description,
-                                         notes = new_notes)
+                                                               description = new_description,
+                                                               notes = new_notes)
         character.special.append(new_special)
         dataChanged = True
         print("\n    Special added\n")
-    """
     elif target == "item":
+        new_name = args.name if args.name != None else ""
+        new_weight = args.weight if args.weight != None else 0.0
+        new_count = args.count if args.count != None else 0
+        new_pack = args.pack
+        new_notes = args.notes if args.notes != None else ""
+        new_item = pf.CharacterEquipment.CharacterEquipment(name = new_name,
+                                                            weight = new_weight,
+                                                            count = new_count,
+                                                            pack = new_pack,
+                                                            notes = new_notes)
+        character.equipment.append(new_item)
+        dataChanged = True
+        print("\n    Item added\n")
+    """
     elif target == "attack":
     elif target == "armor":
     elif target == "spell":
@@ -303,5 +328,5 @@ elif subcommand == "add":
 # Write check
 if dataChanged:
     pf.writeCharacter(character, args.file)
-    print("\n    Changes saved to " + args.file + "\n")
+    print("    Changes saved to " + args.file + "\n")
 sys.exit()
