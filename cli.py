@@ -267,6 +267,32 @@ parser_add.add_argument("--range",
                         default = 0,
                         help = "(attack) range increment",
                         type = int)
+parser_add.add_argument("--acBonus",
+                        dest = "acBonus",
+                        default = 0,
+                        help = "bonus to AC",
+                        type = int)
+parser_add.add_argument("--acPenalty",
+                        dest = "acPenalty",
+                        default = 0,
+                        help = "armor check penalty",
+                        type = int)
+parser_add.add_argument("--maxDexBonus",
+                        dest = "maxDexBonus",
+                        default = 0,
+                        help = "max dexterity bonus",
+                        type = int)
+parser_add.add_argument("--type",
+                        dest = "type",
+                        choices = ["light", "medium", "heavy"],
+                        default = "",
+                        help = "armor type",
+                        type = str)
+parser_add.add_argument("--arcaneFailureChance",
+                        dest = "arcaneFailureChance",
+                        default = 0,
+                        help = "percentage chance that arcane spellcasting fails",
+                        type = int)
 
 # File path (positional)
 parser.add_argument("file",
@@ -383,8 +409,23 @@ elif subcommand == "add":
         character.attacks.append(new_attack)
         dataChanged = True
         print("\n    Attack added\n")
-    """
     elif target == "armor":
+        new_name = args.name
+        new_acBonus = args.acBonus
+        new_acPenalty = args.acPenalty
+        new_maxDexBonus = args.maxDexBonus
+        new_arcaneFailureChance = args.arcaneFailureChance
+        new_type = args.type
+        new_armor = pf.CharacterArmor.CharacterArmor(name = new_name,
+                                                     acBonus = new_acBonus,
+                                                     acPenalty = new_acPenalty,
+                                                     maxDexBonus = new_maxDexBonus,
+                                                     arcaneFailureChance = new_arcaneFailureChance,
+                                                     type_ = new_type)
+        character.armor.append(new_armor)
+        dataChanged = True
+        print("\n    Armor added\n")
+    """
     elif target == "spell":
     """
 
