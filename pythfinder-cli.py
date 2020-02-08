@@ -283,8 +283,17 @@ elif subcommand == "add":
         character.traits.append(new_trait)
         dataChanged = True
         print("\n    Trait added\n")
-    """
     elif target == "special":
+        new_name = args.name if args.name != None else ""
+        new_description = args.description if args.description != None else ""
+        new_notes = args.notes if args.notes != None else ""
+        new_special = pf.CharacterBasicItem.CharacterBasicItem(name = new_name,
+                                         description = new_description,
+                                         notes = new_notes)
+        character.special.append(new_special)
+        dataChanged = True
+        print("\n    Special added\n")
+    """
     elif target == "item":
     elif target == "attack":
     elif target == "armor":
