@@ -165,7 +165,9 @@ parser = argparse.ArgumentParser(description = "pathfinder 1E character sheet")
 
 # Subparsers for subcommands
 subparsers = parser.add_subparsers(help = "subcommand",
-                                   dest = "subparser_name")
+                                   dest = "subcommand_name")
+
+# List: read values
 parser_list = subparsers.add_parser("list",
                                     help = "list character details",
                                     aliases = ["ls"])
@@ -183,6 +185,20 @@ parser_list.add_argument("target",
                          type = str
                          )
 
+# Add: create a new entry in the character
+parser_add = subparsers.add_parser("add",
+                                    help = "add entry to character")
+parser_add.add_argument("target",
+                        choices = ["feat",
+                                   "trait",
+                                   "special",
+                                   "item",
+                                   "attack",
+                                   "armor",
+                                   "spell"],
+                        help = "add target",
+                        type = str)
+
 # File path (positional)
 parser.add_argument("file",
                     metavar = "filepath",
@@ -199,38 +215,40 @@ except FileNotFoundError:
     sys.exit()
 
 # Main execution
-arg = args.target
-if arg == "character":
-    c = character.getCharacterShort()
-    outstring = "\n    "
-    outstring += c["name"] + ", " + c["alignment"] + " " + c["race"]
-    for item in character.classes:
-        cClass = item.getClassDict()
-        outstring += "\n    " + cClass["name"]
-        if cClass["archetypes"]:
-            outstring += " (" + ", ".join(cClass["archetypes"]) + ")"
-        outstring += " - Lvl. " + str(cClass["level"])
-    outstring += "\n    " + c["height"] + ", " + str(c["weight"]) + " lbs."
-    outstring += "\n    " + c["description"] + "\n" + getAbilityString(character)
-    print(outstring)
-elif arg == "abilities":
-    print(getAbilityString(character))
-elif arg == "skills":
-    print(getSkillString(character))
-elif arg == "items":
-    print(getEquipmentString(character))
-elif arg == "combat":
-    print(getCombatString(character))
-elif arg == "feats":
-    print(getFeatString(character))
-elif arg == "throws":
-    print(getThrowString(character))
-elif arg == "spells":
-    print(getSpellString(character))
-elif arg == "traits":
-    print(getTraitString(character))
-elif arg == "special":
-    print(getSpecialString(character))
+subcommand = args.subcommand_name
+if subcommand == "list":
+    target = args.target
+    if target == "character":
+        c = character.getCharacterShort()
+        outstring = "\n    "
+        outstring += c["name"] + ", " + c["alignment"] + " " + c["race"]
+        for item in character.classes:
+            cClass = item.getClassDict()
+            outstring += "\n    " + cClass["name"]
+            if cClass["archetypes"]:
+                outstring += " (" + ", ".join(cClass["archetypes"]) + ")"
+            outstring += " - Lvl. " + str(cClass["level"])
+        outstring += "\n    " + c["height"] + ", " + str(c["weight"]) + " lbs."
+        outstring += "\n    " + c["description"] + "\n" + getAbilityString(character)
+        print(outstring)
+    elif target == "abilities":
+        print(getAbilityString(character))
+    elif target == "skills":
+        print(getSkillString(character))
+    elif target == "items":
+        print(getEquipmentString(character))
+    elif target == "combat":
+        print(getCombatString(character))
+    elif target == "feats":
+        print(getFeatString(character))
+    elif target == "throws":
+        print(getThrowString(character))
+    elif target == "spells":
+        print(getSpellString(character))
+    elif target == "traits":
+        print(getTraitString(character))
+    elif target == "special":
+        print(getSpecialString(character))
 
 if dataChanged:
     pf.writeCharacter(character, args.file)
