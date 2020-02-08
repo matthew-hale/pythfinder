@@ -203,14 +203,17 @@ parser_add.add_argument("target",
                         type = str)
 parser_add.add_argument("-n","--name",
                         dest = "name",
+                        default = "",
                         help = "name of entry",
                         type = str)
 parser_add.add_argument("-d","--description",
                         dest = "description",
+                        default = "",
                         help = "description of entry",
                         type = str)
 parser_add.add_argument("-o","--notes",
                         dest = "notes",
+                        default = "",
                         help = "entry notes",
                         type = str)
 parser_add.add_argument("-k", "--pack",
@@ -219,10 +222,12 @@ parser_add.add_argument("-k", "--pack",
                         help = "(items) pack item if true")
 parser_add.add_argument("-c", "--count",
                         dest = "count",
+                        default = 0,
                         help = "(items) number of items",
                         type = int)
 parser_add.add_argument("-w", "--weight",
                         dest = "weight",
+                        default = 0.0,
                         help = "(items) item unit weight",
                         type = float)
 
@@ -278,9 +283,9 @@ if subcommand == "list":
         print(getSpecialString(character))
 elif subcommand == "add":
     if target == "feat":
-        new_name = args.name if args.name != None else ""
-        new_description = args.description if args.description != None else ""
-        new_notes = args.notes if args.notes != None else ""
+        new_name = args.name
+        new_description = args.description
+        new_notes = args.notes
         new_feat = pf.CharacterBasicItem.CharacterBasicItem(name = new_name,
                                                             description = new_description,
                                                             notes = new_notes)
@@ -288,9 +293,9 @@ elif subcommand == "add":
         dataChanged = True
         print("\n    Feat added\n")
     elif target == "trait":
-        new_name = args.name if args.name != None else ""
-        new_description = args.description if args.description != None else ""
-        new_notes = args.notes if args.notes != None else ""
+        new_name = args.name
+        new_description = args.description
+        new_notes = args.notes
         new_trait = pf.CharacterBasicItem.CharacterBasicItem(name = new_name,
                                                              description = new_description,
                                                              notes = new_notes)
@@ -298,9 +303,9 @@ elif subcommand == "add":
         dataChanged = True
         print("\n    Trait added\n")
     elif target == "special":
-        new_name = args.name if args.name != None else ""
-        new_description = args.description if args.description != None else ""
-        new_notes = args.notes if args.notes != None else ""
+        new_name = args.name
+        new_description = args.description
+        new_notes = args.notes
         new_special = pf.CharacterBasicItem.CharacterBasicItem(name = new_name,
                                                                description = new_description,
                                                                notes = new_notes)
@@ -308,11 +313,11 @@ elif subcommand == "add":
         dataChanged = True
         print("\n    Special added\n")
     elif target == "item":
-        new_name = args.name if args.name != None else ""
-        new_weight = args.weight if args.weight != None else 0.0
-        new_count = args.count if args.count != None else 0
+        new_name = args.name
+        new_weight = args.weight
+        new_count = args.count
         new_pack = args.pack
-        new_notes = args.notes if args.notes != None else ""
+        new_notes = args.notes
         new_item = pf.CharacterEquipment.CharacterEquipment(name = new_name,
                                                             weight = new_weight,
                                                             count = new_count,
@@ -323,6 +328,7 @@ elif subcommand == "add":
         print("\n    Item added\n")
     """
     elif target == "attack":
+        new_name = args.name if args.name != None else ""
     elif target == "armor":
     elif target == "spell":
     """
