@@ -191,6 +191,7 @@ parser_list.add_argument("target",
 parser_add = subparsers.add_parser("add",
                                     help = "add entry to character")
 parser_add.add_argument("target",
+                        metavar = "target",
                         choices = ["feat",
                                    "trait",
                                    "special",
