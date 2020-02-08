@@ -230,6 +230,43 @@ parser_add.add_argument("-w", "--weight",
                         default = 0.0,
                         help = "(items) item unit weight",
                         type = float)
+parser_add.add_argument("--weapon",
+                        dest = "weapon",
+                        default = "",
+                        help = "(attack) name of weapon",
+                        type = str)
+parser_add.add_argument("--attackType",
+                        dest = "attackType",
+                        choices = ["melee","ranged"],
+                        help = "(attack) type of attack (melee, ranged)",
+                        type = str)
+parser_add.add_argument("--damageType",
+                        dest = "damageType",
+                        choices = ["S", "P", "B"],
+                        nargs = "*",
+                        default = [""],
+                        help = "(attack) type of damage dealt",
+                        type = str)
+parser_add.add_argument("--damage",
+                        dest = "damage",
+                        default = "",
+                        help = "(attack) damage dealt (e.g. 1d6, 2d8)",
+                        type = str)
+parser_add.add_argument("--critRoll",
+                        dest = "critRoll",
+                        default = 20,
+                        help = "(attack) the minimum roll to threaten a critical strike",
+                        type = int)
+parser_add.add_argument("--critMulti",
+                        dest = "critMulti",
+                        default = 2,
+                        help = "(attack) the damage multiplier on critical strike",
+                        type = int)
+parser_add.add_argument("--range",
+                        dest = "range",
+                        default = 0,
+                        help = "(attack) range increment",
+                        type = int)
 
 # File path (positional)
 parser.add_argument("file",
@@ -326,9 +363,27 @@ elif subcommand == "add":
         character.equipment.append(new_item)
         dataChanged = True
         print("\n    Item added\n")
-    """
     elif target == "attack":
-        new_name = args.name if args.name != None else ""
+        new_weapon = args.weapon
+        new_attackType = args.attackType
+        new_damageType = args.damageType
+        new_damage = args.damage
+        new_critRoll = args.critRoll
+        new_critMulti = args.critMulti
+        new_range = args.range
+        new_notes = args.notes
+        new_attack = pf.CharacterAttack.CharacterAttack(weapon = new_weapon,
+                                                        attackType = new_attackType,
+                                                        damageType = new_damageType,
+                                                        damage = new_damage,
+                                                        critRoll = new_critRoll,
+                                                        critMulti = new_critMulti,
+                                                        range_ = new_range,
+                                                        notes = new_notes)
+        character.attacks.append(new_attack)
+        dataChanged = True
+        print("\n    Attack added\n")
+    """
     elif target == "armor":
     elif target == "spell":
     """
