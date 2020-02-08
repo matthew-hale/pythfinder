@@ -293,6 +293,21 @@ parser_add.add_argument("--arcaneFailureChance",
                         default = 0,
                         help = "percentage chance that arcane spellcasting fails",
                         type = int)
+parser_add.add_argument("--cast",
+                        dest = "cast",
+                        default = 0,
+                        help = "number of times cast",
+                        type = int)
+parser_add.add_argument("--prepared",
+                        dest = "prepared",
+                        default = 0,
+                        help = "number of spells prepared",
+                        type = int)
+parser_add.add_argument("--level",
+                        dest = "level",
+                        default = 0,
+                        help = "spell level",
+                        type = int)
 
 # File path (positional)
 parser.add_argument("file",
@@ -425,9 +440,20 @@ elif subcommand == "add":
         character.armor.append(new_armor)
         dataChanged = True
         print("\n    Armor added\n")
-    """
     elif target == "spell":
-    """
+        new_name = args.name
+        new_level = args.level
+        new_description = args.description
+        new_prepared = args.prepared
+        new_cast = args.cast
+        new_spell = pf.CharacterSpell.CharacterSpell(name = new_name,
+                                                     level = new_level,
+                                                     description = new_description,
+                                                     prepared = new_prepared,
+                                                     cast = new_cast)
+        character.spells.append(new_spell)
+        dataChanged = True
+        print("\n    Spell added\n")
 
 # Write check
 if dataChanged:
