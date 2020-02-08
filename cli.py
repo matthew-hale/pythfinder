@@ -433,4 +433,3 @@ elif subcommand == "add":
 if dataChanged:
     pf.writeCharacter(character, args.file)
     print("    Changes saved to " + args.file + "\n")
-sys.exit()
