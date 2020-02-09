@@ -265,3 +265,24 @@ class Character:
                                       notes = new_notes)
         self.special.append(new_special)
         return new_special
+
+    def addItem(self,
+                name = "",
+                weight = 0.0,
+                count = 0,
+                pack = False,
+                notes = "",
+                data = {})
+        keys = data.keys()
+        new_name = data["name"] if "name" in keys else name
+        new_weight = data["weight"] if "weight" in keys else weight
+        new_count = data["count"] if "count" in keys else count
+        new_pack = data["pack"] if "pack" in keys else pack
+        new_notes = data["notes"] if "notes" in keys else notes
+        new_item = CharacterEquipment(name = new_name,
+                                      weight = new_weight,
+                                      count = new_count,
+                                      pack = new_pack,
+                                      notes = new_notes)
+        self.equipment.append(new_item)
+        return new_item
