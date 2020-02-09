@@ -364,7 +364,9 @@ elif subcommand == "add":
         new_feat = character.addFeat(name = args.name,
                                      description = args.description,
                                      notes = args.notes)
-        if new_feat.name == args.name and new_feat.description == args.description and new_feat.notes == args.notes:
+        if new_feat.name == args.name and \
+           new_feat.description == args.description and \
+           new_feat.notes == args.notes:
             dataChanged = True
             print(getFeatString(character))
             print("\n    Feat added\n")
@@ -375,7 +377,9 @@ elif subcommand == "add":
         new_trait = character.addTrait(name = args.name,
                                      description = args.description,
                                      notes = args.notes)
-        if new_trait.name == args.name and new_trait.description == args.description and new_trait.notes == args.notes:
+        if new_trait.name == args.name and \
+           new_trait.description == args.description and \
+           new_trait.notes == args.notes:
             dataChanged = True
             print(getTraitString(character))
             print("\n    Trait added\n")
@@ -386,7 +390,9 @@ elif subcommand == "add":
         new_special = character.addSpecial(name = args.name,
                                      description = args.description,
                                      notes = args.notes)
-        if new_special.name == args.name and new_special.description == args.description and new_special.notes == args.notes:
+        if new_special.name == args.name and \
+           new_special.description == args.description and \
+           new_special.notes == args.notes:
             dataChanged = True
             print(getSpecialString(character))
             print("\n    Special added\n")
