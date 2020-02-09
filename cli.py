@@ -377,7 +377,7 @@ elif subcommand == "add":
                                      notes = args.notes)
         if new_trait.name == args.name and new_trait.description == args.description and new_trait.notes == args.notes:
             dataChanged = True
-            print(getFeatString(character))
+            print(getTraitString(character))
             print("\n    Trait added\n")
         else:
             dataChanged = False
