@@ -456,19 +456,22 @@ elif subcommand == "add":
             dataChanged = False
             print("\n    Something went wrong; new armor not added properly; aborting\n")
     elif target == "spell":
-        new_name = args.name
-        new_level = args.level
-        new_description = args.description
-        new_prepared = args.prepared
-        new_cast = args.cast
-        new_spell = pf.CharacterSpell.CharacterSpell(name = new_name,
-                                                     level = new_level,
-                                                     description = new_description,
-                                                     prepared = new_prepared,
-                                                     cast = new_cast)
-        character.spells.append(new_spell)
-        dataChanged = True
-        print("\n    Spell added\n")
+        new_spell = character.addSpell(name = args.name,
+                                       level = args.level,
+                                       description = args.description,
+                                       prepared = args.prepared,
+                                       cast = args.cast)
+        if new_spell.name == args.name and \
+           new_spell.level == args.level and \
+           new_spell.description == args.description and \
+           new_spell.prepared == args.prepared and \
+           new_spell.cast == args.cast:
+            dataChanged = True
+            print(getSpellString(character))
+            print("\n    Spell added\n")
+        else:
+            dataChanged = False
+            print("\n    Something went wrong; new spell not added properly; aborting\n")
 
 # Write check
 if dataChanged:
