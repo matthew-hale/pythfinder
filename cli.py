@@ -361,14 +361,11 @@ if subcommand == "list":
         print(getSpecialString(character))
 elif subcommand == "add":
     if target == "feat":
-        new_name = args.name
-        new_description = args.description
-        new_notes = args.notes
-        new_feat = pf.CharacterBasicItem.CharacterBasicItem(name = new_name,
-                                                            description = new_description,
-                                                            notes = new_notes)
-        character.feats.append(new_feat)
+        new_feat = character.addFeat(name = args.name,
+                                     description = args.description,
+                                     notes = args.notes)
         dataChanged = True
+        print(getFeatString(character))
         print("\n    Feat added\n")
     elif target == "trait":
         new_name = args.name
