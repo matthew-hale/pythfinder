@@ -352,3 +352,28 @@ class Character:
                                    type_ = new_type)
         self.armor.append(new_armor)
         return new_armor
+
+    # Add new spell to the character; supports either named arguments 
+    # or a dictionary
+    #
+    # returns the newly created armor
+    def addSpell(self,
+                 name = "",
+                 level = 0,
+                 description = "".
+                 prepared = 0,
+                 cast = 0,
+                 data = {}):
+        keys = data.keys()
+        new_name = data["name"] if "name" in keys else name
+        new_level = data["level"] if "level" in keys else level
+        new_description = data["description"] if "description" in keys else description
+        new_prepared = data["prepared"] if "prepared" in keys else prepared
+        new_cast = data["cast"] if "cast" in keys else cast
+        new_spell = CharacterSpell(name = new_name,
+                                   level = new_level,
+                                   description = new_description,
+                                   prepared = new_prepared,
+                                   cast = new_cast)
+        self.spells.append(new_spell)
+        return new_spell
