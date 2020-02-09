@@ -438,21 +438,23 @@ elif subcommand == "add":
             dataChanged = False
             print("\n    Something went wrong; new attack not added properly; aborting\n")
     elif target == "armor":
-        new_name = args.name
-        new_acBonus = args.acBonus
-        new_acPenalty = args.acPenalty
-        new_maxDexBonus = args.maxDexBonus
-        new_arcaneFailureChance = args.arcaneFailureChance
-        new_type = args.type
-        new_armor = pf.CharacterArmor.CharacterArmor(name = new_name,
-                                                     acBonus = new_acBonus,
-                                                     acPenalty = new_acPenalty,
-                                                     maxDexBonus = new_maxDexBonus,
-                                                     arcaneFailureChance = new_arcaneFailureChance,
-                                                     type_ = new_type)
-        character.armor.append(new_armor)
-        dataChanged = True
-        print("\n    Armor added\n")
+        new_armor = character.addArmor(name = args.name,
+                                       acBonus = args.acBonus,
+                                       acPenalty = args.acPenalty,
+                                       maxDexBonus = args.maxDexBonus,
+                                       arcaneFailureChance = args.arcaneFailureChance,
+                                       type_ = args.type)
+        if new_armor.name == args.name and \
+           new_armor.acBonus == args.acBonus and \
+           new_armor.acPenalty == args.acPenalty and \
+           new_armor.maxDexBonus == args.maxDexBonus and \
+           new_armor.arcaneFailureChance == args.arcaneFailureChance:
+            dataChanged = True
+            print(getCombatString(character))
+            print("\n    Armor added\n")
+        else:
+            dataChanged = False
+            print("\n    Something went wrong; new armor not added properly; aborting\n")
     elif target == "spell":
         new_name = args.name
         new_level = args.level
