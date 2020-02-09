@@ -35,6 +35,7 @@ enforcement)
     + feats
     + traits
     + spells
+    + special abilities
 + New character creation walkthrough process (CLI)
 + ~~Character sheet JSON format enforcement~~
     + ~~This is partially done with the Character class, but I'll 
