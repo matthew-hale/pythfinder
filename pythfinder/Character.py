@@ -266,6 +266,10 @@ class Character:
         self.special.append(new_special)
         return new_special
 
+    # Add a new item to the character; supports either named arguments 
+    # or a dictionary.
+    #
+    # returns the newly created item
     def addItem(self,
                 name = "",
                 weight = 0.0,
