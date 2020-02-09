@@ -409,7 +409,7 @@ elif subcommand == "add":
            new_item.weight == args.weight and \
            new_item.count == args.count and \
            new_item.pack == args.pack and \
-           new_item.notes \ args.notes:
+           new_item.notes == args.notes:
             dataChanged = True
             print(getEquipmentString(character))
             print("\n    Item added\n")
