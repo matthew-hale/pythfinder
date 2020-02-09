@@ -364,9 +364,12 @@ elif subcommand == "add":
         new_feat = character.addFeat(name = args.name,
                                      description = args.description,
                                      notes = args.notes)
-        dataChanged = True
-        print(getFeatString(character))
-        print("\n    Feat added\n")
+        if new_feat.name == args.name and new_feat.description == args.description and new_feat.notes == args.notes:
+            dataChanged = True
+            print(getFeatString(character))
+            print("\n    Feat added\n")
+        else:
+            print("\n    Something went wrong; new feat not added properly; aborting\n")
     elif target == "trait":
         new_trait = character.addTrait(name = args.name,
                                      description = args.description,
