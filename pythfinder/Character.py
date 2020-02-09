@@ -324,3 +324,31 @@ class Character:
                                      notes = new_notes)
         self.attacks.append(new_attack)
         return new_attack
+
+    # Add new armor to the character; supports either named arguments 
+    # or a dictionary
+    #
+    # returns the newly created armor
+    def addArmor(self,
+                 name = "",
+                 acBonus = 0,
+                 acPenalty = 0,
+                 maxDexBonus = 0,
+                 arcaneFailureChance = 0,
+                 type_ = "",
+                 data = {}):
+        keys = data.keys()
+        new_name = data["name"] if "name" in keys else name
+        new_acBonus = data["acBonus"] if "acBonus" in keys else acBonus
+        new_acPenalty = data["acPenalty"] if "acPenalty" in keys else acPenalty
+        new_maxDexBonus = data["maxDexBonus"] if "maxDexBonus" in keys else maxDexBonus
+        new_arcaneFailureChance = data["arcaneFailureChance"] if "arcaneFailureChance" in keys else arcaneFailureChance
+        new_type = data["type"] if "type" in keys else type_
+        new_armor = CharacterArmor(name = new_name,
+                                   acBonus = new_acBonus,
+                                   acPenalty = new_acPenalty,
+                                   maxDexBonus = new_maxDexBonus,
+                                   arcaneFailureChance = new_arcaneFailureChance,
+                                   type_ = new_type)
+        self.armor.append(new_armor)
+        return new_armor
