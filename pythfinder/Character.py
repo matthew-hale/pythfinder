@@ -272,7 +272,7 @@ class Character:
                 count = 0,
                 pack = False,
                 notes = "",
-                data = {})
+                data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
         new_weight = data["weight"] if "weight" in keys else weight
