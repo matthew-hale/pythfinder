@@ -267,7 +267,7 @@ class Character:
         return new_special
 
     # Add a new item to the character; supports either named arguments 
-    # or a dictionary.
+    # or a dictionary
     #
     # returns the newly created item
     def addItem(self,
@@ -290,3 +290,37 @@ class Character:
                                       notes = new_notes)
         self.equipment.append(new_item)
         return new_item
+
+    # Add a new attack to the character; supports either named 
+    # arguments or a dictionary
+    #
+    # returns the newly created attack
+    def addAttack(self,
+                  weapon = "",
+                  attackType = "",
+                  damageType = [],
+                  damage = "",
+                  critRoll = 20,
+                  critMulti = 2,
+                  range_ = 0,
+                  notes = "",
+                  data = {}):
+        keys = data.keys()
+        new_weapon = data["weapon"] if "weapon" in keys else weapon
+        new_attackType = data["attackType"] if "attackType" in keys else attackType
+        new_damageType = data["damageType"] if "damageType" in keys else damageType
+        new_damage = data["damage"] if "damage" in keys else damage
+        new_critRoll = data["critRoll"] if "critRoll" in keys else critRoll
+        new_critMulti = data["critMulti"] if "critMulti" in keys else critMulti
+        new_range_ = data["range_"] if "range_" in keys else range_
+        new_notes = data["notes"] if "notes" in keys else notes
+        new_attack = CharacterAttack(weapon = new_weapon,
+                                     attackType = new_attackType,
+                                     damageType = new_damageType,
+                                     damage = new_damage,
+                                     critRoll = new_critRoll,
+                                     critMulti = new_critMulti,
+                                     range_ = new_range_,
+                                     notes = new_notes)
+        self.attacks.append(new_attack)
+        return new_attack
