@@ -211,6 +211,8 @@ class Character:
 
     # Add a new feat to the character; supports either named arguments 
     # or a dictionary
+    #
+    # returns the newly created feat
     def addFeat(self,
                 name = "",
                 description = "",
@@ -225,3 +227,22 @@ class Character:
                                       notes = new_notes)
         self.feats.append(new_feat)
         return new_feat
+    
+    # Add a new feat to the character; supports either named arguments 
+    # or a dictionary
+    #
+    # returns the newly created trait
+    def addTrait(self,
+                name = "",
+                description = "",
+                notes = "",
+                data = {}):
+        keys = data.keys()
+        new_name = data["name"] if "name" in keys else name
+        new_description = data["description"] if "description" in keys else description
+        new_notes = data["notes"] if "notes" in keys else notes
+        new_trait = CharacterBasicItem(name = new_name,
+                                      description = new_description,
+                                      notes = new_notes)
+        self.traits.append(new_trait)
+        return new_trait
