@@ -383,15 +383,16 @@ elif subcommand == "add":
             dataChanged = False
             print("\n    Something went wrong; new trait not added properly; aborting\n")
     elif target == "special":
-        new_name = args.name
-        new_description = args.description
-        new_notes = args.notes
-        new_special = pf.CharacterBasicItem.CharacterBasicItem(name = new_name,
-                                                               description = new_description,
-                                                               notes = new_notes)
-        character.special.append(new_special)
-        dataChanged = True
-        print("\n    Special added\n")
+        new_special = character.addSpecial(name = args.name,
+                                     description = args.description,
+                                     notes = args.notes)
+        if new_special.name == args.name and new_special.description == args.description and new_special.notes == args.notes:
+            dataChanged = True
+            print(getSpecialString(character))
+            print("\n    Special added\n")
+        else:
+            dataChanged = False
+            print("\n    Something went wrong; new special not added properly; aborting\n")
     elif target == "item":
         new_name = args.name
         new_weight = args.weight
