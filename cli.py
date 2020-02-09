@@ -400,19 +400,22 @@ elif subcommand == "add":
             dataChanged = False
             print("\n    Something went wrong; new special not added properly; aborting\n")
     elif target == "item":
-        new_name = args.name
-        new_weight = args.weight
-        new_count = args.count
-        new_pack = args.pack
-        new_notes = args.notes
-        new_item = pf.CharacterEquipment.CharacterEquipment(name = new_name,
-                                                            weight = new_weight,
-                                                            count = new_count,
-                                                            pack = new_pack,
-                                                            notes = new_notes)
-        character.equipment.append(new_item)
-        dataChanged = True
-        print("\n    Item added\n")
+        new_item = character.addItem(name = args.name,
+                                     weight = args.weight,
+                                     count = args.count,
+                                     pack = args.pack,
+                                     notes = args.notes)
+        if new_item.name == args.name and \
+           new_item.weight == args.weight and \
+           new_item.count == args.count and \
+           new_item.pack == args.pack and \
+           new_item.notes \ args.notes:
+            dataChanged = True
+            print(getEquipmentString(character))
+            print("\n    Item added\n")
+        else:
+            dataChanged = False
+            print("\n    Something went wrong; new item not added properly; aborting\n")
     elif target == "attack":
         new_weapon = args.weapon
         new_attackType = args.attackType
