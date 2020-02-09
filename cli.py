@@ -417,25 +417,26 @@ elif subcommand == "add":
             dataChanged = False
             print("\n    Something went wrong; new item not added properly; aborting\n")
     elif target == "attack":
-        new_weapon = args.weapon
-        new_attackType = args.attackType
-        new_damageType = args.damageType
-        new_damage = args.damage
-        new_critRoll = args.critRoll
-        new_critMulti = args.critMulti
-        new_range = args.range
-        new_notes = args.notes
-        new_attack = pf.CharacterAttack.CharacterAttack(weapon = new_weapon,
-                                                        attackType = new_attackType,
-                                                        damageType = new_damageType,
-                                                        damage = new_damage,
-                                                        critRoll = new_critRoll,
-                                                        critMulti = new_critMulti,
-                                                        range_ = new_range,
-                                                        notes = new_notes)
-        character.attacks.append(new_attack)
-        dataChanged = True
-        print("\n    Attack added\n")
+        new_attack = character.addAttack(weapon = args.weapon,
+                                         attackType = args.attackType,
+                                         damageType = args.damageType,
+                                         damage = args.damage,
+                                         critRoll = args.critRoll,
+                                         critMulti = args.critMulti,
+                                         range_ = args.range)
+        if new_attack.weapon == args.weapon and \
+           new_attack.attackType == args.attackType and \
+           new_attack.damageType == args.damageType and \
+           new_attack.damage == args.damage and \
+           new_attack.critRoll == args.critRoll and \
+           new_attack.critMulti == args.critMulti and \
+           new_attack.range_ == args.range:
+            dataChanged = True
+            print(getCombatString(character))
+            print("\n    Attack added\n")
+        else:
+            dataChanged = False
+            print("\n    Something went wrong; new attack not added properly; aborting\n")
     elif target == "armor":
         new_name = args.name
         new_acBonus = args.acBonus
