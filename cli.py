@@ -398,7 +398,7 @@ elif subcommand == "add":
             print("\n    Special added\n")
         else:
             dataChanged = False
-            print("\n    Something went wrong; new special not added properly; aborting\n")
+            print("\n    Something went wrong; new special ability not added properly; aborting\n")
     elif target == "item":
         new_item = character.addItem(name = args.name,
                                      weight = args.weight,
