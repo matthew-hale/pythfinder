@@ -31,12 +31,30 @@
     "eyes": "",
     "languages": [""],
     "abilities": {
-        "str": 0,
-        "dex": 0,
-        "con": 0,
-        "int": 0,
-        "wis": 0,
-        "cha": 0
+        "str": {
+            "base": 0,
+            "mods": [0]
+        },
+        "dex": {
+            "base": 0,
+            "mods": [0]
+        },
+        "con": {
+            "base": 0,
+            "mods": [0]
+        },
+        "int": {
+            "base": 0,
+            "mods": [0]
+        },
+        "wis": {
+            "base": 0,
+            "mods": [0]
+        },
+        "cha": {
+            "base": 0,
+            "mods": [0]
+        }
     },
     "hp": {
         "max": 0,
