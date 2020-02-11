@@ -70,7 +70,7 @@ def getCombatString(c):
     outstring += "    Ranged mod: " + str(c.getAbilityMod("dex")) + "\n"
 
     for attack in c.attacks:
-        outstring += "\n    " + attack.weapon + " (" + attack.attackType + ")\n        "
+        outstring += "\n    " + attack.name + " (" + attack.attackType + ")\n        "
         outstring += "Damage: " + attack.damage + " " + str(attack.critRoll)
         if attack.critRoll < 20:
             outstring += "-20"
@@ -230,11 +230,6 @@ parser_add.add_argument("-w", "--weight",
                         default = 0.0,
                         help = "(items) item unit weight",
                         type = float)
-parser_add.add_argument("--weapon",
-                        dest = "weapon",
-                        default = "",
-                        help = "(attack) name of weapon",
-                        type = str)
 parser_add.add_argument("--attackType",
                         dest = "attackType",
                         choices = ["melee","ranged"],
@@ -439,14 +434,14 @@ elif subcommand == "add":
             dataChanged = False
             print("\n    Something went wrong; new item not added properly; aborting\n")
     elif target == "attack":
-        new_attack = character.addAttack(weapon = args.weapon,
+        new_attack = character.addAttack(name = args.name,
                                          attackType = args.attackType,
                                          damageType = args.damageType,
                                          damage = args.damage,
                                          critRoll = args.critRoll,
                                          critMulti = args.critMulti,
                                          range_ = args.range)
-        if new_attack.weapon == args.weapon and \
+        if new_attack.name == args.name and \
            new_attack.attackType == args.attackType and \
            new_attack.damageType == args.damageType and \
            new_attack.damage == args.damage and \

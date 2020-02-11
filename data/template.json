@@ -426,7 +426,7 @@
     ],
     "attacks": [
         {
-            "weapon": "",
+            "name": "",
             "attackType": "",
             "damageType": [""],
             "damage": "",

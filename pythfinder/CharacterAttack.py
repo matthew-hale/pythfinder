@@ -1,6 +1,6 @@
 class CharacterAttack:
     def __init__(self,
-                 weapon = "",
+                 name = "",
                  attackType = "",
                  damageType = [],
                  damage = "",
@@ -10,7 +10,7 @@ class CharacterAttack:
                  notes = "",
                  data = {}):
         keys = data.keys()
-        self.weapon = data["weapon"] if "weapon" in keys else weapon
+        self.name = data["name"] if "name" in keys else name
         self.attackType = data["attackType"] if "attackType" in keys else attackType
         self.damageType = data["damageType"] if "damageType" in keys else damageType
         self.damage = data["damage"] if "damage" in keys else damage
