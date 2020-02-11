@@ -322,9 +322,13 @@ parser_edit.add_argument("target",
 parser_edit.add_argument("-n", "--name",
                          dest = "name",
                          default = "",
-                         help = "name field of target; primary key",
+                         help = "name of target; primary key",
                          type = str)
-parser_edit.add_argument("")
+parser_edit.add_argument("-d", "--description",
+                         dest = "description",
+                         default = "",
+                         help = "new description of target",
+                         type = str)
 
 # File path (positional)
 parser.add_argument("file",
