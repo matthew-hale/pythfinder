@@ -309,6 +309,19 @@ parser_add.add_argument("--level",
                         help = "spell level",
                         type = int)
 
+# Edit: modify the properties of the character
+parser_edit = subparsers.add_parser("edit",
+                                    help = "edit character properties")
+parser_edit.add_argument("target",
+                         choices = ["ability",
+                                    "skill",
+                                    "item",
+                                    "attack",
+                                    "feat",
+                                    "trait",
+                                    "special",
+                                    "spell"])
+
 # File path (positional)
 parser.add_argument("file",
                     metavar = "filepath",
