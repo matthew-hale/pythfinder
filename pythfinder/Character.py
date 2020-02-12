@@ -360,7 +360,7 @@ class Character:
     def addSpell(self,
                  name = "",
                  level = 0,
-                 description = "".
+                 description = "",
                  prepared = 0,
                  cast = 0,
                  data = {}):
