@@ -329,6 +329,16 @@ parser_edit.add_argument("-d", "--description",
                          default = "",
                          help = "new description of target",
                          type = str)
+parser_edit.add_argument("--new-name",
+                         dest = "new_name",
+                         default = "",
+                         help = "new name of target",
+                         type = str)
+parser_edit.add_argument("-o", "--notes",
+                         dest = "notes",
+                         default = "",
+                         help = "new notes of target",
+                         type = str)
 
 # File path (positional)
 parser.add_argument("file",
@@ -493,6 +503,51 @@ elif subcommand == "add":
         else:
             dataChanged = False
             print("\n    Something went wrong; new spell not added properly; aborting\n")
+elif subcommand == "edit":
+    if target == "feat":
+        if not args.description and not args.new_name and not args.notes:
+            print("\n    No new fields specified; nothing to do\n")
+        else:
+            # Keeping track of what the user wants updated
+            updates = [False, False, False]
+            if args.new_name:
+                updates[0] = True
+            if args.description:
+                updates[1] = True
+            if args.notes:
+                updates[2] = True
+            updated_feat = character.updateFeat(name = args.name,
+                                                new_name = args.new_name,
+                                                description = args.description,
+                                                notes = args.notes)
+            # If updateFeat() returned "None," it means that there was 
+            # no matching feat with the name given
+            if updated_feat == None:
+                print("\n    No matching feat with the name given; aborting\n")
+            else:
+            # Seeing if updates were applied successfully, testing only 
+            # those values that were true above
+                success = True
+                for i in range(3):
+                    if updates[i] == True:
+                        # Name
+                        if i == 0:
+                            if updated_feat.name != args.new_name:
+                                success = False
+                        # Description
+                        if i == 1:
+                            if updated_feat.description != args.description:
+                                success = False
+                        # Notes
+                        if i == 2:
+                            if updated_feat.notes != args.notes:
+                                success = False
+                if success:
+                    dataChanged = True
+                    print(getFeatString(character))
+                    print("\n    Feat updated\n")
+                else:
+                    print("\n    Something went wrong; feat not updated properly; aborting\n")
 
 # Write check
 if dataChanged:
