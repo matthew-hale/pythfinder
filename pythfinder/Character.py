@@ -377,3 +377,35 @@ class Character:
                                    cast = new_cast)
         self.spells.append(new_spell)
         return new_spell
+
+    # Update an existing feat based on name; supports either named 
+    # arguments or a dictionary
+    #
+    # returns the updated feat
+    def updateFeat(self,
+                   name = "",
+                   new_name = "",
+                   description = "",
+                   notes = "",
+                   data = {}):
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        new_name = data["new_name"] if "new_name" in keys else new_name
+        description = data["description"] if "description" in keys else description
+        notes = data["notes"] if "notes" in keys else notes
+        # Lazy selection; if there are duplicates, this will just pick 
+        # up the first one that shows up
+        for feat in self.feats:
+            if feat.name == name:
+                target_feat = feat
+                break
+        try:
+            target_feat
+        except NameError:
+            return None
+        else:
+            # Ignore empty parameters
+            target_feat.name = new_name or target_feat.name
+            target_feat.description = description or target_feat.description
+            target_feat.notes = notes or target_feat.notes
+            return target_feat
