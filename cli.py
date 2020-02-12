@@ -308,7 +308,7 @@ parser_add.add_argument("--level",
 parser_edit = subparsers.add_parser("edit",
                                     help = "edit character properties")
 parser_edit.add_argument("target",
-                         metavar = "target"
+                         metavar = "target",
                          choices = ["ability",
                                     "skill",
                                     "item",
@@ -317,7 +317,7 @@ parser_edit.add_argument("target",
                                     "trait",
                                     "special",
                                     "spell"],
-                         help = "edit target"
+                         help = "edit target",
                          type = str)
 parser_edit.add_argument("-n", "--name",
                          dest = "name",
