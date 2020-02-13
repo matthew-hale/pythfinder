@@ -45,7 +45,7 @@ enforcement)
     import json; just grab values if they're there, if not use the 
     defaults, and for extra values just ignore them.~~ this is now 
     pretty much finished, nearly everything is an object
-+ add ability modifiers (for temp increases/damage)
++ ~~add ability modifiers (for temp increases/damage)~~
 + rework hp:
     + add wounds, temp hp, temporary max hp increases
     + essentially make current hp a calculated value
