@@ -92,14 +92,29 @@ def getCombatString(c):
 
 # Returns a formatted string of abilities
 def getAbilityString(c):
-    outstring = "\n    Abilities:\n\n    "
-    for k, v in c.abilities.__dict__.items():
-        modValue = c.getAbilityMod(k)
-        if modValue >= 0:
-            modString = "+" + str(modValue)
+    outstring = "\n    Abilities:"
+    for ability in c.abilities.__dict__.keys():
+        ability_mods = [getattr(c.abilities, ability)["base"]]
+        for item in getattr(c.abilities, ability)["mods"]:
+            ability_mods.append(item)
+        base_mod_value = c.getAbilityMod(getattr(c.abilities, ability)["base"])
+        temp_mod_value = c.getAbilityMod(sum(ability_mods))
+        if base_mod_value >= 0:
+            base_mod_string = "+" + str(base_mod_value)
         else:
-            modString = str(modValue)
-        outstring += k + ": " + str(v) + " (" + modString + ")\n    "
+            base_mod_string = str(base_mod_value)
+        if temp_mod_value >= 0:
+            temp_mod_string = "+" + str(temp_mod_value)
+        else:
+            temp_mod_string = str(temp_mod_value)
+        outstring += "\n\n    {}:  {} ({}) - temp: {} ({})".format(
+            ability,
+            str(getattr(c.abilities, ability)["base"]),
+            base_mod_string,
+            str(sum(ability_mods)),
+            temp_mod_value
+        )
+    outstring += "\n"
     return outstring
 
 # Formatted string of spells
