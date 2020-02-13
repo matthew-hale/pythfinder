@@ -32,7 +32,7 @@ enforcement)
     + skill ranks/class status/notes
     + items
     + attacks
-    + feats
+    + ~~feats~~
     + traits
     + spells
     + special abilities
