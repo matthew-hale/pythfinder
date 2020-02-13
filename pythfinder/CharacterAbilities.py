@@ -33,8 +33,10 @@ class CharacterAbilities:
         ability_range = ["str", "dex", "con", "int", "wis", "cha"]
         if ability not in ability_range:
             raise ValueError("ability must be one of " + ability_range)
-        scores = getattr(self, ability)["mods"]
+        scores = []
         scores.append(getattr(self, ability)["base"])
+        for item in getattr(self, ability)["mods"]:
+            scores.append(item)
         return(sum(scores))
 
     # Like get_total_value, but for just the base value
