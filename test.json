@@ -112,7 +112,6 @@
             "name": "Acrobatics",
             "rank": 0,
             "isClass": false,
-            "mod": "dex",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -121,7 +120,6 @@
             "name": "Appraise",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -130,7 +128,6 @@
             "name": "Bluff",
             "rank": 0,
             "isClass": false,
-            "mod": "cha",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -139,7 +136,6 @@
             "name": "Climb",
             "rank": 0,
             "isClass": false,
-            "mod": "str",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -148,7 +144,6 @@
             "name": "Craft",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -157,7 +152,6 @@
             "name": "Diplomacy",
             "rank": 0,
             "isClass": false,
-            "mod": "cha",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -166,7 +160,6 @@
             "name": "Disable Device",
             "rank": 0,
             "isClass": false,
-            "mod": "dex",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -175,7 +168,6 @@
             "name": "Disguise",
             "rank": 0,
             "isClass": false,
-            "mod": "cha",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -184,7 +176,6 @@
             "name": "Escape Artist",
             "rank": 0,
             "isClass": false,
-            "mod": "dex",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -193,7 +184,6 @@
             "name": "Fly",
             "rank": 0,
             "isClass": false,
-            "mod": "dex",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -202,7 +192,6 @@
             "name": "Handle Animal",
             "rank": 0,
             "isClass": false,
-            "mod": "cha",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -211,7 +200,6 @@
             "name": "Heal",
             "rank": 0,
             "isClass": false,
-            "mod": "wis",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -220,7 +208,6 @@
             "name": "Intimidate",
             "rank": 0,
             "isClass": false,
-            "mod": "cha",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -229,7 +216,6 @@
             "name": "Knowledge (Arcana)",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -238,7 +224,6 @@
             "name": "Knowledge (Dungeoneering)",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -247,7 +232,6 @@
             "name": "Knowledge (Engineering)",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -256,7 +240,6 @@
             "name": "Knowledge (Geography)",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -265,7 +248,6 @@
             "name": "Knowledge (History)",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -274,7 +256,6 @@
             "name": "Knowledge (Local)",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -283,7 +264,6 @@
             "name": "Knowledge (Nature)",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -292,7 +272,6 @@
             "name": "Knowledge (Nobility)",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -301,7 +280,6 @@
             "name": "Knowledge (Planes)",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -310,7 +288,6 @@
             "name": "Knowledge (Religion)",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -319,7 +296,6 @@
             "name": "Linguistics",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -328,7 +304,6 @@
             "name": "Perception",
             "rank": 0,
             "isClass": false,
-            "mod": "wis",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -337,7 +312,6 @@
             "name": "Perform",
             "rank": 0,
             "isClass": false,
-            "mod": "cha",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -346,7 +320,6 @@
             "name": "Profession",
             "rank": 0,
             "isClass": false,
-            "mod": "wis",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -355,7 +328,6 @@
             "name": "Ride",
             "rank": 0,
             "isClass": false,
-            "mod": "dex",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -364,7 +336,6 @@
             "name": "Sense Motive",
             "rank": 0,
             "isClass": false,
-            "mod": "wis",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -373,7 +344,6 @@
             "name": "Sleight Of Hand",
             "rank": 0,
             "isClass": false,
-            "mod": "dex",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -382,7 +352,6 @@
             "name": "Spellcraft",
             "rank": 0,
             "isClass": false,
-            "mod": "int",
             "notes": "",
             "useUntrained": false,
             "misc": []
@@ -391,7 +360,6 @@
             "name": "Stealth",
             "rank": 0,
             "isClass": false,
-            "mod": "dex",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -400,7 +368,6 @@
             "name": "Survival",
             "rank": 0,
             "isClass": false,
-            "mod": "wis",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -409,7 +376,6 @@
             "name": "Swim",
             "rank": 0,
             "isClass": false,
-            "mod": "str",
             "notes": "",
             "useUntrained": true,
             "misc": []
@@ -418,7 +384,6 @@
             "name": "Use Magic Device",
             "rank": 0,
             "isClass": false,
-            "mod": "cha",
             "notes": "",
             "useUntrained": false,
             "misc": []
