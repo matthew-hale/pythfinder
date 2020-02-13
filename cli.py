@@ -41,7 +41,18 @@ def getTraitString(c):
 
 # Formatted string of skills
 def getSkillString(c):
-    .
+    outstring = "\n    Skills:\n"
+    for skill in c.skills:
+        if skill.useUntrained == False:
+            outstring += "\n   *"
+        else:
+            outstring += "\n    "
+        total = skill.get_total_value(c)
+        outstring += "{}: {}".format(skill.name, total)
+        if skill.rank == 0:
+            outstring += " - (untrained)"
+    outstring += "\n"
+    return outstring
 
 # Formatted string of combat elements
 def getCombatString(c):
