@@ -142,9 +142,9 @@ def getSpecialString(c):
 # Formatted string of saving throws
 def getThrowString(c):
     outstring = "\n    Saving throws:\n\n"
-    fort_total = sum([c.savingThrows["fortitude"].base, sum(c.savingThrows["fortitude"].misc), c.getAbilityMod("con")])
-    ref_total = sum([c.savingThrows["reflex"].base, sum(c.savingThrows["reflex"].misc), c.getAbilityMod("dex")])
-    will_total = sum([c.savingThrows["will"].base, sum(c.savingThrows["will"].misc), c.getAbilityMod("wis")])
+    fort_total = sum([c.savingThrows["fortitude"].base, sum(c.savingThrows["fortitude"].misc), c.getAbilityMod(c.abilities.get_total_value("con"))])
+    ref_total = sum([c.savingThrows["reflex"].base, sum(c.savingThrows["reflex"].misc), c.getAbilityMod(c.abilities.get_total_value("dex"))])
+    will_total = sum([c.savingThrows["will"].base, sum(c.savingThrows["will"].misc), c.getAbilityMod(c.abilities.get_total_value("wis"))])
     outstring += "    Fortitude: {}\n\n    Reflex: {}\n\n    Will: {}\n\n".format(str(fort_total), str(ref_total), str(will_total))
     return outstring
 
