@@ -31,12 +31,30 @@
     "eyes": "test eyes",
     "languages": ["test language 1","test language 2"],
     "abilities": {
-        "str": 10,
-        "dex": 10,
-        "con": 10,
-        "int": 10,
-        "wis": 10,
-        "cha": 10
+        "str": {
+            "base": 14,
+            "mods": [-2, 1]
+        },
+        "dex": {
+            "base": 13,
+            "mods": [2, 4, -1]
+        },
+        "con": {
+            "base": 12,
+            "mods": [0]
+        },
+        "int": {
+            "base": 11,
+            "mods": [0]
+        },
+        "wis": {
+            "base": 10,
+            "mods": [0]
+        },
+        "cha": {
+            "base": 9,
+            "mods": [0]
+        }
     },
     "hp": {
         "max": 10,
@@ -97,7 +115,7 @@
             "mod": "dex",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Appraise",
@@ -106,7 +124,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Bluff",
@@ -115,7 +133,7 @@
             "mod": "cha",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Climb",
@@ -124,7 +142,7 @@
             "mod": "str",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Craft",
@@ -133,7 +151,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Diplomacy",
@@ -142,7 +160,7 @@
             "mod": "cha",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Disable Device",
@@ -151,7 +169,7 @@
             "mod": "dex",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Disguise",
@@ -160,7 +178,7 @@
             "mod": "cha",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Escape Artist",
@@ -169,7 +187,7 @@
             "mod": "dex",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Fly",
@@ -178,7 +196,7 @@
             "mod": "dex",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Handle Animal",
@@ -187,7 +205,7 @@
             "mod": "cha",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Heal",
@@ -196,7 +214,7 @@
             "mod": "wis",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Intimidate",
@@ -205,7 +223,7 @@
             "mod": "cha",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Knowledge (Arcana)",
@@ -214,7 +232,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Knowledge (Dungeoneering)",
@@ -223,7 +241,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Knowledge (Engineering)",
@@ -232,7 +250,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Knowledge (Geography)",
@@ -241,7 +259,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Knowledge (History)",
@@ -250,7 +268,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Knowledge (Local)",
@@ -259,7 +277,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Knowledge (Nature)",
@@ -268,7 +286,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Knowledge (Nobility)",
@@ -277,7 +295,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Knowledge (Planes)",
@@ -286,7 +304,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Knowledge (Religion)",
@@ -295,7 +313,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Linguistics",
@@ -304,7 +322,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Perception",
@@ -313,7 +331,7 @@
             "mod": "wis",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Perform",
@@ -322,7 +340,7 @@
             "mod": "cha",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Profession",
@@ -331,7 +349,7 @@
             "mod": "wis",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Ride",
@@ -340,7 +358,7 @@
             "mod": "dex",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Sense Motive",
@@ -349,7 +367,7 @@
             "mod": "wis",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Sleight Of Hand",
@@ -358,7 +376,7 @@
             "mod": "dex",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Spellcraft",
@@ -367,7 +385,7 @@
             "mod": "int",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Stealth",
@@ -376,7 +394,7 @@
             "mod": "dex",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Survival",
@@ -385,7 +403,7 @@
             "mod": "wis",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Swim",
@@ -394,7 +412,7 @@
             "mod": "str",
             "notes": "",
             "useUntrained": true,
-            "misc": 0
+            "misc": []
         },
         {
             "name": "Use Magic Device",
@@ -403,7 +421,7 @@
             "mod": "cha",
             "notes": "",
             "useUntrained": false,
-            "misc": 0
+            "misc": []
         }
     ],
     "attacks": [
