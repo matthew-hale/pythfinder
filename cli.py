@@ -41,33 +41,18 @@ def getTraitString(c):
 
 # Formatted string of skills
 def getSkillString(c):
-    outstring = "\n    Skills:\n\n    "
-    for skill in c.skills:
-        total = 0
-        if not skill.useUntrained:
-            outstring += "*"
-        outstring += skill.name 
-        outstring += " - " + str(skill.rank) + " (ranks) "
-        total += skill.rank
-        if skill.isClass and skill.rank > 0:
-            outstring += "+ 3 (class) "
-            total += 3
-        outstring += "+ " + str(c.getAbilityMod(skill.mod)) + " (mod: " + skill.mod + ") "
-        total += c.getAbilityMod(skill.mod)
-        if skill.misc > 0:
-            total += skill.misc
-            outstring += "+ " + str(skill.misc) + " (misc) "
-        outstring += "= " + str(total) + "\n    "
-    return outstring
+    .
 
 # Formatted string of combat elements
 def getCombatString(c):
+    strength_mod = c.getAbilityMod(c.abilities.get_total_value("str"))
+    dexterity_mod = c.getAbilityMod(c.abilities.get_total_value("dex"))
     outstring = "    Combat:\n\n"
     outstring += "    HP: " + str(c.hp.current) + "/" + str(c.hp.max) + "\n\n"
     outstring += "    Attacks:\n"
     outstring += "    BAB: " + "/".join(map(str, c.baseAttackBonus)) + "\n"
-    outstring += "    Melee mod: " + str(c.getAbilityMod("str")) + "\n"
-    outstring += "    Ranged mod: " + str(c.getAbilityMod("dex")) + "\n"
+    outstring += "    Strength mod: {}\n".format(strength_mod)
+    outstring += "    Dexterity mod: {}\n".format(dexterity_mod)
 
     for attack in c.attacks:
         outstring += "\n    " + attack.name + " (" + attack.attackType + ")\n        "
@@ -86,8 +71,12 @@ def getCombatString(c):
         outstring += "    {}: ({} armor)\n        AC Bonus: {}, Max Dex Bonus: {}, Armor Check Penalty: {}, Spell Failure Chance: {}%\n\n".format(item.name,item.type,item.acBonus,item.maxDexBonus,item.acPenalty,item.arcaneFailureChance)
     outstring += "    AC Calculation: 10 + Dex Bonus + AC Bonus\n\n"
 
-    outstring += "    CMD: {}".format(str(sum([10, c.baseAttackBonus[0], c.getAbilityMod("str"), c.getAbilityMod("dex")]))) + "\n"
-    outstring += "    CMB: {}".format(str(sum([c.baseAttackBonus[0], c.getAbilityMod("str")]))) + "\n\n"
+    outstring += "    CMD: {}\n".format(str(sum([10,
+                                                 c.baseAttackBonus[0],
+                                                 strength_mod,
+                                                 dexterity_mod])))
+    outstring += "    CMB: {}\n".format(str(sum([c.baseAttackBonus[0],
+                                                 strength_mod])))
     return outstring
 
 # Returns a formatted string of abilities
