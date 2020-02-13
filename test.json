@@ -96,15 +96,15 @@
     "savingThrows": {
         "fortitude": {
             "base": 1,
-            "misc": 1
+            "misc": [1]
         },
         "reflex": {
             "base": 2,
-            "misc": 1
+            "misc": [1]
         },
         "will": {
             "base": 3,
-            "misc": 1
+            "misc": [1]
         }
     },
     "skills": [
