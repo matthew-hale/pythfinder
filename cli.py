@@ -94,11 +94,10 @@ def getCombatString(c):
 def getAbilityString(c):
     outstring = "\n    Abilities:"
     for ability in c.abilities.__dict__.keys():
-        ability_mods = [getattr(c.abilities, ability)["base"]]
-        for item in getattr(c.abilities, ability)["mods"]:
-            ability_mods.append(item)
-        base_mod_value = c.getAbilityMod(getattr(c.abilities, ability)["base"])
-        temp_mod_value = c.getAbilityMod(sum(ability_mods))
+        base_score_value = c.abilities.get_base_value(ability)
+        base_mod_value = c.getAbilityMod(base_score_value)
+        temp_score_value = c.abilities.get_total_value(ability)
+        temp_mod_value = c.getAbilityMod(temp_score_value)
         if base_mod_value >= 0:
             base_mod_string = "+" + str(base_mod_value)
         else:
@@ -109,9 +108,9 @@ def getAbilityString(c):
             temp_mod_string = str(temp_mod_value)
         outstring += "\n\n    {}:  {} ({}) - temp: {} ({})".format(
             ability,
-            str(getattr(c.abilities, ability)["base"]),
+            base_score_value,
             base_mod_string,
-            str(sum(ability_mods)),
+            temp_score_value,
             temp_mod_value
         )
     outstring += "\n"
