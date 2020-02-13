@@ -1,10 +1,12 @@
+from pythfinder.CharacterAbilities import CharacterAbilities
+
 class CharacterSkill:
     def __init__(self,
                  name = "",
                  rank = 0,
                  isClass = False,
                  notes = "",
-                 misc = 0,
+                 misc = [],
                  data = {}):
         keys = data.keys()
         allowedNames = (
@@ -77,3 +79,13 @@ class CharacterSkill:
 
         self.mod = mods[self.name]
         self.useUntrained = False if self.name in trainedOnly else True
+
+    # Returns the total value of the skill modifier
+    def get_total_value(self, c):
+        total = 0
+        if self.isClass and self.rank >= 1:
+            total += 3
+        total += self.rank
+        total += sum(self.misc)
+        total += c.getAbilityMod(c.abilities.get_total_value(self.mod))
+        return total
