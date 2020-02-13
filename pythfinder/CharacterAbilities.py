@@ -26,3 +26,22 @@ class CharacterAbilities:
         self.cha = {}
         self.cha["base"] = data["cha"]["base"] if "cha" in keys else cha
         self.cha["mods"] = data["cha"]["mods"] if "cha" in keys else []
+
+    # Returns the ability score after summing all modifiers
+    def get_total_value(self,
+                        ability):
+        ability_range = ["str", "dex", "con", "int", "wis", "cha"]
+        if ability not in ability_range:
+            raise ValueError("ability must be one of " + ability_range)
+        scores = []
+        scores.append(getattr(self, ability)["base"])
+        scores.append(getattr(self, ability)["mods"])
+        return(sum(scores))
+
+    # Like get_total_value, but for just the base value
+    def get_base_value(self,
+                       ability):
+        ability_range = ["str", "dex", "con", "int", "wis", "cha"]
+        if ability not in ability_range:
+            raise ValueError("ability must be one of " + ability_range)
+        return getattr(self, ability)["base"]
