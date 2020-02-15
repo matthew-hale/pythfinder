@@ -405,3 +405,41 @@ class Character:
             target_feat.description = description or target_feat.description
             target_feat.notes = notes or target_feat.notes
             return target_feat
+
+    # Update an existing item based on name; supports either named 
+    # arguments or a dictionary
+    #
+    # returns the updated item 
+    def updateItem(self,
+                   name = "",
+                   weight = 0,
+                   count = 0,
+                   pack = None,
+                   notes = "",
+                   data = {}):
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        weight = data["weight"] if "weight" in keys else weight
+        pack = data["pack"] if "pack" in keys else pack
+        count = data["count"] if "count" in keys else count
+        notes = data["notes"] if "notes" in keys else notes
+        # Lazy selection; if there are duplicates, this will just pick 
+        # up the first one that shows up
+        for item in self.equipment:
+            if item.name == name:
+                target_item = item
+                break
+        try:
+            target_item
+        except NameError:
+            return None
+        else:
+            # Ignore empty parameters
+            target_item.weight = weight or target_item.weight
+            target_item.count = count or target_item.count
+            target_item.notes = notes or target_item.notes
+            # Pack is special
+            print("updateItem method pack value:" + str(pack))
+            if pack != None:
+                target_item.pack = pack
+            return target_item
