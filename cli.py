@@ -534,7 +534,6 @@ elif subcommand == "add":
             print("\n    Something went wrong; new spell not added properly; aborting\n")
 elif subcommand == "edit":
     if target == "feat":
-        print(str(args.pack))
         updates = {}
         if args.new_name:
             updates["new_name"] = args.new_name
@@ -566,8 +565,39 @@ elif subcommand == "edit":
                 print("\n    Feat updated\n")
             else:
                 print("\n    Something went wrong; feat not updated properly; aborting\n")
+    if target == "trait":
+        updates = {}
+        if args.new_name:
+            updates["new_name"] = args.new_name
+        if args.description:
+            updates["description"] = args.description
+        if args.notes:
+            updates["notes"] = args.notes
+        updated_trait = character.updateTrait(name = args.name,
+                                              data = updates)
+        # If updateTrait() returned "None," it means that there was no 
+        # matching trait with the name given
+        if updated_trait == None:
+            print("\n    No matching trait with the name given; aborting\n")
+        else:
+        # Seeing if updates were applied successfully, testing all args 
+        # provided
+            success = True
+            for item in updates.keys():
+                # New_name is a special case:
+                if item == "new_name":
+                    if updates["new_name"] != getattr(updated_trait, "name"):
+                        success = False
+                else:
+                    if updates[item] != getattr(updated_trait, item):
+                        success = False
+            if success:
+                dataChanged = True
+                print(getTraitString(character))
+                print("\n    Trait updated\n")
+            else:
+                print("\n    Something went wrong; trait not updated properly; aborting\n")
     if target == "item":
-        print("argument: " + str(args.pack))
         updates = {}
         if args.weight:
             updates["weight"] = args.weight
@@ -587,7 +617,6 @@ elif subcommand == "edit":
         else:
         # Seeing if updates were applied successfully, testing all args 
         # provided
-            print("name: {}\nweight: {}\npack: {}\nnotes: {}".format(updated_item.name,updated_item.weight,updated_item.pack,updated_item.notes))
             success = True
             for item in updates.keys():
                 if updates[item] != getattr(updated_item, item):
