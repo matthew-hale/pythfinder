@@ -31,10 +31,10 @@ enforcement)
     + ability scores
     + skill ranks/class status/notes
     + ~~items~~
-    + attacks
+    + ~~attacks~~
     + ~~feats~~
     + ~~traits~~
-    + spells
+    + ~~spells~~
     + ~~special abilities~~
     + etc.
 + New character creation walkthrough process (CLI)
