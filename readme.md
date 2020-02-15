@@ -30,7 +30,7 @@ enforcement)
 + Functionality to edit/update values of:
     + ability scores
     + skill ranks/class status/notes
-    + items
+    + ~~items~~
     + attacks
     + ~~feats~~
     + traits
