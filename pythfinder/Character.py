@@ -506,3 +506,43 @@ class Character:
             if pack != None:
                 target_item.pack = pack
             return target_item
+
+    # Update an existing spell based on name; supports either named 
+    # arguments or a dictionary
+    #
+    # returns the updated spell 
+    def updateSpell(self,
+                    name = None,
+                    level = None,
+                    description = None,
+                    prepared = None,
+                    cast = None,
+                    data = {}):
+        keys = data.keys()
+        if "name" in keys:
+            name = data["name"]
+        if "level" in keys:
+            level = data["level"]
+        if "description" in keys:
+            description = data["description"]
+        if "prepared" in keys:
+            prepared = data["prepared"]
+        if "cast" in keys:
+            cast = data["cast"]
+        # Lazy selection; if there are duplicates, this will just pick 
+        # up the first one that shows up
+        for spell in self.spells:
+            if spell.name == name:
+                target_spell = spell
+                break
+        try:
+            target_spell
+        except NameError:
+            return None
+        else:
+            # Ignore empty parameters
+            target_spell.level = level or target_spell.level
+            target_spell.description = description or target_spell.description
+            target_spell.prepared = prepared or target_spell.prepared
+            target_spell.cast = cast or target_spell.cast
+            return target_spell
