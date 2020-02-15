@@ -597,7 +597,7 @@ elif subcommand == "edit":
                 print(getEquipmentString(character))
                 print("\n    Item updated\n")
             else:
-                print("\n    Something went wrong; feat not updated properly; aborting\n")
+                print("\n    Something went wrong; item not updated properly; aborting\n")
 
 # Write check
 if dataChanged:
