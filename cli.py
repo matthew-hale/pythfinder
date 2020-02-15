@@ -416,7 +416,6 @@ elif subcommand == "add":
             print(getFeatString(character))
             print("\n    Feat added\n")
         else:
-            dataChanged = False
             print("\n    Something went wrong; new feat not added properly; aborting\n")
     elif target == "trait":
         new_trait = character.addTrait(name = args.name,
@@ -429,7 +428,6 @@ elif subcommand == "add":
             print(getTraitString(character))
             print("\n    Trait added\n")
         else:
-            dataChanged = False
             print("\n    Something went wrong; new trait not added properly; aborting\n")
     elif target == "special":
         new_special = character.addSpecial(name = args.name,
@@ -442,7 +440,6 @@ elif subcommand == "add":
             print(getSpecialString(character))
             print("\n    Special added\n")
         else:
-            dataChanged = False
             print("\n    Something went wrong; new special ability not added properly; aborting\n")
     elif target == "item":
         new_item = character.addItem(name = args.name,
@@ -459,7 +456,6 @@ elif subcommand == "add":
             print(getEquipmentString(character))
             print("\n    Item added\n")
         else:
-            dataChanged = False
             print("\n    Something went wrong; new item not added properly; aborting\n")
     elif target == "attack":
         new_attack = character.addAttack(name = args.name,
@@ -480,7 +476,6 @@ elif subcommand == "add":
             print(getCombatString(character))
             print("\n    Attack added\n")
         else:
-            dataChanged = False
             print("\n    Something went wrong; new attack not added properly; aborting\n")
     elif target == "armor":
         new_armor = character.addArmor(name = args.name,
@@ -498,7 +493,6 @@ elif subcommand == "add":
             print(getCombatString(character))
             print("\n    Armor added\n")
         else:
-            dataChanged = False
             print("\n    Something went wrong; new armor not added properly; aborting\n")
     elif target == "spell":
         new_spell = character.addSpell(name = args.name,
@@ -515,7 +509,6 @@ elif subcommand == "add":
             print(getSpellString(character))
             print("\n    Spell added\n")
         else:
-            dataChanged = False
             print("\n    Something went wrong; new spell not added properly; aborting\n")
 elif subcommand == "edit":
     if target == "feat":
