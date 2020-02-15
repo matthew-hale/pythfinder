@@ -394,7 +394,7 @@
         {
             "weapon": "test weapon",
             "attackType": "test attack type",
-            "damageType": ["test damage type"],
+            "damageType": "test damage type",
             "damage": "test weapon damage",
             "critRoll": 20,
             "critMulti": 2,

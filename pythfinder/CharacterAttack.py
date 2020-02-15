@@ -2,7 +2,7 @@ class CharacterAttack:
     def __init__(self,
                  name = "",
                  attackType = "",
-                 damageType = [],
+                 damageType = "",
                  damage = "",
                  critRoll = 20,
                  critMulti = 2,

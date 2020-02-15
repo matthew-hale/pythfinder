@@ -83,7 +83,7 @@ def getCombatString(c):
         outstring += "Damage: " + attack.damage + " " + str(attack.critRoll)
         if attack.critRoll < 20:
             outstring += "-20"
-        outstring += " x" + str(attack.critMulti) + " (" + ",".join(attack.damageType) + ") "
+        outstring += " x" + str(attack.critMulti) + " (" + attack.damageType + ") "
         if attack.range > 0:
             outstring += "\n        " + str(attack.range) + " ft. range increment"
         if attack.notes:
@@ -264,9 +264,6 @@ parser_add.add_argument("--attackType",
                         type = str)
 parser_add.add_argument("--damageType",
                         dest = "damageType",
-                        choices = ["S", "P", "B"],
-                        nargs = "*",
-                        default = [""],
                         help = "(attack) type of damage dealt",
                         type = str)
 parser_add.add_argument("--damage",
