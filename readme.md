@@ -33,7 +33,7 @@ enforcement)
     + ~~items~~
     + attacks
     + ~~feats~~
-    + traits
+    + ~~traits~~
     + spells
     + special abilities
     + etc.
