@@ -59,7 +59,8 @@
     "hp": {
         "max": 10,
         "current": 10,
-        "temporary": 1
+        "temporary": 1,
+        "nonlethal": 0
     },
     "baseAttackBonus": [1],
     "special": [
