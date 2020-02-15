@@ -7,6 +7,19 @@ import pythfinder as pf
 import json
 import sys
 
+# Special function for argparse and boolean arguments
+def t_or_f(arg):
+    ua = str(arg).upper()
+    print("function: " + ua)
+    value = None
+    if "FALSE".startswith(ua):
+        value = False
+    elif "TRUE".startswith(ua):
+        value = True
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+    return value
+
 # Formatted string of items
 def getEquipmentString(c):
     total = 0
@@ -350,6 +363,18 @@ parser_edit.add_argument("-o", "--notes",
                          dest = "notes",
                          help = "new notes of target",
                          type = str)
+parser_edit.add_argument("-w", "--weight",
+                         dest = "weight",
+                         help = "new weight of target",
+                         type = float)
+parser_edit.add_argument("-c", "--count",
+                         dest = "count",
+                         help = "new count of target",
+                         type = int)
+parser_edit.add_argument("-k", "--pack",
+                         dest = "pack",
+                         help = "whether or not target is a pack item",
+                         type = t_or_f)
 
 # File path (positional)
 parser.add_argument("file",
@@ -509,6 +534,7 @@ elif subcommand == "add":
             print("\n    Something went wrong; new spell not added properly; aborting\n")
 elif subcommand == "edit":
     if target == "feat":
+        print(str(args.pack))
         updates = {}
         if args.new_name:
             updates["new_name"] = args.new_name
@@ -538,6 +564,38 @@ elif subcommand == "edit":
                 dataChanged = True
                 print(getFeatString(character))
                 print("\n    Feat updated\n")
+            else:
+                print("\n    Something went wrong; feat not updated properly; aborting\n")
+    if target == "item":
+        print("argument: " + str(args.pack))
+        updates = {}
+        if args.weight:
+            updates["weight"] = args.weight
+        if args.count:
+            updates["count"] = args.count
+        # Special
+        if args.pack != None:
+            updates["pack"] = args.pack
+        if args.notes:
+            updates["notes"] = args.notes
+        updated_item = character.updateItem(name = args.name,
+                                            data = updates)
+        # If updateFeat() returned "None," it means that there was 
+        # no matching item with the name given
+        if updated_item == None:
+            print("\n    No matching item with the name given; aborting\n")
+        else:
+        # Seeing if updates were applied successfully, testing all args 
+        # provided
+            print("name: {}\nweight: {}\npack: {}\nnotes: {}".format(updated_item.name,updated_item.weight,updated_item.pack,updated_item.notes))
+            success = True
+            for item in updates.keys():
+                if updates[item] != getattr(updated_item, item):
+                    success = False
+            if success:
+                dataChanged = True
+                print(getEquipmentString(character))
+                print("\n    Item updated\n")
             else:
                 print("\n    Something went wrong; feat not updated properly; aborting\n")
 
