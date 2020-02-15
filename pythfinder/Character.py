@@ -406,6 +406,38 @@ class Character:
             target_feat.notes = notes or target_feat.notes
             return target_feat
 
+    # Update an existing trait based on name; supports either named 
+    # arguments or a dictionary
+    #
+    # returns the updated trait
+    def updateTrait(self,
+                    name = "",
+                    new_name = "",
+                    description = "",
+                    notes = "",
+                    data = {}):
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        new_name = data["new_name"] if "new_name" in keys else new_name
+        description = data["description"] if "description" in keys else description
+        notes = data["notes"] if "notes" in keys else notes
+        # Lazy selection; if there are duplicates, this will just pick 
+        # up the first one that shows up
+        for trait in self.traits:
+            if trait.name == name:
+                target_trait = trait
+                break
+        try:
+            target_trait
+        except NameError:
+            return None
+        else:
+            # Ignore empty parameters
+            target_trait.name = new_name or target_trait.name
+            target_trait.description = description or target_trait.description
+            target_trait.notes = notes or target_trait.notes
+            return target_trait
+
     # Update an existing item based on name; supports either named 
     # arguments or a dictionary
     #
@@ -439,7 +471,6 @@ class Character:
             target_item.count = count or target_item.count
             target_item.notes = notes or target_item.notes
             # Pack is special
-            print("updateItem method pack value:" + str(pack))
             if pack != None:
                 target_item.pack = pack
             return target_item
