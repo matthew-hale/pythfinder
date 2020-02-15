@@ -384,6 +384,31 @@ parser_edit.add_argument("--level",
                          dest = "level",
                          help = "level of spell",
                          type = int)
+parser_edit.add_argument("--attackType",
+                         dest = "attackType",
+                         choices = ["melee", "ranged"],
+                         help = "type of attack (melee, ranged)",
+                         type = str)
+parser_edit.add_argument("--damageType",
+                         dest = "damageType",
+                         help = "type of damage dealt",
+                         type = str)
+parser_edit.add_argument("--damage",
+                         dest = "damage",
+                         help = "amount of damage dealt",
+                         type = str)
+parser_edit.add_argument("--critRoll",
+                         dest = "critRoll",
+                         help = "the minimum roll to threaten a critical strike",
+                         type = int)
+parser_edit.add_argument("--critMulti",
+                         dest = "critMulti",
+                         help = "the damage multiplier upon critical strike",
+                         type = int)
+parser_edit.add_argument("--range",
+                         dest = "range",
+                         help = "the range of the attack, in feet",
+                         type = int)
 
 # File path (positional)
 parser.add_argument("file",
@@ -495,6 +520,7 @@ elif subcommand == "add":
                                          damage = args.damage,
                                          critRoll = args.critRoll,
                                          critMulti = args.critMulti,
+                                         notes = args.notes,
                                          range_ = args.range)
         if new_attack.name == args.name and \
            new_attack.attackType == args.attackType and \
@@ -502,7 +528,8 @@ elif subcommand == "add":
            new_attack.damage == args.damage and \
            new_attack.critRoll == args.critRoll and \
            new_attack.critMulti == args.critMulti and \
-           new_attack.range == args.range:
+           new_attack.range == args.range and \
+           new_attac.notes == args.notes:
             dataChanged = True
             print(getCombatString(character))
             print("\n    Attack added\n")
@@ -697,6 +724,46 @@ elif subcommand == "edit":
                 print("\n    Spell updated\n")
             else:
                 print("\n    Something went wrong; spell not updated properly; aborting\n")
+    if target == "attack":
+        updates = {}
+        if args.attackType:
+            updates["attackType"] = args.attackType
+        if args.damageType:
+            updates["damageType"] = args.damageType
+        if args.damage:
+            updates["damage"] = args.damage
+        if args.critRoll:
+            updates["critRoll"] = args.critRoll
+        if args.critMulti:
+            updates["critMulti"] = args.critMulti
+        if args.range:
+            updates["range_"] = args.range
+        if args.notes:
+            updates["notes"] = args.notes
+        updated_attack = character.updateAttack(name = args.name,
+                                                data = updates)
+        # If updateAttack() returned "None," it means that there was no 
+        # matching attack with the name given
+        if updated_attack == None:
+            print("\n    No matching attack with the name given; aborting\n")
+        else:
+        # Seeing if updates were applied successfully, testing all args 
+        # provided
+            success = True
+            for item in updates.keys():
+                # Range is special
+                if item == "range_":
+                    if updates["range_"] != getattr(updated_attack, "range"):
+                        success = False
+                else:
+                    if updates[item] != getattr(updated_attack, item):
+                        success = False
+            if success:
+                dataChanged = True
+                print(getCombatString(character))
+                print("\n    Attack updated\n")
+            else:
+                print("\n    Something went wrong; attack not updated properly; aborting\n")
 
 # Write check
 if dataChanged:
