@@ -375,6 +375,18 @@ parser_edit.add_argument("-k", "--pack",
                          dest = "pack",
                          help = "whether or not target is a pack item",
                          type = t_or_f)
+parser_edit.add_argument("--cast",
+                         dest = "cast",
+                         help = "number of times cast",
+                         type = int)
+parser_edit.add_argument("--prepared",
+                         dest = "prepared",
+                         help = "number of casts prepared",
+                         type = int)
+parser_edit.add_argument("--level",
+                         dest = "level",
+                         help = "level of spell",
+                         type = int)
 
 # File path (positional)
 parser.add_argument("file",
@@ -642,7 +654,7 @@ elif subcommand == "edit":
             updates["notes"] = args.notes
         updated_item = character.updateItem(name = args.name,
                                             data = updates)
-        # If updateFeat() returned "None," it means that there was 
+        # If updateItem() returned "None," it means that there was 
         # no matching item with the name given
         if updated_item == None:
             print("\n    No matching item with the name given; aborting\n")
@@ -659,6 +671,35 @@ elif subcommand == "edit":
                 print("\n    Item updated\n")
             else:
                 print("\n    Something went wrong; item not updated properly; aborting\n")
+    if target == "spell":
+        updates = {}
+        if args.level:
+            updates["level"] = args.level
+        if args.prepared:
+            updates["prepared"] = args.prepared
+        if args.cast:
+            updates["cast"] = args.cast
+        if args.description:
+            updates["description"] = args.description
+        updated_spell = character.updateSpell(name = args.name,
+                                              data = updates)
+        # If updateSpell() returned "None," it means that there was 
+        # no matching spell with the name given
+        if updated_spell == None:
+            print("\n    No matching spell with the name given; aborting\n")
+        else:
+        # Seeing if updates were applied successfully, testing all args 
+        # provided
+            success = True
+            for item in updates.keys():
+                if updates[item] != getattr(updated_spell, item):
+                    success = False
+            if success:
+                dataChanged = True
+                print(getSpellString(character))
+                print("\n    Spell updated\n")
+            else:
+                print("\n    Something went wrong; spell not updated properly; aborting\n")
 
 # Write check
 if dataChanged:

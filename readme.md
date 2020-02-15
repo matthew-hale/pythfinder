@@ -21,7 +21,7 @@ enforcement)
 + ~~Add interactive flag for old behavior~~
     I'm going to get rid of this for now; it might end up being too 
     much effort to implement an interactive prompt with the new 
-    argument structure.
+    argument structure. Will revisit in the future.
 + ~~Basic tracking of, and output for:~~
     + ~~attacks~~
     + ~~feats~~
