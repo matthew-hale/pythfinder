@@ -101,6 +101,45 @@ class Character:
         if "skills" in keys:
             for item in data["skills"]:
                 self.skills.append(CharacterSkill(data = item))
+        # We want to initialize all of the skills if we're creating a 
+        # new character, or one without any skills
+        else:
+            for skill in ["Acrobatics",
+                          "Appraise",
+                          "Bluff",
+                          "Climb",
+                          "Craft",
+                          "Diplomacy",
+                          "Disable Device",
+                          "Disguise",
+                          "Escape Artist",
+                          "Fly",
+                          "Handle Animal",
+                          "Heal",
+                          "Intimidate",
+                          "Knowledge (Arcana)",
+                          "Knowledge (Dungeoneering)",
+                          "Knowledge (Engineering)",
+                          "Knowledge (Geography)",
+                          "Knowledge (History)",
+                          "Knowledge (Local)",
+                          "Knowledge (Nature)",
+                          "Knowledge (Nobility)",
+                          "Knowledge (Planes)",
+                          "Knowledge (Religion)",
+                          "Linguistics",
+                          "Perception",
+                          "Perform",
+                          "Profession",
+                          "Ride",
+                          "Sense Motive",
+                          "Sleight Of Hand",
+                          "Spellcraft",
+                          "Stealth",
+                          "Survival",
+                          "Swim",
+                          "Use Magic Device"]:
+                self.skills.append(CharacterSkill(name = skill))
 
         self.spells = []
         if "spells" in keys:
