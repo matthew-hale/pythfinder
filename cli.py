@@ -539,9 +539,9 @@ elif subcommand == "edit":
         if args.new_name:
             updates["new_name"] = args.new_name
         if args.description:
-            updates["description"] = args.new_name
+            updates["description"] = args.description
         if args.notes:
-            updates["notes"] = args.new_name
+            updates["notes"] = args.notes
         updated_feat = character.updateFeat(name = args.name,
                                             data = updates)
         # If updateFeat() returned "None," it means that there was 
