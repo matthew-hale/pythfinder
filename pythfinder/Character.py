@@ -546,3 +546,55 @@ class Character:
             target_spell.prepared = prepared or target_spell.prepared
             target_spell.cast = cast or target_spell.cast
             return target_spell
+
+    # Update an existing attack based on name; supports either named 
+    # arguments or a dictionary
+    #
+    # returns the updated attack 
+    def updateAttack(self,
+                    name = None,
+                    attackType = None,
+                    damageType = None,
+                    damage = None,
+                    critRoll = None,
+                    critMulti = None,
+                    range_ = None,
+                    notes = None,
+                    data = {}):
+        keys = data.keys()
+        if "name" in keys:
+            name = data["name"]
+        if "attackType" in keys:
+            attackType = data["attackType"]
+        if "damageType" in keys:
+            damageType = data["damageType"]
+        if "damage" in keys:
+            damage = data["damage"]
+        if "critRoll" in keys:
+            critRoll = data["critRoll"]
+        if "critMulti" in keys:
+            critMulti = data["critMulti"]
+        if "range_" in keys:
+            range_ = data["range_"]
+        if "notes" in keys:
+            notes = data["notes"]
+        # Lazy selection; if there are duplicates, this will just pick 
+        # up the first one that shows up
+        for attack in self.attacks:
+            if attack.name == name:
+                target_attack = attack
+                break
+        try:
+            target_attack
+        except NameError:
+            return None
+        else:
+            # Ignore empty parameters
+            target_attack.attackType = attackType or target_attack.attackType
+            target_attack.damageType = damageType or target_attack.damageType
+            target_attack.damage = damage or target_attack.damage
+            target_attack.critRoll = critRoll or target_attack.critRoll
+            target_attack.critMulti = critMulti or target_attack.critMulti
+            target_attack.range = range_ or target_attack.range_
+            target_attack.notes = notes or target_attack.notes
+            return target_attack
