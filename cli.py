@@ -335,22 +335,19 @@ parser_edit.add_argument("target",
                          type = str)
 parser_edit.add_argument("-n", "--name",
                          dest = "name",
-                         default = "",
+                         required = True,
                          help = "name of target; primary key",
                          type = str)
 parser_edit.add_argument("-d", "--description",
                          dest = "description",
-                         default = "",
                          help = "new description of target",
                          type = str)
 parser_edit.add_argument("--new-name",
                          dest = "new_name",
-                         default = "",
                          help = "new name of target",
                          type = str)
 parser_edit.add_argument("-o", "--notes",
                          dest = "notes",
-                         default = "",
                          help = "new notes of target",
                          type = str)
 
