@@ -97,10 +97,10 @@ class Character:
             for item in data["savingThrows"].keys():
                 self.savingThrows[item] = CharacterSavingThrow(data = data["savingThrows"][item])
         
-        self.skills = []
+        self.skills = {}
         if "skills" in keys:
-            for item in data["skills"]:
-                self.skills.append(CharacterSkill(data = item))
+            for item in data["skills"].keys():
+                self.skills[item] = CharacterSkill(data = data["skills"][item])
         # We want to initialize all of the skills if we're creating a 
         # new character, or one without any skills
         else:
@@ -139,7 +139,7 @@ class Character:
                           "Survival",
                           "Swim",
                           "Use Magic Device"]:
-                self.skills.append(CharacterSkill(name = skill))
+                self.skills[skill] = CharacterSkill(name = skill)
 
         self.spells = []
         if "spells" in keys:

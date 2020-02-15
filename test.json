@@ -108,288 +108,323 @@
             "misc": [1]
         }
     },
-    "skills": [
-        {
+    "skills": {
+        "Acrobatics": {
             "name": "Acrobatics",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "dex",
+            "useUntrained": true
         },
-        {
+        "Appraise": {
             "name": "Appraise",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": true
         },
-        {
+        "Bluff": {
             "name": "Bluff",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "cha",
+            "useUntrained": true
         },
-        {
+        "Climb": {
             "name": "Climb",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "str",
+            "useUntrained": true
         },
-        {
+        "Craft": {
             "name": "Craft",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": true
         },
-        {
+        "Diplomacy": {
             "name": "Diplomacy",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "cha",
+            "useUntrained": true
         },
-        {
+        "Disable Device": {
             "name": "Disable Device",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "dex",
+            "useUntrained": false
         },
-        {
+        "Disguise": {
             "name": "Disguise",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "cha",
+            "useUntrained": true
         },
-        {
+        "Escape Artist": {
             "name": "Escape Artist",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "dex",
+            "useUntrained": true
         },
-        {
+        "Fly": {
             "name": "Fly",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "dex",
+            "useUntrained": true
         },
-        {
+        "Handle Animal": {
             "name": "Handle Animal",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "cha",
+            "useUntrained": false
         },
-        {
+        "Heal": {
             "name": "Heal",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "wis",
+            "useUntrained": true
         },
-        {
+        "Intimidate": {
             "name": "Intimidate",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "cha",
+            "useUntrained": true
         },
-        {
+        "Knowledge (Arcana)": {
             "name": "Knowledge (Arcana)",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": false
         },
-        {
+        "Knowledge (Dungeoneering)": {
             "name": "Knowledge (Dungeoneering)",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": false
         },
-        {
+        "Knowledge (Engineering)": {
             "name": "Knowledge (Engineering)",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": false
         },
-        {
+        "Knowledge (Geography)": {
             "name": "Knowledge (Geography)",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": false
         },
-        {
+        "Knowledge (History)": {
             "name": "Knowledge (History)",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": false
         },
-        {
+        "Knowledge (Local)": {
             "name": "Knowledge (Local)",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": false
         },
-        {
+        "Knowledge (Nature)": {
             "name": "Knowledge (Nature)",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": false
         },
-        {
+        "Knowledge (Nobility)": {
             "name": "Knowledge (Nobility)",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": false
         },
-        {
+        "Knowledge (Planes)": {
             "name": "Knowledge (Planes)",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": false
         },
-        {
+        "Knowledge (Religion)": {
             "name": "Knowledge (Religion)",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": false
         },
-        {
+        "Linguistics": {
             "name": "Linguistics",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": false
         },
-        {
+        "Perception": {
             "name": "Perception",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "wis",
+            "useUntrained": false
         },
-        {
+        "Perform": {
             "name": "Perform",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "cha",
+            "useUntrained": true
         },
-        {
+        "Profession": {
             "name": "Profession",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "wis",
+            "useUntrained": false
         },
-        {
+        "Ride": {
             "name": "Ride",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "dex",
+            "useUntrained": true
         },
-        {
+        "Sense Motive": {
             "name": "Sense Motive",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "wis",
+            "useUntrained": true
         },
-        {
+        "Sleight Of Hand": {
             "name": "Sleight Of Hand",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "dex",
+            "useUntrained": false
         },
-        {
+        "Spellcraft": {
             "name": "Spellcraft",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "int",
+            "useUntrained": false
         },
-        {
+        "Stealth": {
             "name": "Stealth",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "dex",
+            "useUntrained": true
         },
-        {
+        "Survival": {
             "name": "Survival",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "wis",
+            "useUntrained": true
         },
-        {
+        "Swim": {
             "name": "Swim",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": true,
-            "misc": []
+            "misc": [],
+            "mod": "str",
+            "useUntrained": true
         },
-        {
+        "Use Magic Device": {
             "name": "Use Magic Device",
             "rank": 0,
             "isClass": false,
             "notes": "",
-            "useUntrained": false,
-            "misc": []
+            "misc": [],
+            "mod": "cha",
+            "useUntrained": false
         }
-    ],
+    },
     "attacks": [
         {
             "weapon": "test weapon",
