@@ -438,6 +438,38 @@ class Character:
             target_trait.notes = notes or target_trait.notes
             return target_trait
 
+    # Update an existing special ability based on name; supports either 
+    # named arguments or a dictionary
+    #
+    # returns the updated special ability
+    def updateSpecial(self,
+                      name = "",
+                      new_name = "",
+                      description = "",
+                      notes = "",
+                      data = {}):
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        new_name = data["new_name"] if "new_name" in keys else new_name
+        description = data["description"] if "description" in keys else description
+        notes = data["notes"] if "notes" in keys else notes
+        # Lazy selection; if there are duplicates, this will just pick 
+        # up the first one that shows up
+        for special in self.special:
+            if special.name == name:
+                target_special = special
+                break
+        try:
+            target_special
+        except NameError:
+            return None
+        else:
+            # Ignore empty parameters
+            target_special.name = new_name or target_special.name
+            target_special.description = description or target_special.description
+            target_special.notes = notes or target_special.notes
+            return target_special
+
     # Update an existing item based on name; supports either named 
     # arguments or a dictionary
     #
