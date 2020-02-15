@@ -47,8 +47,9 @@ enforcement)
     pretty much finished, nearly everything is an object
 + ~~add ability modifiers (for temp increases/damage)~~
 + rework hp:
-    + add wounds, temp hp, temporary max hp increases
-    + essentially make current hp a calculated value
+    + ~~add wounds, temp hp, temporary max hp increases~~
+    + ~~essentially make current hp a calculated value~~
+    I'm not doing either of these, but I am adding nonlethal damage
 + add full armor class components
 + expand on attacks and armor class:
     + display all modifiers
