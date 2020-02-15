@@ -597,6 +597,38 @@ elif subcommand == "edit":
                 print("\n    Trait updated\n")
             else:
                 print("\n    Something went wrong; trait not updated properly; aborting\n")
+    if target == "special":
+        updates = {}
+        if args.new_name:
+            updates["new_name"] = args.new_name
+        if args.description:
+            updates["description"] = args.description
+        if args.notes:
+            updates["notes"] = args.notes
+        updated_special = character.updateSpecial(name = args.name,
+                                              data = updates)
+        # If updateSpecial() returned "None," it means that there was 
+        # no matching special ability with the name given
+        if updated_special == None:
+            print("\n    No matching special ability with the name given; aborting\n")
+        else:
+        # Seeing if updates were applied successfully, testing all args 
+        # provided
+            success = True
+            for item in updates.keys():
+                # New_name is a special case:
+                if item == "new_name":
+                    if updates["new_name"] != getattr(updated_special, "name"):
+                        success = False
+                else:
+                    if updates[item] != getattr(updated_special, item):
+                        success = False
+            if success:
+                dataChanged = True
+                print(getSpecialString(character))
+                print("\n    Special ability updated\n")
+            else:
+                print("\n    Something went wrong; special ability not updated properly; aborting\n")
     if target == "item":
         updates = {}
         if args.weight:
