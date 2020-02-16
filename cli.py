@@ -128,7 +128,7 @@ def getAbilityString(c):
             base_score_value,
             base_mod_string,
             temp_score_value,
-            temp_mod_value
+            temp_mod_string
         )
     outstring += "\n"
     return outstring
