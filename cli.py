@@ -617,7 +617,7 @@ elif subcommand == "edit":
                 print("\n    Feat updated\n")
             else:
                 print("\n    Something went wrong; feat not updated properly; aborting\n")
-    if target == "trait":
+    elif target == "trait":
         updates = {}
         if args.new_name:
             updates["new_name"] = args.new_name
@@ -649,7 +649,7 @@ elif subcommand == "edit":
                 print("\n    Trait updated\n")
             else:
                 print("\n    Something went wrong; trait not updated properly; aborting\n")
-    if target == "special":
+    elif target == "special":
         updates = {}
         if args.new_name:
             updates["new_name"] = args.new_name
@@ -681,7 +681,7 @@ elif subcommand == "edit":
                 print("\n    Special ability updated\n")
             else:
                 print("\n    Something went wrong; special ability not updated properly; aborting\n")
-    if target == "item":
+    elif target == "item":
         updates = {}
         if args.weight:
             updates["weight"] = args.weight
@@ -711,7 +711,7 @@ elif subcommand == "edit":
                 print("\n    Item updated\n")
             else:
                 print("\n    Something went wrong; item not updated properly; aborting\n")
-    if target == "spell":
+    elif target == "spell":
         updates = {}
         if args.level:
             updates["level"] = args.level
@@ -740,7 +740,7 @@ elif subcommand == "edit":
                 print("\n    Spell updated\n")
             else:
                 print("\n    Something went wrong; spell not updated properly; aborting\n")
-    if target == "attack":
+    elif target == "attack":
         updates = {}
         if args.attackType:
             updates["attackType"] = args.attackType
@@ -780,7 +780,7 @@ elif subcommand == "edit":
                 print("\n    Attack updated\n")
             else:
                 print("\n    Something went wrong; attack not updated properly; aborting\n")
-    if target == "skill":
+    elif target == "skill":
         updates = {}
         if args.rank:
             updates["rank"] = args.rank
@@ -808,7 +808,7 @@ elif subcommand == "edit":
                 print("\n    Skill updated\n")
             else:
                 print("\n    Something went wrong; skill not updated properly; aborting\n")
-    if target == "ability":
+    elif target == "ability":
         updates = {}
         if args.base:
             updates["base"] = args.base
