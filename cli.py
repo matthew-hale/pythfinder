@@ -369,6 +369,7 @@ parser_edit.add_argument("-w", "--weight",
                          type = float)
 parser_edit.add_argument("-c", "--count",
                          dest = "count",
+                         default = None,
                          help = "new count of target",
                          type = int)
 parser_edit.add_argument("-k", "--pack",
@@ -684,7 +685,7 @@ elif subcommand == "edit":
         updates = {}
         if args.weight:
             updates["weight"] = args.weight
-        if args.count:
+        if args.count != None:
             updates["count"] = args.count
         # Special
         if args.pack != None:

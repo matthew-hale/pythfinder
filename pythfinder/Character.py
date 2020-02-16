@@ -515,8 +515,8 @@ class Character:
     # returns the updated item 
     def updateItem(self,
                    name = "",
-                   weight = 0,
-                   count = 0,
+                   weight = None,
+                   count = None,
                    pack = None,
                    notes = "",
                    data = {}):
@@ -538,8 +538,11 @@ class Character:
             return None
         else:
             # Ignore empty parameters
-            target_item.weight = weight or target_item.weight
-            target_item.count = count or target_item.count
+            # Handle zero ints
+            if weight != None:
+                target_item.weight = weight
+            if count != None:
+                target_item.count = count
             target_item.notes = notes or target_item.notes
             # Pack is special
             if pack != None:
