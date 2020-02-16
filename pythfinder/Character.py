@@ -670,3 +670,26 @@ class Character:
             target_skill.isClass = isClass or target_skill.isClass
             target_skill.notes = notes or target_skill.notes
             return target_skill
+
+    # Update an existing skill based on name; supports either named 
+    # arguments or a dictionary
+    #
+    # returns the updated ability dict
+    def updateAbility(self,
+                      name = None,
+                      base = None,
+                      data = {}):
+        keys = data.keys()
+        if "name" in keys:
+            name = data["name"]
+        if "base" in keys:
+            base = data["base"]
+        # Abilities are all fixed, so selection is easy
+        allowed_values = self.abilities.__dict__.keys()
+        if not name in allowed_values:
+            raise ValueError("Character().updateAbility: name must be one of " + allowed_values)
+        else:
+            target_ability = getattr(self.abilities, name)
+        # Ignore empty parameters
+        target_ability["base"] = base or target_ability["base"]
+        return target_ability
