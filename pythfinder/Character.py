@@ -637,3 +637,36 @@ class Character:
             target_attack.range = range_ or target_attack.range_
             target_attack.notes = notes or target_attack.notes
             return target_attack
+
+    # Update an existing skill based on name; supports either named 
+    # arguments or a dictionary
+    #
+    # returns the updated skill 
+    def updateSkill(self,
+                    name = None,
+                    rank = None,
+                    isClass = None,
+                    notes = None,
+                    data = {}):
+        keys = data.keys()
+        if "name" in keys:
+            name = data["name"]
+        if "rank" in keys:
+            rank = data["rank"]
+        if "isClass" in keys:
+            isClass = data["isClass"]
+        if "notes" in keys:
+            notes = data["notes"]
+        # Skill selection is selecting a dict key; if it doesn't error 
+        # out, we're probably fine, but we'll check it just in case
+        target_skill = self.skills[name]
+        try:
+            target_skill
+        except NameError:
+            return None
+        else:
+            # Ignore empty parameters
+            target_skill.rank = rank or target_skill.rank
+            target_skill.isClass = isClass or target_skill.isClass
+            target_skill.notes = notes or target_skill.notes
+            return target_skill
