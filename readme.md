@@ -28,8 +28,15 @@ enforcement)
     + ~~traits~~
     + ~~spells~~
 + Functionality to edit/update values of:
-    + ability scores
-    + skill ranks/class status/notes
+    + ~~ability scores~~
+        Same as below; I need to create functions specifically for 
+        adding/removing ability/skill modifiers, possibly by name. This 
+        would necessitate reworking the structure of both, or maybe 
+        adding a class for temporary/permanent effects, I'm not sure.
+    + ~~skill ranks/class status/notes~~
+        This still needs a custom function to add/remove/change any of 
+        the "misc" modifiers on skills, but otherwise it's implemented 
+        fully
     + ~~items~~
     + ~~attacks~~
     + ~~feats~~
