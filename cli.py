@@ -56,10 +56,14 @@ def getTraitString(c):
 def getSkillString(c):
     outstring = "\n    Skills:\n"
     for skill in c.skills.keys():
-        if c.skills[skill].useUntrained == False:
-            outstring += "\n   *"
+        if c.skills[skill].isClass:
+            outstring += "\nc"
         else:
-            outstring += "\n    "
+            outstring += "\n "
+        if c.skills[skill].useUntrained == False:
+            outstring += "  *"
+        else:
+            outstring += "   "
         total = c.skills[skill].get_total_value(c)
         outstring += "{}: {}".format(skill, total)
         if c.skills[skill].rank == 0:
@@ -371,6 +375,14 @@ parser_edit.add_argument("-k", "--pack",
                          dest = "pack",
                          help = "whether or not target is a pack item",
                          type = t_or_f)
+parser_edit.add_argument("--isClass",
+                         dest = "isClass",
+                         help = "whether or not skill is treated as a class skill",
+                         type = t_or_f)
+parser_edit.add_argument("--rank",
+                         dest = "rank",
+                         help = "number of skill ranks",
+                         type = int)
 parser_edit.add_argument("--cast",
                          dest = "cast",
                          help = "number of times cast",
@@ -763,6 +775,34 @@ elif subcommand == "edit":
                 print("\n    Attack updated\n")
             else:
                 print("\n    Something went wrong; attack not updated properly; aborting\n")
+    if target == "skill":
+        updates = {}
+        if args.rank:
+            updates["rank"] = args.rank
+        # Special boolean handling
+        if args.isClass != None:
+            updates["isClass"] = args.isClass
+        if args.notes:
+            updates["notes"] = args.notes
+        updated_skill = character.updateSkill(name = args.name,
+                                              data = updates)
+        # If updateSkill() returned "None," it means that there was no 
+        # matching skill with the name given
+        if updated_skill == None:
+            print("\n    No matching skill with the name given; aborting\n")
+        else:
+        # Seeing if updates were applied successfully, testing all args 
+        # provided
+            success = True
+            for item in updates.keys():
+                if updates[item] != getattr(updated_skill, item):
+                    success = False
+            if success:
+                dataChanged = True
+                print(getSkillString(character))
+                print("\n    Skill updated\n")
+            else:
+                print("\n    Something went wrong; skill not updated properly; aborting\n")
 
 # Write check
 if dataChanged:
