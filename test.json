@@ -427,7 +427,7 @@
     },
     "attacks": [
         {
-            "weapon": "test weapon",
+            "name": "test weapon",
             "attackType": "test attack type",
             "damageType": "test damage type",
             "damage": "test weapon damage",
