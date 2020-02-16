@@ -443,6 +443,7 @@
             "acBonus": 0,
             "acPenalty": 0,
             "maxDexBonus": 0,
+            "arcaneFailureChance": 0,
             "type": ""
         }
     ],
