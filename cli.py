@@ -420,6 +420,10 @@ parser_edit.add_argument("--range",
                          dest = "range",
                          help = "the range of the attack, in feet",
                          type = int)
+parser_edit.add_argument("--base",
+                         dest = "base",
+                         help = "the base value of the ability",
+                         type = int)
 
 # File path (positional)
 parser.add_argument("file",
@@ -803,6 +807,24 @@ elif subcommand == "edit":
                 print("\n    Skill updated\n")
             else:
                 print("\n    Something went wrong; skill not updated properly; aborting\n")
+    if target == "ability":
+        updates = {}
+        if args.base:
+            updates["base"] = args.base
+        updated_ability = character.updateAbility(name = args.name,
+                                                  data = updates)
+        # Seeing if updates were applied successfully, testing all args 
+        # provided
+        success = True
+        for item in updates.keys():
+            if updates[item] != updated_ability[item]:
+                success = False
+        if success:
+            dataChanged = True
+            print(getAbilityString(character))
+            print("\n    Ability updated\n")
+        else:
+            print("\n    Something went wrong; ability not updated properly; aborting\n")
 
 # Write check
 if dataChanged:
