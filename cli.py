@@ -545,7 +545,7 @@ elif subcommand == "add":
            new_attack.critRoll == args.critRoll and \
            new_attack.critMulti == args.critMulti and \
            new_attack.range == args.range and \
-           new_attac.notes == args.notes:
+           new_attack.notes == args.notes:
             dataChanged = True
             print(getCombatString(character))
             print("\n    Attack added\n")
