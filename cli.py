@@ -426,6 +426,9 @@ parser_edit.add_argument("--base",
                          help = "the base value of the ability",
                          type = int)
 
+# New: create new character sheet
+parser_new = subparsers.add_parser("new",
+                                   help = "create new blank character sheet")
 # File path (positional)
 parser.add_argument("file",
                     metavar = "filepath",
@@ -434,16 +437,26 @@ parser.add_argument("file",
 
 args = parser.parse_args()
 
-try:
-    with open(args.file) as f:
-        character = pf.Character(json.load(f))
-except FileNotFoundError:
-    print("File not found.")
-    sys.exit()
-
 # Main execution
 subcommand = args.subcommand_name
-target = args.target
+try:
+    target = args.target
+except AttributeError:
+    target = None
+
+if subcommand == "new":
+    character = pf.Character()
+    pf.writeCharacter(character, args.file)
+    print("    Blank character sheet saved to " + args.file + "\n")
+    sys.exit()
+else:
+    try:
+        with open(args.file) as f:
+            character = pf.Character(json.load(f))
+    except FileNotFoundError:
+        print("File not found.")
+        sys.exit()
+
 if subcommand == "list":
     if target == "character":
         c = character.getCharacterShort()
