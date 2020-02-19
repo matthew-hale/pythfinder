@@ -29,14 +29,18 @@ enforcement)
     + ~~spells~~
 + Functionality to edit/update values of:
     + ~~ability scores~~
+
         Same as below; I need to create functions specifically for 
         adding/removing ability/skill modifiers, possibly by name. This 
         would necessitate reworking the structure of both, or maybe 
         adding a class for temporary/permanent effects, I'm not sure.
+
     + ~~skill ranks/class status/notes~~
+
         This still needs a custom function to add/remove/change any of 
         the "misc" modifiers on skills, but otherwise it's implemented 
         fully
+
     + ~~items~~
     + ~~attacks~~
     + ~~feats~~
@@ -56,7 +60,9 @@ enforcement)
 + rework hp:
     + ~~add wounds, temp hp, temporary max hp increases~~
     + ~~essentially make current hp a calculated value~~
+
     I'm not doing either of these, but I am adding nonlethal damage
+
 + add full armor class components
 + expand on attacks and armor class:
     + display all modifiers
@@ -69,10 +75,12 @@ enforcement)
     weapon attacks
     + show damage, cast time, duration (if applicable)
 + Refactor classes into single Character class
+
     Thinking about it more, it doesn't make sense for all of these 
     character properties to be their own classes; their constructors 
     and methods could just be Character() methods. It would greatly 
     simplify a lot of the structure of this package.
+
 + Eventually:
     + Decoupling of input and data processing, converting outputs to 
     json format
