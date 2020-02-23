@@ -300,6 +300,25 @@ class Character:
     def getJson(self):
         return json.dumps(self, default = lambda o: getattr(o, '__dict__', str(o)))
 
+    # Returns the total value of the specified skill, taking into 
+    # account all of the current modifiers, including:
+    #
+    # + Skill ranks
+    # + Class skill status
+    # + Misc. skill modifiers
+    # + Skill's current ability modifier
+    def get_skill_value(self, skill):
+        total = 0
+        if not skill in _allowed_skill_names:
+            raise ValueError("Character.skills: name must be one of: " + _allowed_skill_names)
+        current_skill = self.skills[skill]
+        if current_skill["isClass"] and current_skill["rank"] >= 1:
+            total += 3
+        total += current_skill["rank"]
+        total += sum(current_skill["misc"])
+        total += self.getAbilityMod(self.abilities.get_total_value(current_skill["mod"]))
+        return total
+
     # Add a new feat to the character; supports either named arguments 
     # or a dictionary
     #
