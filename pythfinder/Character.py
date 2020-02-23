@@ -7,7 +7,6 @@ from pythfinder.CharacterClass import CharacterClass
 from pythfinder.CharacterEquipment import CharacterEquipment
 from pythfinder.CharacterHP import CharacterHP
 from pythfinder.CharacterSavingThrow import CharacterSavingThrow
-from pythfinder.CharacterSkill import CharacterSkill
 from pythfinder.CharacterSpeed import CharacterSpeed
 from pythfinder.CharacterSpell import CharacterSpell
 
