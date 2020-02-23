@@ -158,49 +158,44 @@ class Character:
             for item in data["savingThrows"].keys():
                 self.savingThrows[item] = CharacterSavingThrow(data = data["savingThrows"][item])
         
+        # Skill initialization
+        #
         self.skills = {}
-        if "skills" in keys:
-            for item in data["skills"].keys():
-                self.skills[item] = CharacterSkill(data = data["skills"][item])
-        # We want to initialize all of the skills if we're creating a 
-        # new character, or one without any skills
-        else:
-            for skill in ["Acrobatics",
-                          "Appraise",
-                          "Bluff",
-                          "Climb",
-                          "Craft",
-                          "Diplomacy",
-                          "Disable Device",
-                          "Disguise",
-                          "Escape Artist",
-                          "Fly",
-                          "Handle Animal",
-                          "Heal",
-                          "Intimidate",
-                          "Knowledge (Arcana)",
-                          "Knowledge (Dungeoneering)",
-                          "Knowledge (Engineering)",
-                          "Knowledge (Geography)",
-                          "Knowledge (History)",
-                          "Knowledge (Local)",
-                          "Knowledge (Nature)",
-                          "Knowledge (Nobility)",
-                          "Knowledge (Planes)",
-                          "Knowledge (Religion)",
-                          "Linguistics",
-                          "Perception",
-                          "Perform",
-                          "Profession",
-                          "Ride",
-                          "Sense Motive",
-                          "Sleight Of Hand",
-                          "Spellcraft",
-                          "Stealth",
-                          "Survival",
-                          "Swim",
-                          "Use Magic Device"]:
-                self.skills[skill] = CharacterSkill(name = skill)
+        #
+        # This is pretty simple. For each allowed skill name, we'll 
+        # check the data to see if it has it. If it does, we'll 
+        # validate the data's structure as we assign values to our 
+        # skill. If any of the data doesn't match what we need, we'll 
+        # just use a default value. This way, malformed data doesn't 
+        # impact the Character object initialization, and we end up 
+        # with a consistent structure every time.
+        #
+        # First, we get all of the keys from the data:
+        #
+        data_skill_keys = data["skills"].keys() if "skills" in keys else []
+        #
+        # Note that if the data doesn't have any skills at all, our 
+        # data_skill_keys will be empty, resulting in default values 
+        # for everything.
+        #
+        # Now we can begin iterating through all of the allowed skills:
+        for skill_name in _allowed_skill_names:
+            # Here we do the same as above: if the skill name is in 
+            # data["skills"].keys(), we'll get that skill's keys; 
+            # otherwise, we'll just leave it blank.
+            data_skill_entry_keys = data["skills"][skill_name].keys() if skill_name in data_skill_keys else []
+            # Now we can create the actual skill entry, falling back to 
+            # default values if any of the above dictionary keys were 
+            # missing.
+            self.skills[skill_name] = {
+                "name": skill_name,
+                "rank": data["skills"][skill_name]["rank"] if "rank" in data_skill_entry_keys else 0,
+                "isClass": data["skills"][skill_name]["isClass"] if "isClass" in data_skill_entry_keys else 0,
+                "notes": data["skills"][skill_name]["notes"] if "notes" in data_skill_entry_keys else 0,
+                "misc": data["skills"][skill_name]["misc"] if "misc" in data_skill_entry_keys else 0,
+                "mod": _skill_mods[skill_name],
+                "useUntrained": False if skill_name in _trained_only else True
+            }
 
         self.spells = []
         if "spells" in keys:
