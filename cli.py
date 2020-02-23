@@ -56,17 +56,17 @@ def getTraitString(c):
 def getSkillString(c):
     outstring = "\n    Skills:\n"
     for skill in c.skills.keys():
-        if c.skills[skill].isClass:
+        if c.skills[skill]["isClass"]:
             outstring += "\nc"
         else:
             outstring += "\n "
-        if c.skills[skill].useUntrained == False:
+        if c.skills[skill]["useUntrained"] == False:
             outstring += "  *"
         else:
             outstring += "   "
-        total = c.skills[skill].get_total_value(c)
+        total = c.get_skill_value(skill)
         outstring += "{}: {}".format(skill, total)
-        if c.skills[skill].rank == 0:
+        if c.skills[skill]["rank"] == 0:
             outstring += " - (untrained)"
     outstring += "\n"
     return outstring
@@ -813,7 +813,7 @@ elif subcommand == "edit":
         # provided
             success = True
             for item in updates.keys():
-                if updates[item] != getattr(updated_skill, item):
+                if updates[item] != updated_skill[item]:
                     success = False
             if success:
                 dataChanged = True
