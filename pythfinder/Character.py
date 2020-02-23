@@ -744,9 +744,9 @@ class Character:
             return None
         else:
             # Ignore empty parameters
-            target_skill.rank = rank or target_skill.rank
-            target_skill.isClass = isClass or target_skill.isClass
-            target_skill.notes = notes or target_skill.notes
+            target_skill["rank"] = rank or target_skill["rank"]
+            target_skill["isClass"] = isClass or target_skill["isClass"]
+            target_skill["notes"] = notes or target_skill["notes"]
             return target_skill
 
     # Update an existing skill based on name; supports either named 
