@@ -11,14 +11,75 @@ from pythfinder.CharacterSkill import CharacterSkill
 from pythfinder.CharacterSpeed import CharacterSpeed
 from pythfinder.CharacterSpell import CharacterSpell
 
+# These vars are used for skill initialization
+_allowed_skill_names = (
+    "Acrobatics", "Appraise", "Bluff",
+    "Climb", "Craft", "Diplomacy",
+    "Disable Device", "Disguise", "Escape Artist",
+    "Fly", "Handle Animal", "Heal",
+    "Intimidate", "Knowledge (Arcana)", "Knowledge (Dungeoneering)",
+    "Knowledge (Engineering)", "Knowledge (Geography)", "Knowledge (History)",
+    "Knowledge (Local)", "Knowledge (Nature)", "Knowledge (Nobility)",
+    "Knowledge (Planes)", "Knowledge (Religion)", "Linguistics",
+    "Perception", "Perform", "Profession",
+    "Ride", "Sense Motive", "Sleight Of Hand",
+    "Spellcraft", "Stealth", "Survival",
+    "Swim", "Use Magic Device"
+)
+_trained_only = (
+    "Disable Device", "Handle Animal", "Knowledge (Arcana)",
+    "Knowledge (Dungeoneering)", "Knowledge (Engineering)", "Knowledge (Geography)",
+    "Knowledge (History)", "Knowledge (Local)", "Knowledge (Nature)",
+    "Knowledge (Nobility)", "Knowledge (Planes)", "Knowledge (Religion)",
+    "Linguistics", "Perception", "Profession",
+    "Sleight Of Hand", "Spellcraft", "Use Magic Device"
+)
+_skill_mods = {
+    "Climb": "str",
+    "Swim": "str",
+    "Acrobatics": "dex",
+    "Disable Device": "dex",
+    "Escape Artist": "dex",
+    "Fly": "dex",
+    "Ride": "dex",
+    "Sleight Of Hand": "dex",
+    "Stealth": "dex",
+    "Appraise": "int",
+    "Craft": "int",
+    "Knowledge (Arcana)": "int",
+    "Knowledge (Dungeoneering)": "int",
+    "Knowledge (Engineering)": "int",
+    "Knowledge (Geography)": "int",
+    "Knowledge (History)": "int",
+    "Knowledge (Local)": "int",
+    "Knowledge (Nature)": "int",
+    "Knowledge (Nobility)": "int",
+    "Knowledge (Planes)": "int",
+    "Knowledge (Religion)": "int",
+    "Linguistics": "int",
+    "Spellcraft": "int",
+    "Heal": "wis",
+    "Perception": "wis",
+    "Profession": "wis",
+    "Sense Motive": "wis",
+    "Survival": "wis",
+    "Bluff": "cha",
+    "Diplomacy": "cha",
+    "Disguise": "cha",
+    "Handle Animal": "cha",
+    "Intimidate": "cha",
+    "Perform": "cha",
+    "Use Magic Device": "cha"
+}
+
 # Main character class
 class Character:
     def __init__(self, data = {}):
         # Grab keys from imported json data
         keys = data.keys()
 
-        # These are the simple values (those of a type like string, int, etc.). 
-        # More complex values will get their own objects initialized.
+        # These are the simple values (those of a type like string, 
+        # int, etc.). More complex values will use more complex dicts
         self.name = data["name"] if "name" in keys else ""
         self.race = data["race"] if "race" in keys else ""
         self.deity = data["deity"] if "deity" in keys else ""
