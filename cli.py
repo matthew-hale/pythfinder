@@ -42,14 +42,14 @@ def getEquipmentString(c):
 def getFeatString(c):
     outstring = "\n    Feats:\n\n    "
     for feat in c.feats:
-        outstring += "{}:\n        {}\n        {}\n\n    ".format(feat.name,feat.description,feat.notes)
+        outstring += "{}:\n        {}\n        {}\n\n    ".format(feat["name"],feat["description"],feat["notes"])
     return outstring
 
 # Formatted string of traits
 def getTraitString(c):
     outstring = "\n    Traits:\n\n    "
     for trait in c.traits:
-        outstring +=  "{}:\n        {}\n        {}\n\n    ".format(trait.name,trait.description,trait.notes)
+        outstring +=  "{}:\n        {}\n        {}\n\n    ".format(trait["name"],trait["description"],trait["notes"])
     return outstring
 
 # Formatted string of skills
@@ -153,7 +153,7 @@ def getSpellString(c):
 def getSpecialString(c):
     outstring = "\n    Special:\n\n"
     for item in c.special:
-        outstring += "    {}:\n    {}\n    {}\n\n".format(item.name,item.description,item.notes)
+        outstring += "    {}:\n    {}\n    {}\n\n".format(item["name"],item["description"],item["notes"])
     return outstring
 
 # Formatted string of saving throws
