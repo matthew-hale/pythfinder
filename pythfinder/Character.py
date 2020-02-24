@@ -131,21 +131,40 @@ class Character:
         else:
             self.hp = CharacterHP()
 
+        # Special ability initialization
+        #
         self.special = []
+        #
+        # If the character has no special abilities, we'll just skip it 
+        # and leave it as an empty list. Otherwise, we'll want to add 
+        # abilities using a constructor method.
         if "special" in keys:
             for item in data["special"]:
-                self.special.append(CharacterBasicItem(data = item))
+                # add_special returns the special ability dict, and we 
+                # don't want it, so we're throwing it out
+                _ = self.add_special(data = item)
 
+        # Trait initialization
+        #
         self.traits = []
+        #
+        # As above.
         if "traits" in keys:
             for item in data["traits"]:
-                self.traits.append(CharacterBasicItem(data = item))
+                # add_trait returns the trait dict, and we don't want 
+                # it, so we're throwing it out
+                _ = self.add_trait(data = item)
 
+        # Feat initialization
+        #
         self.feats = []
+        #
+        # As above.
         if "feats" in keys:
             for item in data["feats"]:
-                self.feats.append(CharacterBasicItem(data = item))
-
+                # add_feat returns the feat dict, and we don't want 
+                # it, so we're throwing it out
+                _ = self.add_feat(data = item)
 
         self.equipment = []
         if "equipment" in keys:
@@ -322,37 +341,41 @@ class Character:
     # or a dictionary
     #
     # returns the newly created feat
-    def addFeat(self,
-                name = "",
-                description = "",
-                notes = "",
-                data = {}):
+    def add_feat(self,
+                 name = "",
+                 description = "",
+                 notes = "",
+                 data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
-        new_feat = CharacterBasicItem(name = new_name,
-                                      description = new_description,
-                                      notes = new_notes)
+        new_feat = {
+            "name": new_name,
+            "description": new_description,
+            "notes": new_notes,
+        }
         self.feats.append(new_feat)
         return new_feat
 
-    # Add a new feat to the character; supports either named arguments 
+    # Add a new trait to the character; supports either named arguments 
     # or a dictionary
     #
     # returns the newly created trait
-    def addTrait(self,
-                name = "",
-                description = "",
-                notes = "",
-                data = {}):
+    def add_trait(self,
+                  name = "",
+                  description = "",
+                  notes = "",
+                  data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
-        new_trait = CharacterBasicItem(name = new_name,
-                                      description = new_description,
-                                      notes = new_notes)
+        new_trait = {
+            "name": new_name,
+            "description": new_description,
+            "notes": new_notes,
+        }
         self.traits.append(new_trait)
         return new_trait
 
@@ -360,18 +383,20 @@ class Character:
     # arguments or a dictionary
     #
     # returns the newly created special ability
-    def addSpecial(self,
-                name = "",
-                description = "",
-                notes = "",
-                data = {}):
+    def add_special(self,
+                    name = "",
+                    description = "",
+                    notes = "",
+                    data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
-        new_special = CharacterBasicItem(name = new_name,
-                                      description = new_description,
-                                      notes = new_notes)
+        new_special = {
+            "name": new_name,
+            "description": new_description,
+            "notes": new_notes,
+        }
         self.special.append(new_special)
         return new_special
 
