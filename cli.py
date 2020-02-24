@@ -606,7 +606,7 @@ elif subcommand == "edit":
             updates["description"] = args.description
         if args.notes:
             updates["notes"] = args.notes
-        updated_feat = character.updateFeat(name = args.name,
+        updated_feat = character.update_feat(name = args.name,
                                             data = updates)
         # If updateFeat() returned "None," it means that there was 
         # no matching feat with the name given
@@ -619,10 +619,10 @@ elif subcommand == "edit":
             for item in updates.keys():
                 # New_name is a special case:
                 if item == "new_name":
-                    if updates["new_name"] != getattr(updated_feat, "name"):
+                    if updates["new_name"] != updated_feat["name"]:
                         success = False
                 else:
-                    if updates[item] != getattr(updated_feat, item):
+                    if updates[item] != updated_feat[item]:
                         success = False
             if success:
                 dataChanged = True
@@ -638,7 +638,7 @@ elif subcommand == "edit":
             updates["description"] = args.description
         if args.notes:
             updates["notes"] = args.notes
-        updated_trait = character.updateTrait(name = args.name,
+        updated_trait = character.update_trait(name = args.name,
                                               data = updates)
         # If updateTrait() returned "None," it means that there was no 
         # matching trait with the name given
@@ -651,10 +651,10 @@ elif subcommand == "edit":
             for item in updates.keys():
                 # New_name is a special case:
                 if item == "new_name":
-                    if updates["new_name"] != getattr(updated_trait, "name"):
+                    if updates["new_name"] != updated_trait["name"]:
                         success = False
                 else:
-                    if updates[item] != getattr(updated_trait, item):
+                    if updates[item] != updated_trait[item]:
                         success = False
             if success:
                 dataChanged = True
@@ -670,7 +670,7 @@ elif subcommand == "edit":
             updates["description"] = args.description
         if args.notes:
             updates["notes"] = args.notes
-        updated_special = character.updateSpecial(name = args.name,
+        updated_special = character.update_special(name = args.name,
                                               data = updates)
         # If updateSpecial() returned "None," it means that there was 
         # no matching special ability with the name given
@@ -683,10 +683,10 @@ elif subcommand == "edit":
             for item in updates.keys():
                 # New_name is a special case:
                 if item == "new_name":
-                    if updates["new_name"] != getattr(updated_special, "name"):
+                    if updates["new_name"] != updated_special["name"]:
                         success = False
                 else:
-                    if updates[item] != getattr(updated_special, item):
+                    if updates[item] != updated_special[item]:
                         success = False
             if success:
                 dataChanged = True
