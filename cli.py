@@ -491,36 +491,36 @@ if subcommand == "list":
         print(getSpecialString(character))
 elif subcommand == "add":
     if target == "feat":
-        new_feat = character.addFeat(name = args.name,
-                                     description = args.description,
-                                     notes = args.notes)
-        if new_feat.name == args.name and \
-           new_feat.description == args.description and \
-           new_feat.notes == args.notes:
+        new_feat = character.add_feat(name = args.name,
+                                      description = args.description,
+                                      notes = args.notes)
+        if new_feat["name"] == args.name and \
+           new_feat["description"] == args.description and \
+           new_feat["notes"] == args.notes:
             dataChanged = True
             print(getFeatString(character))
             print("\n    Feat added\n")
         else:
             print("\n    Something went wrong; new feat not added properly; aborting\n")
     elif target == "trait":
-        new_trait = character.addTrait(name = args.name,
-                                     description = args.description,
-                                     notes = args.notes)
-        if new_trait.name == args.name and \
-           new_trait.description == args.description and \
-           new_trait.notes == args.notes:
+        new_trait = character.add_trait(name = args.name,
+                                        description = args.description,
+                                        notes = args.notes)
+        if new_trait["name"] == args.name and \
+           new_trait["description"] == args.description and \
+           new_trait["notes"] == args.notes:
             dataChanged = True
             print(getTraitString(character))
             print("\n    Trait added\n")
         else:
             print("\n    Something went wrong; new trait not added properly; aborting\n")
     elif target == "special":
-        new_special = character.addSpecial(name = args.name,
-                                     description = args.description,
-                                     notes = args.notes)
-        if new_special.name == args.name and \
-           new_special.description == args.description and \
-           new_special.notes == args.notes:
+        new_special = character.add_special(name = args.name,
+                                            description = args.description,
+                                            notes = args.notes)
+        if new_special["name"] == args.name and \
+           new_special["description"] == args.description and \
+           new_special["notes"] == args.notes:
             dataChanged = True
             print(getSpecialString(character))
             print("\n    Special added\n")
