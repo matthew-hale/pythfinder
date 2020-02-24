@@ -516,39 +516,7 @@ class Character:
     # arguments or a dictionary
     #
     # returns the updated feat
-    def updateFeat(self,
-                   name = "",
-                   new_name = "",
-                   description = "",
-                   notes = "",
-                   data = {}):
-        keys = data.keys()
-        name = data["name"] if "name" in keys else name
-        new_name = data["new_name"] if "new_name" in keys else new_name
-        description = data["description"] if "description" in keys else description
-        notes = data["notes"] if "notes" in keys else notes
-        # Lazy selection; if there are duplicates, this will just pick 
-        # up the first one that shows up
-        for feat in self.feats:
-            if feat.name == name:
-                target_feat = feat
-                break
-        try:
-            target_feat
-        except NameError:
-            return None
-        else:
-            # Ignore empty parameters
-            target_feat.name = new_name or target_feat.name
-            target_feat.description = description or target_feat.description
-            target_feat.notes = notes or target_feat.notes
-            return target_feat
-
-    # Update an existing trait based on name; supports either named 
-    # arguments or a dictionary
-    #
-    # returns the updated trait
-    def updateTrait(self,
+    def update_feat(self,
                     name = "",
                     new_name = "",
                     description = "",
@@ -561,8 +529,40 @@ class Character:
         notes = data["notes"] if "notes" in keys else notes
         # Lazy selection; if there are duplicates, this will just pick 
         # up the first one that shows up
+        for feat in self.feats:
+            if feat["name"] == name:
+                target_feat = feat
+                break
+        try:
+            target_feat
+        except NameError:
+            return None
+        else:
+            # Ignore empty parameters
+            target_feat["name"] = new_name or target_feat["name"]
+            target_feat["description"] = description or target_feat["description"]
+            target_feat["notes"] = notes or target_feat["notes"]
+            return target_feat
+
+    # Update an existing trait based on name; supports either named 
+    # arguments or a dictionary
+    #
+    # returns the updated trait
+    def update_trait(self,
+                     name = "",
+                     new_name = "",
+                     description = "",
+                     notes = "",
+                     data = {}):
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        new_name = data["new_name"] if "new_name" in keys else new_name
+        description = data["description"] if "description" in keys else description
+        notes = data["notes"] if "notes" in keys else notes
+        # Lazy selection; if there are duplicates, this will just pick 
+        # up the first one that shows up
         for trait in self.traits:
-            if trait.name == name:
+            if trait["name"] == name:
                 target_trait = trait
                 break
         try:
@@ -571,21 +571,21 @@ class Character:
             return None
         else:
             # Ignore empty parameters
-            target_trait.name = new_name or target_trait.name
-            target_trait.description = description or target_trait.description
-            target_trait.notes = notes or target_trait.notes
+            target_trait["name"] = new_name or target_trait["name"]
+            target_trait["description"] = description or target_trait["description"]
+            target_trait["notes"] = notes or target_trait["notes"]
             return target_trait
 
     # Update an existing special ability based on name; supports either 
     # named arguments or a dictionary
     #
     # returns the updated special ability
-    def updateSpecial(self,
-                      name = "",
-                      new_name = "",
-                      description = "",
-                      notes = "",
-                      data = {}):
+    def update_special(self,
+                       name = "",
+                       new_name = "",
+                       description = "",
+                       notes = "",
+                       data = {}):
         keys = data.keys()
         name = data["name"] if "name" in keys else name
         new_name = data["new_name"] if "new_name" in keys else new_name
@@ -594,7 +594,7 @@ class Character:
         # Lazy selection; if there are duplicates, this will just pick 
         # up the first one that shows up
         for special in self.special:
-            if special.name == name:
+            if special["name"] == name:
                 target_special = special
                 break
         try:
@@ -603,9 +603,9 @@ class Character:
             return None
         else:
             # Ignore empty parameters
-            target_special.name = new_name or target_special.name
-            target_special.description = description or target_special.description
-            target_special.notes = notes or target_special.notes
+            target_special["name"] = new_name or target_special["name"]
+            target_special["description"] = description or target_special["description"]
+            target_special["notes"] = notes or target_special["notes"]
             return target_special
 
     # Update an existing item based on name; supports either named 
