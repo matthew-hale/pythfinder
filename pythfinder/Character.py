@@ -2,7 +2,6 @@ import json
 from pythfinder.CharacterAbilities import CharacterAbilities
 from pythfinder.CharacterArmor import CharacterArmor
 from pythfinder.CharacterAttack import CharacterAttack
-from pythfinder.CharacterBasicItem import CharacterBasicItem
 from pythfinder.CharacterClass import CharacterClass
 from pythfinder.CharacterEquipment import CharacterEquipment
 from pythfinder.CharacterHP import CharacterHP
