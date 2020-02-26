@@ -44,7 +44,11 @@ enforcement)
     + ~~spells~~
     + ~~special abilities~~
     + etc.
-+ New character creation walkthrough process (CLI)
++ ~~New character creation walkthrough process (CLI)~~
+    + There is now functionality to create a blank character sheet in 
+    both the module and the CLI, but it's not interactive; that's good 
+    enough for me, as most "interactive" processes would be much better 
+    served in a gui.
 + ~~Character sheet JSON format enforcement~~
     + ~~This is partially done with the Character class, but I'll 
     eventually have classes for other complex objects within the 
@@ -53,7 +57,7 @@ enforcement)
     defaults, and for extra values just ignore them.~~ this is now 
     pretty much finished, nearly everything is an object
 + ~~add ability modifiers (for temp increases/damage)~~
-+ rework hp:
++ ~~rework hp:~~
     + ~~add wounds, temp hp, temporary max hp increases~~
     + ~~essentially make current hp a calculated value~~
     + I'm not doing either of these, but I am adding nonlethal damage
