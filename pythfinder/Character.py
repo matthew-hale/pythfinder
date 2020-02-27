@@ -385,6 +385,13 @@ class Character:
         total += self.getAbilityMod(self.abilities.get_total_value(current_skill["mod"]))
         return total
 
+    # Returns the base ability score given an ability string
+    def get_base_ability_value(self, ability):
+        ability_strings = ("str", "dex", "con", "int", "wis", "cha")
+        if ability not in ability_strings:
+            raise ValueError("ability must be one of " + ability_strings)
+        return self.abilities[ability]["base"]
+
     # Add a new feat to the character; supports either named arguments 
     # or a dictionary
     #
