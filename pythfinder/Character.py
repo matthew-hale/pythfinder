@@ -371,14 +371,14 @@ class Character:
     # Returns a dict containing keys for each level of spell present in the 
     # character's list of spells. Within each key, the spells are sorted by 
     # name.
-    def getSortedSpells(self):
+    def get_sorted_spells(self):
         output = {}
         spellLevels = []
 
         # We're doing this because we don't want to end up with empty keys 
         # (makes things easier later)
         for spell in self.spells:
-            spellLevels.append(spell.level)
+            spellLevels.append(spell["level"])
 
         spellLevelsUnique = sorted(set(spellLevels))
 
@@ -388,7 +388,7 @@ class Character:
             output[level] = []
 
         for spell in self.spells:
-            output[spell.level].append(spell)
+            output[spell["level"]].append(spell)
 
         return output
 
@@ -609,11 +609,6 @@ class Character:
             "prepared": new_prepared,
             "cast": new_cast,
         }
-        new_spell = CharacterSpell(name = new_name,
-                                   level = new_level,
-                                   description = new_description,
-                                   prepared = new_prepared,
-                                   cast = new_cast)
         self.spells.append(new_spell)
         return new_spell
 

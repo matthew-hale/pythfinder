@@ -136,16 +136,16 @@ def getAbilityString(c):
 # Formatted string of spells
 def getSpellString(c):
     outstring = "\n    Spells:\n\n"
-    spells = c.getSortedSpells()
+    spells = c.get_sorted_spells()
     spellLevels = spells.keys()
     for level in spellLevels:
         outstring += "Level {}:\n\n".format(level)
         for spell in spells[level]:
             outstring += "    {}:\n        {}\n\n        Prepared: {}  - Cast: {}\n\n".format(
-                spell.name,
-                spell.description,
-                spell.prepared,
-                spell.cast
+                spell["name"],
+                spell["description"],
+                spell["prepared"],
+                spell["cast"]
             )
     return outstring
 
@@ -582,16 +582,16 @@ elif subcommand == "add":
         else:
             print("\n    Something went wrong; new armor not added properly; aborting\n")
     elif target == "spell":
-        new_spell = character.addSpell(name = args.name,
-                                       level = args.level,
-                                       description = args.description,
-                                       prepared = args.prepared,
-                                       cast = args.cast)
-        if new_spell.name == args.name and \
-           new_spell.level == args.level and \
-           new_spell.description == args.description and \
-           new_spell.prepared == args.prepared and \
-           new_spell.cast == args.cast:
+        new_spell = character.add_spell(name = args.name,
+                                        level = args.level,
+                                        description = args.description,
+                                        prepared = args.prepared,
+                                        cast = args.cast)
+        if new_spell["name"] == args.name and \
+           new_spell["level"] == args.level and \
+           new_spell["description"] == args.description and \
+           new_spell["prepared"] == args.prepared and \
+           new_spell["cast"] == args.cast:
             dataChanged = True
             print(getSpellString(character))
             print("\n    Spell added\n")
@@ -734,9 +734,9 @@ elif subcommand == "edit":
             updates["cast"] = args.cast
         if args.description:
             updates["description"] = args.description
-        updated_spell = character.updateSpell(name = args.name,
-                                              data = updates)
-        # If updateSpell() returned "None," it means that there was 
+        updated_spell = character.update_spell(name = args.name,
+                                               data = updates)
+        # If update_spell() returned "None," it means that there was 
         # no matching spell with the name given
         if updated_spell == None:
             print("\n    No matching spell with the name given; aborting\n")
@@ -745,7 +745,7 @@ elif subcommand == "edit":
         # provided
             success = True
             for item in updates.keys():
-                if updates[item] != getattr(updated_spell, item):
+                if updates[item] != updated_spell[item]:
                     success = False
             if success:
                 dataChanged = True
