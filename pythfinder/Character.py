@@ -801,7 +801,7 @@ class Character:
                      maxDexBonus = None,
                      arcaneFailureChance = None,
                      type_ = None,
-                     data = {})
+                     data = {}):
         keys = data.keys()
         if "name" in keys:
             name = data["name"]
