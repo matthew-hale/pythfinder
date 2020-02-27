@@ -611,7 +611,7 @@ elif subcommand == "edit":
             updates["notes"] = args.notes
         updated_feat = character.update_feat(name = args.name,
                                             data = updates)
-        # If updateFeat() returned "None," it means that there was 
+        # If update_feat() returned "None," it means that there was 
         # no matching feat with the name given
         if updated_feat == None:
             print("\n    No matching feat with the name given; aborting\n")
@@ -643,7 +643,7 @@ elif subcommand == "edit":
             updates["notes"] = args.notes
         updated_trait = character.update_trait(name = args.name,
                                               data = updates)
-        # If updateTrait() returned "None," it means that there was no 
+        # If update_trait() returned "None," it means that there was no 
         # matching trait with the name given
         if updated_trait == None:
             print("\n    No matching trait with the name given; aborting\n")
@@ -675,7 +675,7 @@ elif subcommand == "edit":
             updates["notes"] = args.notes
         updated_special = character.update_special(name = args.name,
                                               data = updates)
-        # If updateSpecial() returned "None," it means that there was 
+        # If update_special() returned "None," it means that there was 
         # no matching special ability with the name given
         if updated_special == None:
             print("\n    No matching special ability with the name given; aborting\n")
@@ -805,9 +805,9 @@ elif subcommand == "edit":
             updates["isClass"] = args.isClass
         if args.notes:
             updates["notes"] = args.notes
-        updated_skill = character.updateSkill(name = args.name,
-                                              data = updates)
-        # If updateSkill() returned "None," it means that there was no 
+        updated_skill = character.update_skill(name = args.name,
+                                               data = updates)
+        # If update_skill() returned "None," it means that there was no 
         # matching skill with the name given
         if updated_skill == None:
             print("\n    No matching skill with the name given; aborting\n")

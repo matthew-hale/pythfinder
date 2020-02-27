@@ -846,12 +846,12 @@ class Character:
     # arguments or a dictionary
     #
     # returns the updated skill 
-    def updateSkill(self,
-                    name = None,
-                    rank = None,
-                    isClass = None,
-                    notes = None,
-                    data = {}):
+    def update_skill(self,
+                     name = None,
+                     rank = None,
+                     isClass = None,
+                     notes = None,
+                     data = {}):
         keys = data.keys()
         if "name" in keys:
             name = data["name"]
