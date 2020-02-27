@@ -96,7 +96,7 @@ def getCombatString(c):
     outstring += "\n    Armor:\n\n"
 
     for item in c.armor:
-        outstring += "    {}: ({} armor)\n        AC Bonus: {}, Max Dex Bonus: {}, Armor Check Penalty: {}, Spell Failure Chance: {}%\n\n".format(item.name,item.type,item.acBonus,item.maxDexBonus,item.acPenalty,item.arcaneFailureChance)
+        outstring += "    {}: ({} armor)\n        AC Bonus: {}, Max Dex Bonus: {}, Armor Check Penalty: {}, Spell Failure Chance: {}%\n\n".format(item["name"],item["type"],item["acBonus"],item["maxDexBonus"],item["acPenalty"],item["arcaneFailureChance"])
     outstring += "    AC Calculation: 10 + Dex Bonus + AC Bonus\n\n"
 
     outstring += "    CMD: {}\n".format(str(sum([10,
@@ -568,17 +568,17 @@ elif subcommand == "add":
         else:
             print("\n    Something went wrong; new attack not added properly; aborting\n")
     elif target == "armor":
-        new_armor = character.addArmor(name = args.name,
-                                       acBonus = args.acBonus,
-                                       acPenalty = args.acPenalty,
-                                       maxDexBonus = args.maxDexBonus,
-                                       arcaneFailureChance = args.arcaneFailureChance,
-                                       type_ = args.type)
-        if new_armor.name == args.name and \
-           new_armor.acBonus == args.acBonus and \
-           new_armor.acPenalty == args.acPenalty and \
-           new_armor.maxDexBonus == args.maxDexBonus and \
-           new_armor.arcaneFailureChance == args.arcaneFailureChance:
+        new_armor = character.add_armor(name = args.name,
+                                        acBonus = args.acBonus,
+                                        acPenalty = args.acPenalty,
+                                        maxDexBonus = args.maxDexBonus,
+                                        arcaneFailureChance = args.arcaneFailureChance,
+                                        type_ = args.type)
+        if new_armor["name"] == args.name and \
+           new_armor["acBonus"] == args.acBonus and \
+           new_armor["acPenalty"] == args.acPenalty and \
+           new_armor["maxDexBonus"] == args.maxDexBonus and \
+           new_armor["arcaneFailureChance"] == args.arcaneFailureChance:
             dataChanged = True
             print(getCombatString(character))
             print("\n    Armor added\n")
