@@ -73,8 +73,8 @@ def getSkillString(c):
 
 # Formatted string of combat elements
 def getCombatString(c):
-    strength_mod = c.getAbilityMod(c.abilities.get_total_value("str"))
-    dexterity_mod = c.getAbilityMod(c.abilities.get_total_value("dex"))
+    strength_mod = c.getAbilityMod(c.get_total_ability_value("str"))
+    dexterity_mod = c.getAbilityMod(c.get_total_ability_value("dex"))
     outstring = "    Combat:\n\n"
     outstring += "    HP: " + str(c.hp["current"]) + "/" + str(c.hp["max"]) + "\n\n"
     outstring += "    Attacks:\n"
@@ -110,10 +110,10 @@ def getCombatString(c):
 # Returns a formatted string of abilities
 def getAbilityString(c):
     outstring = "\n    Abilities:"
-    for ability in c.abilities.__dict__.keys():
-        base_score_value = c.abilities.get_base_value(ability)
+    for ability in c.abilities.keys():
+        base_score_value = c.get_base_ability_value(ability)
         base_mod_value = c.getAbilityMod(base_score_value)
-        temp_score_value = c.abilities.get_total_value(ability)
+        temp_score_value = c.get_total_ability_value(ability)
         temp_mod_value = c.getAbilityMod(temp_score_value)
         if base_mod_value >= 0:
             base_mod_string = "+" + str(base_mod_value)
@@ -159,9 +159,9 @@ def getSpecialString(c):
 # Formatted string of saving throws
 def getThrowString(c):
     outstring = "\n    Saving throws:\n\n"
-    fort_total = sum([c.saving_throws["fortitude"]["base"], sum(c.saving_throws["fortitude"]["misc"]), c.getAbilityMod(c.abilities.get_total_value("con"))])
-    ref_total = sum([c.saving_throws["reflex"]["base"], sum(c.saving_throws["reflex"]["misc"]), c.getAbilityMod(c.abilities.get_total_value("dex"))])
-    will_total = sum([c.saving_throws["will"]["base"], sum(c.saving_throws["will"]["misc"]), c.getAbilityMod(c.abilities.get_total_value("wis"))])
+    fort_total = sum([c.saving_throws["fortitude"]["base"], sum(c.saving_throws["fortitude"]["misc"]), c.getAbilityMod(c.get_total_ability_value("con"))])
+    ref_total = sum([c.saving_throws["reflex"]["base"], sum(c.saving_throws["reflex"]["misc"]), c.getAbilityMod(c.get_total_ability_value("dex"))])
+    will_total = sum([c.saving_throws["will"]["base"], sum(c.saving_throws["will"]["misc"]), c.getAbilityMod(c.get_total_ability_value("wis"))])
     outstring += "    Fortitude: {}\n\n    Reflex: {}\n\n    Will: {}\n\n".format(str(fort_total), str(ref_total), str(will_total))
     return outstring
 
