@@ -790,6 +790,51 @@ class Character:
             target_spell["cast"] = cast or target_spell["cast"]
             return target_spell
 
+    # Update an existing piece of armor based on name; supports either 
+    # named arguments or a dictionary
+    #
+    # returns the updated armor
+    def update_armor(self,
+                     name = None,
+                     acBonus = None,
+                     acPenalty = None,
+                     maxDexBonus = None,
+                     arcaneFailureChance = None,
+                     type_ = None,
+                     data = {})
+        keys = data.keys()
+        if "name" in keys:
+            name = data["name"]
+        if "acBonus" in keys:
+            acBonus = data["acBonus"]
+        if "acPenalty" in keys:
+            acPenalty = data["acPenalty"]
+        if "maxDexBonus" in keys:
+            maxDexBonus = data["maxDexBonus"]
+        if "arcaneFailureChance" in keys:
+            arcaneFailureChance = data["arcaneFailureChance"]
+        if "type" in keys:
+            type_ = data["type"]
+        # Lazy selection; if there are duplicates, this will just pick 
+        # up the first one that shows up
+        for armor in self.armor:
+            if armor["name"] == name:
+                target_armor = armor
+                break
+        try:
+            target_armor
+        except NameError:
+            return None
+        else:
+            # Ignore empty parameters
+            target_armor["name"] = name or target_armor["name"]
+            target_armor["acBonus"] = acBonus or target_armor["acBonus"]
+            target_armor["acPenalty"] = acPenalty or target_armor["acPenalty"]
+            target_armor["maxDexBonus"] = maxDexBonus or target_armor["maxDexBonus"]
+            target_armor["arcaneFailureChance"] = arcaneFailureChance or target_armor["arcaneFailureChance"]
+            target_armor["type"] = type_ or target_armor["type"]
+            return target_armor
+
     # Update an existing attack based on name; supports either named 
     # arguments or a dictionary
     #
