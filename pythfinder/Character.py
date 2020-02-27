@@ -126,9 +126,20 @@ class Character:
             self.abilities = CharacterAbilities()
 
         if "hp" in keys:
-            self.hp = CharacterHP(data = data["hp"])
+            data_keys = data["hp"].keys()
+            self.hp = {
+                "max": data["hp"]["max"] if "max" in data_keys else 0,
+                "current": data["hp"]["current"] if "current" in data_keys else 0,
+                "temporary": data["hp"]["temporary"] if "temporary" in data_keys else 0,
+                "nonlethal": data["hp"]["nonlethal"] if "nonlethal" in data_keys else 0,
+            }
         else:
-            self.hp = CharacterHP()
+            self.hp = {
+                "max": 0,
+                "current": 0,
+                "temporary": 0,
+                "nonlethal": 0
+            }
 
         # Special ability initialization
         #
