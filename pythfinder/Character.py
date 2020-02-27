@@ -392,6 +392,13 @@ class Character:
             raise ValueError("ability must be one of " + ability_strings)
         return self.abilities[ability]["base"]
 
+    # Returns the ability value after summing modifiers
+    def get_total_ability_value(self, ability):
+        ability_strings = ("str", "dex", "con", "int", "wis", "cha")
+        if ability not in ability_strings:
+            raise ValueError("ability must be one of " + ability_strings)
+        return sum(self.abilities[ability]["misc"], self.abilities[ability]["base"])
+
     # Add a new feat to the character; supports either named arguments 
     # or a dictionary
     #
