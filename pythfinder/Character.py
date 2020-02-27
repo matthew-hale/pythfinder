@@ -303,7 +303,7 @@ class Character:
         self.spells = []
         if "spells" in keys:
             for item in data["spells"]:
-                self.spells.append(CharacterSpell(data = item))
+                _ = self.add_spell(data = item)
 
         self.attacks = []
         if "attacks" in keys:
@@ -589,8 +589,8 @@ class Character:
     # Add new spell to the character; supports either named arguments 
     # or a dictionary
     #
-    # returns the newly created armor
-    def addSpell(self,
+    # returns the newly created spell
+    def add_spell(self,
                  name = "",
                  level = 0,
                  description = "",
@@ -603,6 +603,13 @@ class Character:
         new_description = data["description"] if "description" in keys else description
         new_prepared = data["prepared"] if "prepared" in keys else prepared
         new_cast = data["cast"] if "cast" in keys else cast
+        new_spell = {
+            "name": new_name,
+            "level": new_level,
+            "description": new_description,
+            "prepared": new_prepared,
+            "cast": new_cast,
+        }
         new_spell = CharacterSpell(name = new_name,
                                    level = new_level,
                                    description = new_description,
