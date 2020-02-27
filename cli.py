@@ -828,8 +828,8 @@ elif subcommand == "edit":
         updates = {}
         if args.base:
             updates["base"] = args.base
-        updated_ability = character.updateAbility(name = args.name,
-                                                  data = updates)
+        updated_ability = character.update_ability(name = args.name,
+                                                   data = updates)
         # Seeing if updates were applied successfully, testing all args 
         # provided
         success = True
