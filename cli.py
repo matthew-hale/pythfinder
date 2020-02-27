@@ -340,6 +340,7 @@ edit_target_choices = ["ability",
                        "skill",
                        "item",
                        "attack",
+                       "armor",
                        "feat",
                        "trait",
                        "special",
@@ -428,6 +429,26 @@ parser_edit.add_argument("--base",
                          dest = "base",
                          help = "the base value of the ability",
                          type = int)
+parser_edit.add_argument("--acBonus",
+                         dest = "acBonus",
+                         help = "(armor) the armor's bonus to AC",
+                         type = int)
+parser_edit.add_argument("--acPenalty",
+                         dest = "acPenalty",
+                         help = "(armor) the armor's armor check penalty",
+                         type = int)
+parser_edit.add_argument("--maxDexBonus",
+                         dest = "maxDexBonus",
+                         help = "(armor) the armor's maximum dex bonus",
+                         type = int)
+parser_edit.add_argument("--arcaneFailureChance",
+                         dest = "arcaneFailureChance",
+                         help = "(armor) the armor's arcane failure chance, as a whole number percentage",
+                         type = int)
+parser_edit.add_argument("--type",
+                         dest = "type",
+                         help = "(armor) the armor's type (light, medium, heavy)",
+                         type = str)
 
 # New: create new character sheet
 parser_new = subparsers.add_parser("new",
@@ -842,6 +863,32 @@ elif subcommand == "edit":
             print("\n    Ability updated\n")
         else:
             print("\n    Something went wrong; ability not updated properly; aborting\n")
+    elif target == "armor":
+        updates = {}
+        if args.acBonus:
+            updates["acBonus"] = args.acBonus
+        if args.acPenalty:
+            updates["acPenalty"] = args.acPenalty
+        if args.maxDexBonus:
+            updates["maxDexBonus"] = args.maxDexBonus
+        if args.arcaneFailureChance:
+            updates["arcaneFailureChance"] = args.arcaneFailureChance
+        if args.type:
+            updates["type"] = args.type
+        updated_armor = character.update_armor(name = args.name,
+                                               data = updates)
+        # Seeing if updates were applied successfully, testing all args 
+        # provided
+        success = True
+        for item in updates.keys():
+            if updates[item] != updated_armor[item]:
+                success = False
+        if success:
+            dataChanged = True
+            print(getCombatString(character))
+            print("\n    Armor updated\n")
+        else:
+            print("\n    Something went wrong; armor not updated properly; aborting\n")
 
 # Write check
 if dataChanged:
