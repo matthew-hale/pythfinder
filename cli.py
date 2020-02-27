@@ -25,13 +25,13 @@ def getEquipmentString(c):
     total = 0
     totalCamp = 0
     outstring = "\n    Items:\n\n    Gold: {}\n\n    ".format(str(c.gold))
-    for item in sorted(c.equipment, key = lambda i: i.name):
-        total += item.weight * item.count
-        outstring += "{} - Unit Weight: {} lbs, Count: {}".format(item.name,str(item.weight),str(item.count))
-        if item.notes:
-            outstring += ", Notes: {}".format(item.notes)
-        if item.pack:
-            totalCamp += item.weight * item.count
+    for item in sorted(c.equipment, key = lambda i: i["name"]):
+        total += item["weight"] * item["count"]
+        outstring += "{} - Unit Weight: {} lbs, Count: {}".format(item["name"],str(item["weight"]),str(item["count"]))
+        if item["notes"]:
+            outstring += ", Notes: {}".format(item["notes"])
+        if item["pack"]:
+            totalCamp += item["weight"] * item["count"]
         else:
             outstring += " (camp item)"
         outstring += "\n    "
@@ -343,7 +343,7 @@ edit_target_choices = ["ability",
                        "feat",
                        "trait",
                        "special",
-                       "spell"],
+                       "spell"]
 parser_edit.add_argument("target",
                          metavar = "target",
                          choices = edit_target_choices,
@@ -530,16 +530,16 @@ elif subcommand == "add":
         else:
             print("\n    Something went wrong; new special ability not added properly; aborting\n")
     elif target == "item":
-        new_item = character.addItem(name = args.name,
-                                     weight = args.weight,
-                                     count = args.count,
-                                     pack = args.pack,
-                                     notes = args.notes)
-        if new_item.name == args.name and \
-           new_item.weight == args.weight and \
-           new_item.count == args.count and \
-           new_item.pack == args.pack and \
-           new_item.notes == args.notes:
+        new_item = character.add_item(name = args.name,
+                                      weight = args.weight,
+                                      count = args.count,
+                                      pack = args.pack,
+                                      notes = args.notes)
+        if new_item["name"] == args.name and \
+           new_item["weight"] == args.weight and \
+           new_item["count"] == args.count and \
+           new_item["pack"] == args.pack and \
+           new_item["notes"] == args.notes:
             dataChanged = True
             print(getEquipmentString(character))
             print("\n    Item added\n")
@@ -708,9 +708,9 @@ elif subcommand == "edit":
             updates["pack"] = args.pack
         if args.notes:
             updates["notes"] = args.notes
-        updated_item = character.updateItem(name = args.name,
-                                            data = updates)
-        # If updateItem() returned "None," it means that there was 
+        updated_item = character.update_item(name = args.name,
+                                             data = updates)
+        # If update_item() returned "None," it means that there was 
         # no matching item with the name given
         if updated_item == None:
             print("\n    No matching item with the name given; aborting\n")
@@ -719,7 +719,7 @@ elif subcommand == "edit":
         # provided
             success = True
             for item in updates.keys():
-                if updates[item] != getattr(updated_item, item):
+                if updates[item] != updated_item[item]:
                     success = False
             if success:
                 dataChanged = True
