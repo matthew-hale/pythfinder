@@ -312,7 +312,7 @@ class Character:
         self.armor = []
         if "armor" in keys:
             for item in data["armor"]:
-                self.armor.append(CharacterArmor(data = item))
+                _ = self.add_armor(data = item)
 
     # Get the modifier for a given ability
     def getAbilityMod(self, ability):
@@ -561,14 +561,14 @@ class Character:
     # or a dictionary
     #
     # returns the newly created armor
-    def addArmor(self,
-                 name = "",
-                 acBonus = 0,
-                 acPenalty = 0,
-                 maxDexBonus = 0,
-                 arcaneFailureChance = 0,
-                 type_ = "",
-                 data = {}):
+    def add_armor(self,
+                  name = "",
+                  acBonus = 0,
+                  acPenalty = 0,
+                  maxDexBonus = 0,
+                  arcaneFailureChance = 0,
+                  type_ = "",
+                  data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
         new_acBonus = data["acBonus"] if "acBonus" in keys else acBonus
@@ -576,12 +576,14 @@ class Character:
         new_maxDexBonus = data["maxDexBonus"] if "maxDexBonus" in keys else maxDexBonus
         new_arcaneFailureChance = data["arcaneFailureChance"] if "arcaneFailureChance" in keys else arcaneFailureChance
         new_type = data["type"] if "type" in keys else type_
-        new_armor = CharacterArmor(name = new_name,
-                                   acBonus = new_acBonus,
-                                   acPenalty = new_acPenalty,
-                                   maxDexBonus = new_maxDexBonus,
-                                   arcaneFailureChance = new_arcaneFailureChance,
-                                   type_ = new_type)
+        new_armor = {
+            "name": new_name,
+            "acBonus": new_acBonus,
+            "acPenalty": new_acPenalty,
+            "maxDexBonus": new_maxDexBonus,
+            "arcaneFailureChance": new_arcaneFailureChance,
+            "type": new_type
+        }
         self.armor.append(new_armor)
         return new_armor
 
