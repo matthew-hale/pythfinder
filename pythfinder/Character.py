@@ -715,13 +715,13 @@ class Character:
     # arguments or a dictionary
     #
     # returns the updated item 
-    def updateItem(self,
-                   name = "",
-                   weight = None,
-                   count = None,
-                   pack = None,
-                   notes = "",
-                   data = {}):
+    def update_item(self,
+                    name = "",
+                    weight = None,
+                    count = None,
+                    pack = None,
+                    notes = "",
+                    data = {}):
         keys = data.keys()
         name = data["name"] if "name" in keys else name
         weight = data["weight"] if "weight" in keys else weight
@@ -731,7 +731,7 @@ class Character:
         # Lazy selection; if there are duplicates, this will just pick 
         # up the first one that shows up
         for item in self.equipment:
-            if item.name == name:
+            if item["name"] == name:
                 target_item = item
                 break
         try:
@@ -742,13 +742,13 @@ class Character:
             # Ignore empty parameters
             # Handle zero ints
             if weight != None:
-                target_item.weight = weight
+                target_item["weight"] = weight
             if count != None:
-                target_item.count = count
-            target_item.notes = notes or target_item.notes
+                target_item["count"] = count
+            target_item["notes"] = notes or target_item["notes"]
             # Pack is special
             if pack != None:
-                target_item.pack = pack
+                target_item["pack"] = pack
             return target_item
 
     # Update an existing spell based on name; supports either named 
