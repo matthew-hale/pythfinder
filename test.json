@@ -94,7 +94,7 @@
             "notes": "test item notes"
         }
     ],
-    "savingThrows": {
+    "saving_throws": {
         "fortitude": {
             "base": 1,
             "misc": [1]

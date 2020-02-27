@@ -194,10 +194,10 @@ class Character:
             for item in data["equipment"]:
                 self.equipment.append(CharacterEquipment(data = item))
 
-        self.savingThrows = {}
-        if "savingThrows" in keys:
-            for item in data["savingThrows"].keys():
-                self.savingThrows[item] = CharacterSavingThrow(data = data["savingThrows"][item])
+        self.saving_throws = {}
+        if "saving_throws" in keys:
+            for item in data["saving_throws"].keys():
+                self.savingThrows[item] = CharacterSavingThrow(data = data["saving_throws"][item])
         
         # Skill initialization
         #

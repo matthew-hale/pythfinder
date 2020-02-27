@@ -94,7 +94,7 @@
             "notes": ""
         }
     ],
-    "savingThrows": {
+    "saving_throws": {
         "fortitude": {
             "base": 0,
             "misc": []
