@@ -304,7 +304,7 @@ class Character:
         self.attacks = []
         if "attacks" in keys:
             for item in data["attacks"]:
-                self.attacks.append(CharacterAttack(data = item))
+                _ = self.add_attack(data = item)
 
         self.armor = []
         if "armor" in keys:
@@ -861,16 +861,16 @@ class Character:
     # arguments or a dictionary
     #
     # returns the updated attack 
-    def updateAttack(self,
-                    name = None,
-                    attackType = None,
-                    damageType = None,
-                    damage = None,
-                    critRoll = None,
-                    critMulti = None,
-                    range_ = None,
-                    notes = None,
-                    data = {}):
+    def update_attack(self,
+                      name = None,
+                      attackType = None,
+                      damageType = None,
+                      damage = None,
+                      critRoll = None,
+                      critMulti = None,
+                      range_ = None,
+                      notes = None,
+                      data = {}):
         keys = data.keys()
         if "name" in keys:
             name = data["name"]
@@ -891,7 +891,7 @@ class Character:
         # Lazy selection; if there are duplicates, this will just pick 
         # up the first one that shows up
         for attack in self.attacks:
-            if attack.name == name:
+            if attack["name"] == name:
                 target_attack = attack
                 break
         try:
@@ -900,13 +900,13 @@ class Character:
             return None
         else:
             # Ignore empty parameters
-            target_attack.attackType = attackType or target_attack.attackType
-            target_attack.damageType = damageType or target_attack.damageType
-            target_attack.damage = damage or target_attack.damage
-            target_attack.critRoll = critRoll or target_attack.critRoll
-            target_attack.critMulti = critMulti or target_attack.critMulti
-            target_attack.range = range_ or target_attack.range_
-            target_attack.notes = notes or target_attack.notes
+            target_attack["attackType"] = attackType or target_attack["attackType"]
+            target_attack["damageType"] = damageType or target_attack["damageType"]
+            target_attack["damage"] = damage or target_attack["damage"]
+            target_attack["critRoll"] = critRoll or target_attack["critRoll"]
+            target_attack["critMulti"] = critMulti or target_attack["critMulti"]
+            target_attack["range"] = range_ or target_attack["range"]
+            target_attack["notes"] = notes or target_attack["notes"]
             return target_attack
 
     # Update an existing skill based on name; supports either named 
