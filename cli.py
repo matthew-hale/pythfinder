@@ -76,7 +76,7 @@ def getCombatString(c):
     strength_mod = c.getAbilityMod(c.abilities.get_total_value("str"))
     dexterity_mod = c.getAbilityMod(c.abilities.get_total_value("dex"))
     outstring = "    Combat:\n\n"
-    outstring += "    HP: " + str(c.hp.current) + "/" + str(c.hp.max) + "\n\n"
+    outstring += "    HP: " + str(c.hp["current"]) + "/" + str(c.hp["max"]) + "\n\n"
     outstring += "    Attacks:\n"
     outstring += "    BAB: " + "/".join(map(str, c.baseAttackBonus)) + "\n"
     outstring += "    Strength mod: {}\n".format(strength_mod)
