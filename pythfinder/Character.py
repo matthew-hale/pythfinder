@@ -1,5 +1,4 @@
 import json
-from pythfinder.CharacterAttack import CharacterAttack
 
 # These vars are used for skill initialization
 _allowed_skill_names = (
