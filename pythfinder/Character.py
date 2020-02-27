@@ -110,9 +110,24 @@ class Character:
 
         # Complex object members
         if "speed" in keys:
-            self.speed = CharacterSpeed(data = data["speed"])
+            data_keys = data["speed"].keys()
+            self.speed = {
+                "base": data["speed"]["base"] if "base" in data_keys else 0,
+                "armor": data["speed"]["armor"] if "armor" in data_keys else 0,
+                "fly": data["speed"]["fly"] if "fly" in data_keys else 0,
+                "swim": data["speed"]["swim"] if "swim" in data_keys else 0,
+                "climb": data["speed"]["climb"] if "climb" in data_keys else 0,
+                "burrow": data["speed"]["burrow"] if "burrow" in data_keys else 0,
+            }
         else:
-            self.speed = CharacterSpeed() 
+            self.speed = {
+                "base": 0,
+                "armor": 0,
+                "fly": 0,
+                "swim": 0,
+                "climb": 0,
+                "burrow": 0
+            }
 
         self.classes = []
         if "classes" in keys:
