@@ -226,7 +226,7 @@ class Character:
         self.equipment = []
         if "equipment" in keys:
             for item in data["equipment"]:
-                self.equipment.append(CharacterEquipment(data = item))
+                _ = self.add_item(data = item)
 
         # Saving throw initialization
         #
@@ -363,8 +363,8 @@ class Character:
         output["description"] = self.description
         output["height"] = self.height
         output["weight"] = self.weight
-        output["abilities"] = self.abilities.__dict__
-        output["hp"] = self.hp.__dict__
+        output["abilities"] = self.abilities
+        output["hp"] = self.hp
         return output
 
     # Returns a dict containing keys for each level of spell present in the 
@@ -501,24 +501,26 @@ class Character:
     # or a dictionary
     #
     # returns the newly created item
-    def addItem(self,
-                name = "",
-                weight = 0.0,
-                count = 0,
-                pack = False,
-                notes = "",
-                data = {}):
+    def add_item(self,
+                 name = "",
+                 weight = 0.0,
+                 count = 0,
+                 pack = False,
+                 notes = "",
+                 data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
         new_weight = data["weight"] if "weight" in keys else weight
         new_count = data["count"] if "count" in keys else count
         new_pack = data["pack"] if "pack" in keys else pack
         new_notes = data["notes"] if "notes" in keys else notes
-        new_item = CharacterEquipment(name = new_name,
-                                      weight = new_weight,
-                                      count = new_count,
-                                      pack = new_pack,
-                                      notes = new_notes)
+        new_item = {
+            "name": new_name,
+            "weight": new_weight,
+            "count": new_count,
+            "pack": new_pack,
+            "notes": new_notes,
+        }
         self.equipment.append(new_item)
         return new_item
 
