@@ -1,6 +1,5 @@
 import json
 from pythfinder.CharacterAttack import CharacterAttack
-from pythfinder.CharacterClass import CharacterClass
 
 # These vars are used for skill initialization
 _allowed_skill_names = (
@@ -126,7 +125,7 @@ class Character:
         self.classes = []
         if "classes" in keys:
             for item in data["classes"]:
-                self.classes.append(CharacterClass(data = item))
+                _ = self.add_class(data = item)
 
         # Ability initialization
         #
@@ -432,6 +431,27 @@ class Character:
         if ability not in ability_strings:
             raise ValueError("ability must be one of " + ability_strings)
         return sum(self.abilities[ability]["misc"], self.abilities[ability]["base"])
+
+    # Add a new class to the character; supports either named arguments 
+    # or a dictionary
+    #
+    # returns the newly created class
+    def add_class(self,
+                  name = "",
+                  archetypes = [],
+                  level = 0,
+                  data = {}):
+        keys = data.keys()
+        new_name = data["name"] if "name" in keys else name
+        new_archetypes = data["archetypes"] if "archetypes" in keys else archetypes
+        new_level = data["level"] if "level" in keys else level
+        new_class = {
+            "name": new_name,
+            "archetypes": new_archetypes,
+            "level": new_level
+        }
+        self.classes.append(new_class)
+        return new_class
 
     # Add a new feat to the character; supports either named arguments 
     # or a dictionary
