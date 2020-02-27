@@ -5,7 +5,6 @@ from pythfinder.CharacterAttack import CharacterAttack
 from pythfinder.CharacterClass import CharacterClass
 from pythfinder.CharacterEquipment import CharacterEquipment
 from pythfinder.CharacterSavingThrow import CharacterSavingThrow
-from pythfinder.CharacterSpeed import CharacterSpeed
 from pythfinder.CharacterSpell import CharacterSpell
 
 # These vars are used for skill initialization
