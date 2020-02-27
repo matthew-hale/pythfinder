@@ -356,7 +356,7 @@ class Character:
         output["race"] = self.race
         output["classes"] = []
         for item in self.classes:
-            output["classes"].append(item.__dict__)
+            output["classes"].append(item)
         output["alignment"] = self.alignment
         output["description"] = self.description
         output["height"] = self.height
