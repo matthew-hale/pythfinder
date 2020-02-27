@@ -1,5 +1,4 @@
 import json
-from pythfinder.CharacterAbilities import CharacterAbilities
 from pythfinder.CharacterArmor import CharacterArmor
 from pythfinder.CharacterAttack import CharacterAttack
 from pythfinder.CharacterClass import CharacterClass
@@ -132,10 +131,48 @@ class Character:
             for item in data["classes"]:
                 self.classes.append(CharacterClass(data = item))
 
+        # Ability initialization
+        #
+        self.abilities = {}
+        #
+        # Abilities are nested dicts, so more validation is necessary 
+        # (like with saving throws)
         if "abilities" in keys:
-            self.abilities = CharacterAbilities(data = data["abilities"])
+            data_keys = data["abilities"].keys()
+            for key in data_keys:
+                if key in ("str","dex","con","int","wis","cha"):
+                    data_subkeys = data["abilities"][key].keys()
+                    self.abilities[key] = {
+                        "base": data["abilities"][key]["base"] if "base" in data_subkeys else 0,
+                        "misc": data["abilities"][key]["misc"] if "misc" in data_subkeys else [],
+                    }
         else:
-            self.abilities = CharacterAbilities()
+            self.abilities = {
+                "str": {
+                    "base": 0,
+                    "misc": []
+                },
+                "dex": {
+                    "base": 0,
+                    "misc": []
+                },
+                "con": {
+                    "base": 0,
+                    "misc": []
+                },
+                "int": {
+                    "base": 0,
+                    "misc": []
+                },
+                "wis": {
+                    "base": 0,
+                    "misc": []
+                },
+                "cha": {
+                    "base": 0,
+                    "misc": []
+                }
+            }
 
         if "hp" in keys:
             data_keys = data["hp"].keys()
@@ -221,7 +258,7 @@ class Character:
                 "will": {
                     "base": 0,
                     "misc": []
-                },
+                }
             }
         
         # Skill initialization
