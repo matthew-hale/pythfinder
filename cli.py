@@ -487,11 +487,10 @@ if subcommand == "list":
         outstring = "\n    "
         outstring += c["name"] + ", " + c["alignment"] + " " + c["race"]
         for item in character.classes:
-            cClass = item.getClassDict()
-            outstring += "\n    " + cClass["name"]
-            if cClass["archetypes"]:
-                outstring += " (" + ", ".join(cClass["archetypes"]) + ")"
-            outstring += " - Lvl. " + str(cClass["level"])
+            outstring += "\n    " + item["name"]
+            if item["archetypes"]:
+                outstring += " (" + ", ".join(item["archetypes"]) + ")"
+            outstring += " - Lvl. " + str(item["level"])
         outstring += "\n    " + c["height"] + ", " + str(c["weight"]) + " lbs."
         outstring += "\n    " + c["description"] + "\n" + getAbilityString(character)
         print(outstring)
