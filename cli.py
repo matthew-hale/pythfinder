@@ -83,15 +83,15 @@ def getCombatString(c):
     outstring += "    Dexterity mod: {}\n".format(dexterity_mod)
 
     for attack in c.attacks:
-        outstring += "\n    " + attack.name + " (" + attack.attackType + ")\n        "
-        outstring += "Damage: " + attack.damage + " " + str(attack.critRoll)
-        if attack.critRoll < 20:
+        outstring += "\n    " + attack["name"] + " (" + attack["attackType"] + ")\n        "
+        outstring += "Damage: " + attack["damage"] + " " + str(attack["critRoll"])
+        if attack["critRoll"] < 20:
             outstring += "-20"
-        outstring += " x" + str(attack.critMulti) + " (" + attack.damageType + ") "
-        if attack.range > 0:
-            outstring += "\n        " + str(attack.range) + " ft. range increment"
-        if attack.notes:
-            outstring += "\n        " + attack.notes
+        outstring += " x" + str(attack["critMulti"]) + " (" + attack["damageType"] + ") "
+        if attack["range"] > 0:
+            outstring += "\n        " + str(attack["range"]) + " ft. range increment"
+        if attack["notes"]:
+            outstring += "\n        " + attack["notes"]
         outstring += "\n    "
     outstring += "\n    Armor:\n\n"
 
@@ -566,22 +566,22 @@ elif subcommand == "add":
         else:
             print("\n    Something went wrong; new item not added properly; aborting\n")
     elif target == "attack":
-        new_attack = character.addAttack(name = args.name,
-                                         attackType = args.attackType,
-                                         damageType = args.damageType,
-                                         damage = args.damage,
-                                         critRoll = args.critRoll,
-                                         critMulti = args.critMulti,
-                                         notes = args.notes,
-                                         range_ = args.range)
-        if new_attack.name == args.name and \
-           new_attack.attackType == args.attackType and \
-           new_attack.damageType == args.damageType and \
-           new_attack.damage == args.damage and \
-           new_attack.critRoll == args.critRoll and \
-           new_attack.critMulti == args.critMulti and \
-           new_attack.range == args.range and \
-           new_attack.notes == args.notes:
+        new_attack = character.add_attack(name = args.name,
+                                          attackType = args.attackType,
+                                          damageType = args.damageType,
+                                          damage = args.damage,
+                                          critRoll = args.critRoll,
+                                          critMulti = args.critMulti,
+                                          notes = args.notes,
+                                          range_ = args.range)
+        if new_attack["name"] == args.name and \
+           new_attack["attackType"] == args.attackType and \
+           new_attack["damageType"] == args.damageType and \
+           new_attack["damage"] == args.damage and \
+           new_attack["critRoll"] == args.critRoll and \
+           new_attack["critMulti"] == args.critMulti and \
+           new_attack["range"] == args.range and \
+           new_attack["notes"] == args.notes:
             dataChanged = True
             print(getCombatString(character))
             print("\n    Attack added\n")
@@ -792,9 +792,9 @@ elif subcommand == "edit":
             updates["range_"] = args.range
         if args.notes:
             updates["notes"] = args.notes
-        updated_attack = character.updateAttack(name = args.name,
-                                                data = updates)
-        # If updateAttack() returned "None," it means that there was no 
+        updated_attack = character.update_attack(name = args.name,
+                                                 data = updates)
+        # If update_attack() returned "None," it means that there was no 
         # matching attack with the name given
         if updated_attack == None:
             print("\n    No matching attack with the name given; aborting\n")
@@ -805,10 +805,10 @@ elif subcommand == "edit":
             for item in updates.keys():
                 # Range is special
                 if item == "range_":
-                    if updates["range_"] != getattr(updated_attack, "range"):
+                    if updates["range_"] != updated_attack["range"]:
                         success = False
                 else:
-                    if updates[item] != getattr(updated_attack, item):
+                    if updates[item] != updated_attack[item]:
                         success = False
             if success:
                 dataChanged = True
