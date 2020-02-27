@@ -3,7 +3,6 @@ from pythfinder.CharacterArmor import CharacterArmor
 from pythfinder.CharacterAttack import CharacterAttack
 from pythfinder.CharacterClass import CharacterClass
 from pythfinder.CharacterEquipment import CharacterEquipment
-from pythfinder.CharacterSpell import CharacterSpell
 
 # These vars are used for skill initialization
 _allowed_skill_names = (
@@ -591,12 +590,12 @@ class Character:
     #
     # returns the newly created spell
     def add_spell(self,
-                 name = "",
-                 level = 0,
-                 description = "",
-                 prepared = 0,
-                 cast = 0,
-                 data = {}):
+                  name = "",
+                  level = 0,
+                  description = "",
+                  prepared = 0,
+                  cast = 0,
+                  data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
         new_level = data["level"] if "level" in keys else level
@@ -758,13 +757,13 @@ class Character:
     # arguments or a dictionary
     #
     # returns the updated spell 
-    def updateSpell(self,
-                    name = None,
-                    level = None,
-                    description = None,
-                    prepared = None,
-                    cast = None,
-                    data = {}):
+    def update_spell(self,
+                     name = None,
+                     level = None,
+                     description = None,
+                     prepared = None,
+                     cast = None,
+                     data = {}):
         keys = data.keys()
         if "name" in keys:
             name = data["name"]
@@ -779,7 +778,7 @@ class Character:
         # Lazy selection; if there are duplicates, this will just pick 
         # up the first one that shows up
         for spell in self.spells:
-            if spell.name == name:
+            if spell["name"] == name:
                 target_spell = spell
                 break
         try:
@@ -788,10 +787,10 @@ class Character:
             return None
         else:
             # Ignore empty parameters
-            target_spell.level = level or target_spell.level
-            target_spell.description = description or target_spell.description
-            target_spell.prepared = prepared or target_spell.prepared
-            target_spell.cast = cast or target_spell.cast
+            target_spell["level"] = level or target_spell["level"]
+            target_spell["description"] = description or target_spell["description"]
+            target_spell["prepared"] = prepared or target_spell["prepared"]
+            target_spell["cast"] = cast or target_spell["cast"]
             return target_spell
 
     # Update an existing attack based on name; supports either named 
