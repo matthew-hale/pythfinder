@@ -65,7 +65,10 @@ def getSkillString(c):
         else:
             outstring += "   "
         total = c.get_skill_value(skill)
-        outstring += "{}: {}".format(skill, total)
+        if skill == "Craft" or skill == "Profession":
+            outstring += "{} ({}): {}".format(skill, c.skills[skill]["notes"], total)
+        else:
+            outstring += "{}: {}".format(skill, total)
         if c.skills[skill]["rank"] == 0:
             outstring += " - (untrained)"
     outstring += "\n"
