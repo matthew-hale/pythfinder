@@ -414,7 +414,7 @@ class Character:
             total += 3
         total += current_skill["rank"]
         total += sum(current_skill["misc"])
-        total += self.getAbilityMod(self.abilities.get_total_value(current_skill["mod"]))
+        total += self.getAbilityMod(self.get_total_ability_value(current_skill["mod"]))
         return total
 
     # Returns the base ability score given an ability string
