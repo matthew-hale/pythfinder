@@ -376,11 +376,12 @@ class Character:
 
     # Returns the character's calculated AC value
     def get_total_AC(self):
-        total_dex_mod = self.getAbilityMod(self.get_total_ability_value)
+        total_dex_mod = self.getAbilityMod(self.get_total_ability_value("dex"))
         total_armor_bonus = 0
         for item in self.armor:
             total_armor_bonus += item["acBonus"]
-        ac_total = 10 + total_dex_mod + total_armor_bonus + sum(self.AC["misc"])
+        total_AC_mods = sum(self.AC) or 0
+        ac_total = sum([10, total_dex_mod, total_armor_bonus, total_AC_mods])
         return ac_total
 
     # Returns a dict containing keys for each level of spell present in the 
@@ -978,7 +979,7 @@ class Character:
         if not name in allowed_values:
             raise ValueError("Character().update_ability: name must be one of " + allowed_values)
         else:
-            target_ability = self.abilities["name"]
+            target_ability = self.abilities[name]
         # Ignore empty parameters
         target_ability["base"] = base or target_ability["base"]
         return target_ability
