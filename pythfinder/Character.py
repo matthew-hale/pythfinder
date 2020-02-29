@@ -791,6 +791,7 @@ class Character:
     # returns the updated item 
     def update_item(self,
                     name = "",
+                    new_name = "",
                     weight = None,
                     count = None,
                     pack = None,
@@ -798,6 +799,7 @@ class Character:
                     data = {}):
         keys = data.keys()
         name = data["name"] if "name" in keys else name
+        new_name = data["new_name"] if "new_name" in keys else new_name
         weight = data["weight"] if "weight" in keys else weight
         pack = data["pack"] if "pack" in keys else pack
         count = data["count"] if "count" in keys else count
@@ -819,6 +821,7 @@ class Character:
                 target_item["weight"] = weight
             if count != None:
                 target_item["count"] = count
+            target_item["name"] = new_name or target_item["name"]
             target_item["notes"] = notes or target_item["notes"]
             # Pack is special
             if pack != None:
@@ -831,6 +834,7 @@ class Character:
     # returns the updated spell 
     def update_spell(self,
                      name = None,
+                     new_name = "",
                      level = None,
                      description = None,
                      prepared = None,
@@ -839,6 +843,7 @@ class Character:
         keys = data.keys()
         if "name" in keys:
             name = data["name"]
+        new_name = data["new_name"] if "new_name" in keys else new_name
         if "level" in keys:
             level = data["level"]
         if "description" in keys:
@@ -859,6 +864,7 @@ class Character:
             return None
         else:
             # Ignore empty parameters
+            target_spell["name"] = new_name or target_spell["name"]
             target_spell["level"] = level or target_spell["level"]
             target_spell["description"] = description or target_spell["description"]
             target_spell["prepared"] = prepared or target_spell["prepared"]
@@ -871,6 +877,7 @@ class Character:
     # returns the updated armor
     def update_armor(self,
                      name = None,
+                     new_name = "",
                      acBonus = None,
                      acPenalty = None,
                      maxDexBonus = None,
@@ -880,6 +887,7 @@ class Character:
         keys = data.keys()
         if "name" in keys:
             name = data["name"]
+        new_name = data["new_name"] if "new_name" in keys else new_name
         if "acBonus" in keys:
             acBonus = data["acBonus"]
         if "acPenalty" in keys:
@@ -902,7 +910,7 @@ class Character:
             return None
         else:
             # Ignore empty parameters
-            target_armor["name"] = name or target_armor["name"]
+            target_armor["name"] = new_name or target_armor["name"]
             target_armor["acBonus"] = acBonus or target_armor["acBonus"]
             target_armor["acPenalty"] = acPenalty or target_armor["acPenalty"]
             target_armor["maxDexBonus"] = maxDexBonus or target_armor["maxDexBonus"]
@@ -916,6 +924,7 @@ class Character:
     # returns the updated attack 
     def update_attack(self,
                       name = None,
+                      new_name = "",
                       attackType = None,
                       damageType = None,
                       damage = None,
@@ -927,6 +936,7 @@ class Character:
         keys = data.keys()
         if "name" in keys:
             name = data["name"]
+        new_name = data["new_name"] if "new_name" in keys else new_name
         if "attackType" in keys:
             attackType = data["attackType"]
         if "damageType" in keys:
@@ -953,6 +963,7 @@ class Character:
             return None
         else:
             # Ignore empty parameters
+            target_attack["name"] = new_name or target_attack["name"]
             target_attack["attackType"] = attackType or target_attack["attackType"]
             target_attack["damageType"] = damageType or target_attack["damageType"]
             target_attack["damage"] = damage or target_attack["damage"]
