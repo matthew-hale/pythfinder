@@ -77,7 +77,7 @@ enforcement)
     character properties to be their own classes; their constructors 
     and methods could just be Character() methods. It would greatly 
     simplify a lot of the structure of this package.~~ - complete
-+ Add name enforcement for list properties
++ ~~Add name enforcement for list properties~~
 + Eventually:
     + Decoupling of input and data processing, converting outputs to 
     json format
