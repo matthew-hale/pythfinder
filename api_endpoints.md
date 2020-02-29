@@ -6,8 +6,8 @@ implementation of the pythfinder module.
 
 Supports:
 
-    + GET
-    + PATCH
++ GET
++ PATCH
 
 ### GET
 Returns the full character object that Flask is currently serving.
@@ -57,7 +57,7 @@ Returns the character's name property as plain text:
 
 Supports:
 
-    + GET
++ GET
 
 ### GET
 Returns the character's race property as plain text:
@@ -70,7 +70,7 @@ Returns the character's race property as plain text:
 
 Supports:
 
-    + GET
++ GET
 
 ### GET
 Returns the character's deity property as plain text:
@@ -83,7 +83,7 @@ Returns the character's deity property as plain text:
 
 Supports:
 
-    + GET
++ GET
 
 ### GET
 Returns the character's homeland property as plain text:
@@ -96,8 +96,8 @@ Returns the character's homeland property as plain text:
 
 Supports:
 
-    + GET
-    + PATCH
++ GET
++ PATCH
 
 ### GET
 Returns the chraacter's speed properties:
