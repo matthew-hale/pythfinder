@@ -368,6 +368,15 @@ class Character:
         output["hp"] = self.hp
         return output
 
+    # Returns the character's calculated AC value
+    def get_total_AC(self):
+        total_dex_mod = self.getAbilityMod(self.get_total_ability_value)
+        total_armor_bonus = 0
+        for item in self.armor:
+            total_armor_bonus += item["acBonus"]
+        ac_total = 10 + total_dex_mod + total_armor_bonus + sum(self.AC["misc"])
+        return ac_total
+
     # Returns a dict containing keys for each level of spell present in the 
     # character's list of spells. Within each key, the spells are sorted by 
     # name.
