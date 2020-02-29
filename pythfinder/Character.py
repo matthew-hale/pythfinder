@@ -102,6 +102,12 @@ class Character:
 
         # Complex object members
 
+        # AC modifiers
+        self.AC = []
+        if "AC" in keys:
+            for item in data["AC"]:
+                self.AC.append(item)
+
         # Speed initialization
         if "speed" in keys:
             data_keys = data["speed"].keys()
