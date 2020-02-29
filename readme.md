@@ -66,7 +66,7 @@ enforcement)
     + display all modifiers
     + show the rolls and modifiers for hits and damage
     + track enhancement bonus / masterwork status
-    + (AC) show touch/flat footed and all the modifiers
+    + ~~(AC) show touch/flat footed and all the modifiers~~
 + implement spells like equipment and attacks:
     + ~~spells get tracked in the character.spells list~~
     + damaging spells can get added to the spell attack list, like 
