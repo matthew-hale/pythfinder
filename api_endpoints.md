@@ -47,10 +47,10 @@ Supports:
 + GET
 
 ### GET
-Returns the character's name property as plain text:
+Returns the character's name property as a single JSON string:
 
 ```
-<name>
+"<name>"
 ```
 
 ## /character/race
@@ -60,10 +60,10 @@ Supports:
 + GET
 
 ### GET
-Returns the character's race property as plain text:
+Returns the character's race property as a single JSON string:
 
 ```
-<race>
+"<race>"
 ```
 
 ## /character/deity
@@ -73,10 +73,10 @@ Supports:
 + GET
 
 ### GET
-Returns the character's deity property as plain text:
+Returns the character's deity property as a single JSON string:
 
 ```
-<deity>
+"<deity>"
 ```
 
 ## /character/homeland
@@ -86,10 +86,10 @@ Supports:
 + GET
 
 ### GET
-Returns the character's homeland property as plain text:
+Returns the character's homeland property as a single JSON string:
 
 ```
-<homeland>
+"<homeland>"
 ```
 
 ## /character/speed
@@ -114,11 +114,11 @@ Returns the chraacter's speed properties:
 ```
 
 Accepts a `type` parameter, which will subsequently return only the 
-specified property, as plain text:
+specified property, as a single JSON string:
 
 GET /character/speed?type=base
 ```
-<base>
+"<base>"
 ```
 
 ### PATCH
@@ -129,4 +129,43 @@ Accepts json:
     "base": <new base>,
     "swim": <new swim>
 }
+```
+
+## /character/CMB
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's CMB property as a single JSON string:
+
+```
+"<CMB>"
+```
+
+## /character/CMD
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's CMD property as a single JSON string:
+
+```
+"<CMD>"
+```
+
+## /character/initiativeMods
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's initiativeMods property as json:
+
+```
+[<mod1>,<mod2>]
 ```
