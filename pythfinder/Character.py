@@ -101,6 +101,8 @@ class Character:
         self.gold = data["gold"] if "gold" in keys else 0
 
         # Complex object members
+
+        # Speed initialization
         if "speed" in keys:
             data_keys = data["speed"].keys()
             self.speed = {
@@ -295,6 +297,8 @@ class Character:
                 "useUntrained": False if skill_name in _trained_only else True
             }
 
+        # Spells, attacks, and armor are all collections of 
+        # dictionaries; their initialization is pretty boring
         self.spells = []
         if "spells" in keys:
             for item in data["spells"]:
