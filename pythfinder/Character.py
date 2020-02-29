@@ -472,6 +472,9 @@ class Character:
                   data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
+        # Validate that new_name is not null or empty
+        if new_name == None or new_name == "":
+            raise ValueError("add_class: name must not be null or empty")
         new_archetypes = data["archetypes"] if "archetypes" in keys else archetypes
         new_level = data["level"] if "level" in keys else level
         new_class = {
@@ -493,6 +496,9 @@ class Character:
                  data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
+        # Validate that new_name is not null or empty
+        if new_name == None or new_name == "":
+            raise ValueError("add_feat: name must not be null or empty")
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
         new_feat = {
@@ -514,6 +520,9 @@ class Character:
                   data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
+        # Validate that new_name is not null or empty
+        if new_name == None or new_name == "":
+            raise ValueError("add_trait: name must not be null or empty")
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
         new_trait = {
@@ -535,6 +544,9 @@ class Character:
                     data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
+        # Validate that new_name is not null or empty
+        if new_name == None or new_name == "":
+            raise ValueError("add_special: name must not be null or empty")
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
         new_special = {
@@ -558,6 +570,9 @@ class Character:
                  data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
+        # Validate that new_name is not null or empty
+        if new_name == None or new_name == "":
+            raise ValueError("add_item: name must not be null or empty")
         new_weight = data["weight"] if "weight" in keys else weight
         new_count = data["count"] if "count" in keys else count
         new_pack = data["pack"] if "pack" in keys else pack
@@ -588,6 +603,9 @@ class Character:
                    data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
+        # Validate that new_name is not null or empty
+        if new_name == None or new_name == "":
+            raise ValueError("add_attack: name must not be null or empty")
         new_attackType = data["attackType"] if "attackType" in keys else attackType
         new_damageType = data["damageType"] if "damageType" in keys else damageType
         new_damage = data["damage"] if "damage" in keys else damage
@@ -622,6 +640,9 @@ class Character:
                   data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
+        # Validate that new_name is not null or empty
+        if new_name == None or new_name == "":
+            raise ValueError("add_armor: name must not be null or empty")
         new_acBonus = data["acBonus"] if "acBonus" in keys else acBonus
         new_acPenalty = data["acPenalty"] if "acPenalty" in keys else acPenalty
         new_maxDexBonus = data["maxDexBonus"] if "maxDexBonus" in keys else maxDexBonus
@@ -651,6 +672,9 @@ class Character:
                   data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
+        # Validate that new_name is not null or empty
+        if new_name == None or new_name == "":
+            raise ValueError("add_spell: name must not be null or empty")
         new_level = data["level"] if "level" in keys else level
         new_description = data["description"] if "description" in keys else description
         new_prepared = data["prepared"] if "prepared" in keys else prepared
