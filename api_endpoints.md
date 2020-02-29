@@ -44,7 +44,7 @@ Accepts json:
 
 Supports:
 
-    + GET
++ GET
 
 ### GET
 Returns the character's name property as plain text:
