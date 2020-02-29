@@ -100,7 +100,8 @@ def getCombatString(c):
 
     for item in c.armor:
         outstring += "    {}: ({} armor)\n        AC Bonus: {}, Max Dex Bonus: {}, Armor Check Penalty: {}, Spell Failure Chance: {}%\n\n".format(item["name"],item["type"],item["acBonus"],item["maxDexBonus"],item["acPenalty"],item["arcaneFailureChance"])
-    outstring += "    AC Calculation: 10 + Dex Bonus + AC Bonus\n\n"
+    outstring += "    AC Calculation: 10 + Dex Bonus + Armor Bonus + Misc. bonuses\n"
+    outstring += "    AC: {}\n\n".format(str(c.get_total_AC()))
 
     outstring += "    CMD: {}\n".format(str(sum([10,
                                                  c.baseAttackBonus[0],
