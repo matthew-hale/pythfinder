@@ -72,11 +72,11 @@ enforcement)
     + damaging spells can get added to the spell attack list, like 
     weapon attacks
     + show damage, cast time, duration (if applicable)
-+ Refactor classes into single Character class
-    + Thinking about it more, it doesn't make sense for all of these 
++ ~~Refactor classes into single Character class~~
+    + ~~Thinking about it more, it doesn't make sense for all of these 
     character properties to be their own classes; their constructors 
     and methods could just be Character() methods. It would greatly 
-    simplify a lot of the structure of this package.
+    simplify a lot of the structure of this package.~~ - complete
 + Eventually:
     + Decoupling of input and data processing, converting outputs to 
     json format
