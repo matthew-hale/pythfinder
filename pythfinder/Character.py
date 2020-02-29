@@ -375,11 +375,21 @@ class Character:
         return output
 
     # Returns the character's calculated AC value
-    def get_total_AC(self):
+    def get_total_AC(self,
+                     flat_footed = False,
+                     touch = False):
         total_dex_mod = self.getAbilityMod(self.get_total_ability_value("dex"))
+        # Flat footed sets dex bonus to 0
+        if flat_footed:
+            total_dex_mod = 0
         total_armor_bonus = 0
         for item in self.armor:
             total_armor_bonus += item["acBonus"]
+        # Touch sets armor bonuses to 0
+        if touch:
+            total_armor_bonus = 0
+        # If there are no modifiers to AC in the character, this 
+        # defaults to 0
         total_AC_mods = sum(self.AC) or 0
         ac_total = sum([10, total_dex_mod, total_armor_bonus, total_AC_mods])
         return ac_total
