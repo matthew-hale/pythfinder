@@ -1,0 +1,18 @@
+#!/bin/python3
+
+
+import pythfinder as pf
+from flask import Flask
+
+c = pf.Character()
+c.name = "Test character"
+
+app = Flask(__name__)
+
+@app.route("/")
+def hey():
+    return "Browse to /character to view character json"
+
+@app.route("/character")
+def character():
+    return c.getJson()
