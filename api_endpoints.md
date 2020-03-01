@@ -596,3 +596,250 @@ POST /character/equipment
     "notes": "Illuminates a small area"
 }
 ```
+
+## /character/saving_throws
+Supports:
+
++ GET
++ PATCH
+
+### GET
+Returns the character's saving_throws property:
+
+```
+{
+    "fortitude": {
+        "base": 0,
+        "misc": []
+    },
+    "reflex": {
+        "base": 1,
+        "misc": []
+    },
+    "will": {
+        "base": 2,
+        "misc": []
+    }
+}
+```
+
+Accepts a `type` parameter to return a specific saving throw type:
+
+GET /character/saving_throws?type=fortitude
+```
+{
+    "base": 0,
+    "misc": []
+}
+```
+
+### PATCH
+Allows for updates to saving throws, by type:
+
+PATCH /character/saving_throws?type=will
+
+```
+{
+    "base": 5
+}
+```
+
+## /character/skills
+Supports:
+
++ GET
++ PATCH
+
+### GET
+Returns the character's skills property:
+
+```
+{
+    "Acrobatics": {
+        "name": "Acrobatics",
+        ...
+    }
+    ...
+}
+```
+
+Accepts parameters to filter results:
+
+GET /character/skills?name=Fly
+```
+{
+    "name": "Fly",
+    "rank": 0,
+    "isClass": false,
+    "notes": "",
+    "misc": [],
+    "mod": dex,
+    "useUntrained": true
+}
+```
+
+GET /character/skills?rank=5
+```
+[
+    {
+        "name": "Fly",
+        "rank": 5,
+        "isClass": false,
+        "notes": "",
+        "misc": [],
+        "mod": dex,
+        "useUntrained": true
+    },
+    {
+        "name": "Acrobatics",
+        "rank": 5,
+        "isClass": false,
+        "notes": "",
+        "misc": [],
+        "mod": dex,
+        "useUntrained": true
+    },
+]
+```
+
+### PATCH
+Allows for updates to specific skills, by name:
+
+PATCH /character/skills?name=Heal
+```
+{
+    "rank": 5,
+    "misc": [2, 4]
+}
+```
+
+## /character/attacks
+Supports:
+
++ GET
++ PATCH
++ POST
+
+### GET
+Returns the character's attacks in a list:
+
+```
+[
+    {
+        "name": "",
+        "attackType": "",
+        ...
+    },
+    ...
+]
+```
+
+Accepts parameters to filter results:
+
+GET /character/attacks?name=Spear&damage=1d8
+```
+{
+    "name": "spear",
+    "attackType": "melee",
+    "damageType": "piercing",
+    "damage": "1d8",
+    "critRoll": 19,
+    "critMulti": 2,
+    "range": 0,
+    "notes": ""
+}
+```
+
+### PATCH
+Allows updates to specific attacks by name:
+
+PATCH /character/attacks?name=Spear
+```
+{
+    "critMulti": 3
+}
+```
+
+### POST
+Allows creation of new attacks:
+
+POST /character/attacks
+```
+{
+    "name": "Longsword",
+    "attackType": "melee",
+    "damageType": "slashing, piercing",
+    "damage": "1d8",
+    "critRoll": 19,
+    "critMulti": 2,
+    "range": 0,
+    "notes": ""
+}
+```
+
+## /character/armor
+Supports:
+
++ GET
++ PATCH
++ POST
+
+### GET
+Returns the character's armor property as a list:
+
+```
+[
+    {
+        "name": "Chainmail",
+        ...
+    },
+    ...
+]
+```
+
+### PATCH
+Allows updates to specific armor by name:
+
+PATCH /character/armor?name=Chainmail
+```
+{
+    "acPenalty": 2,
+    "acBonus": 6
+}
+```
+
+Accepts parameters to filter results:
+
+GET /character/armor?acBonus=6&acPenalty=2
+```
+{
+    "name": "Chainmail",
+    "acBonus": 6,
+    "acPenalty": 2,
+    "maxDexBonus": 0,
+    "arcaneFailureChance": 25,
+    "type": "medium"
+}
+```
+
+### POST
+Allows creation of new armor:
+
+POST /character/armor
+```
+{
+    "name": "Full Plate",
+    "acBonus": 5,
+    "acPenalty": 5,
+    "maxDexBonus": 5,
+    "arcaneFailureChance": 25,
+    "type": "heavy"
+}
+```
+
+## /character/spells
+Supports:
+
++ GET
++ PATCH
++ POST
