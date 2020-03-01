@@ -18,3 +18,7 @@ def hey():
 @app.route("/character")
 def character():
     return c.getJson()
+
+@app.route("/character/name")
+def character_name():
+    return c.name
