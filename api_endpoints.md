@@ -2,6 +2,22 @@
 This document describes the API endpoint structure for the Flask 
 implementation of the pythfinder module.
 
+## A note on names
+The pythfinder module enforces unique names for collection properties, 
+like equipment, attacks, spells, etc. This is to ensure that things 
+like update\_feat only affect a single resource, and that the selection 
+is not ambiguous or arbitrary. Now, I _could_ use UUIDs, but I figured 
+unique names would be easier to reason about and implement, for both 
+myself and users.
+
+## A note on collections
+Many properties in the Character class are represented as lists, 
+containing multiple different entries of dictionaries. Examples include 
+equipment, attacks, spells, etc. With these properties, the results 
+of a GET request will always be returned as a list, even if the request 
+only returns one result. This simplifies the implementation on both 
+ends, as you can always assume the result is iterable.
+
 ## /character
 
 Supports:
@@ -168,4 +184,76 @@ Returns the character's initiativeMods property as json:
 
 ```
 [<mod1>,<mod2>]
+```
+
+## /character/classes
+
+Supports:
+
++ GET
++ PATCH
+
+### GET
+Returns the character's classes as json:
+
+```
+[
+    {
+        <class>
+    },
+    {
+        <class>
+    }
+]
+```
+
+Supports parameters to filter results:
+
+GET /character/classes?name=Fighter&level=5
+```
+[
+    {
+        "name": "Fighter",
+        "archetypes": [],
+        "level": 5
+    }
+]
+```
+
+(`archetypes` is like a "contains" operation, as it's a list of strings)
+GET /character/classes?name=Fighter&archetypes=Pack Mule&level=2
+```
+[
+    {
+        "name": "Fighter",
+        "archetypes": [
+            "Pack Mule",
+            "Child of War"
+        ],
+        "level": 2
+    }
+]
+```
+
+### PATCH
+Allows changes to classes, specified by name:
+
+PATCH /character/classes?name=Fighter
+```
+{
+    "level": 3
+}
+```
+
+## /character/AC
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's AC property:
+
+```
+[4, 1, -2]
 ```
