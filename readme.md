@@ -11,9 +11,13 @@ It's got lots of rough edges.
 ## Requirements
 
 + python
-+ a character sheet in JSON format (copy the template to get started; 
-future versions will have character sheet generators, as well as format 
-enforcement)
++ a character sheet in JSON format
+
+To get a character sheet, you can either copy the template in 
+data/template.json, or generate a blank one using either the cli 
+script, or by writing your own script using the 
+`pythfinder.writeCharacter()` function to save the output of 
+`pythfinder.Character()` to a file.
 
 ## Roadmap
 
