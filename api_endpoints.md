@@ -192,6 +192,7 @@ Supports:
 
 + GET
 + PATCH
++ POST
 
 ### GET
 Returns the character's classes as json:
@@ -245,6 +246,20 @@ PATCH /character/classes?name=Fighter
 }
 ```
 
+### POST
+Allows creation of classes:
+
+POST /character/classes
+```
+{
+    "name": "Fighter",
+    "archetypes": [
+        "Child of War"
+    ],
+    "level": 1
+}
+```
+
 ## /character/AC
 
 Supports:
@@ -252,8 +267,212 @@ Supports:
 + GET
 
 ### GET
-Returns the character's AC property:
+Returns the character's AC property as a list:
 
 ```
 [4, 1, -2]
+```
+
+## /character/alignment
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's alignment property as a single JSON string:
+
+```
+"<alignment>"
+```
+
+## /character/description
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's description property as a single JSON string:
+
+```
+"<description>"
+```
+
+## /character/height
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's height property as a single JSON string:
+
+```
+"<height>"
+```
+
+## /character/weight
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's weight property as a single JSON string:
+
+```
+"<weight>"
+```
+
+## /character/size
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's size property as a single JSON string:
+
+```
+"<size>"
+```
+
+## /character/age
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's age property as a single JSON string:
+
+```
+"<age>"
+```
+
+## /character/hair
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's hair property as a single JSON string:
+
+```
+"<hair>"
+```
+
+## /character/eyes
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's eyes property as a single JSON string:
+
+```
+"<eyes>"
+```
+
+## /character/languages
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's languages property as a list:
+
+```
+["<language>","<language>"]
+```
+
+## /character/abilities
+
+Supports:
+
++ GET
++ PATCH
+
+### GET
+Returns the character's abilities property:
+
+```
+{
+    "str": {
+        "base": 0,
+        "mods": []
+    },
+    "dex": {
+        "base": 1,
+        "mods": []
+    },
+    "con": {
+        "base": 2,
+        "mods": []
+    },
+    "int": {
+        "base": 3,
+        "mods": []
+    },
+    "wis": {
+        "base": 4,
+        "mods": []
+    },
+    "cha": {
+        "base": 5,
+        "mods": []
+    }
+}
+```
+
+Supports an `ability` parameter to return a single ability:
+
+GET /character/abilities?ability=str
+```
+{
+    "base": 0,
+    "mods": []
+}
+```
+
+## /character/hp
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's HP property:
+
+```
+{
+    "max": 0,
+    "current": 0,
+    "temporary": 0,
+    "nonlethal": 0
+}
+```
+
+Accepts a `type` parameter to specify a specific HP property:
+
+GET /character/hp?type=max
+```
+"0"
+```
+
+## /character/baseAttackBonus
+
+Supports:
+
++ GET
+
+### GET
+Returns the character's baseAttackBonus property as a list:
+
+```
+[11, 6, 1]
 ```
