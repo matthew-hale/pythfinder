@@ -750,6 +750,9 @@ class Character:
         keys = data.keys()
         name = data["name"] if "name" in keys else name
         new_name = data["new_name"] if "new_name" in keys else new_name
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "feats"):
+            raise ValueError("update_feat: name must be unique among feats")
         description = data["description"] if "description" in keys else description
         notes = data["notes"] if "notes" in keys else notes
         # Lazy selection; if there are duplicates, this will just pick 
@@ -782,6 +785,9 @@ class Character:
         keys = data.keys()
         name = data["name"] if "name" in keys else name
         new_name = data["new_name"] if "new_name" in keys else new_name
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "traits"):
+            raise ValueError("update_trait: name must be unique among traits")
         description = data["description"] if "description" in keys else description
         notes = data["notes"] if "notes" in keys else notes
         # Lazy selection; if there are duplicates, this will just pick 
@@ -814,6 +820,9 @@ class Character:
         keys = data.keys()
         name = data["name"] if "name" in keys else name
         new_name = data["new_name"] if "new_name" in keys else new_name
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "special"):
+            raise ValueError("update_special: name must be unique among specials")
         description = data["description"] if "description" in keys else description
         notes = data["notes"] if "notes" in keys else notes
         # Lazy selection; if there are duplicates, this will just pick 
@@ -848,6 +857,9 @@ class Character:
         keys = data.keys()
         name = data["name"] if "name" in keys else name
         new_name = data["new_name"] if "new_name" in keys else new_name
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "equipment"):
+            raise ValueError("update_item: name must be unique among equipment")
         weight = data["weight"] if "weight" in keys else weight
         pack = data["pack"] if "pack" in keys else pack
         count = data["count"] if "count" in keys else count
@@ -892,6 +904,9 @@ class Character:
         if "name" in keys:
             name = data["name"]
         new_name = data["new_name"] if "new_name" in keys else new_name
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "spells"):
+            raise ValueError("update_spell: name must be unique among spells")
         if "level" in keys:
             level = data["level"]
         if "description" in keys:
@@ -936,6 +951,9 @@ class Character:
         if "name" in keys:
             name = data["name"]
         new_name = data["new_name"] if "new_name" in keys else new_name
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "armor"):
+            raise ValueError("update_armor: name must be unique among armor")
         if "acBonus" in keys:
             acBonus = data["acBonus"]
         if "acPenalty" in keys:
@@ -985,6 +1003,9 @@ class Character:
         if "name" in keys:
             name = data["name"]
         new_name = data["new_name"] if "new_name" in keys else new_name
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "attacks"):
+            raise ValueError("update_attack: name must be unique among attacks")
         if "attackType" in keys:
             attackType = data["attackType"]
         if "damageType" in keys:
