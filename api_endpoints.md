@@ -222,7 +222,7 @@ GET /character/classes?name=Fighter&level=5
 ```
 
 (`archetypes` is like a "contains" operation, as it's a list of strings)
-GET /character/classes?name=Fighter&archetypes=Pack Mule&level=2
+GET /character/classes?name=Fighter&archetypes=Pack%20Mule&level=2
 ```
 [
     {
@@ -475,4 +475,124 @@ Returns the character's baseAttackBonus property as a list:
 
 ```
 [11, 6, 1]
+```
+
+## /character/special
+
+Supports:
+
++ GET
++ PATCH
++ POST
+
+### GET
+Returns the character's special abilities as a list:
+
+```
+[
+    {
+        "name": "",
+        "description": "",
+        "notes": ""
+    }
+]
+```
+
+Supports parameters to filter results:
+
+GET /character/special?name=Special%20beam%20cannon&description=bwaoaoaoaoaom
+```
+[
+    {
+        "name": "Special beam cannon",
+        "description": "bwaoaoaoaoaom",
+        "notes": ""
+    }
+]
+```
+
+### PATCH
+Allows changes to special abilities, specified by name:
+
+PATCH /character/special?name=Special%20beam%20cannon
+```
+{
+    "notes": "new ability notes"
+}
+```
+
+### POST
+Allows creation of new special abilities:
+
+POST /character/special
+```
+{
+    "name": "Solar flare",
+    "description": "Blinds everyone in a huge radius",
+    "notes": "Super annoying"
+}
+```
+
+## /character/traits
+As special
+
+## /character/feats
+As special
+
+## /character/gold
+Supports:
+
++ GET
+
+### GET
+Returns the character's gold property as a single JSON string:
+
+```
+"<gold>"
+```
+
+## /character/equipment
+Supports:
+
++ GET
++ PATCH
++ POST
+
+### GET
+Returns the character's equipment property as a list:
+
+```
+[
+    {
+        "name": "",
+        "weight": 0,
+        "count": 0,
+        "pack": false,
+        "notes": ""
+    }
+]
+```
+
+### PATCH
+Allows updates to items specified by name:
+
+PATCH /character/equipment?name=Torch
+```
+{
+    "count": 12
+}
+```
+
+### POST
+Allows creation of new items:
+
+POST /character/equipment
+```
+{
+    "name": "Candle",
+    "weight": -,
+    "count": 10,
+    "pack": true,
+    "notes": "Illuminates a small area"
+}
 ```
