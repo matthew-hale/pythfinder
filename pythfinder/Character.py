@@ -461,6 +461,30 @@ class Character:
             raise ValueError("ability must be one of " + ability_strings)
         return sum(self.abilities[ability]["misc"], self.abilities[ability]["base"])
 
+    # Checks that the given name string is unique among the collection 
+    # contained within the property name
+    def is_unique_name(self,
+                       name,
+                       prop):
+        allowed_props = ("classes",
+                         "special",
+                         "traits",
+                         "feats",
+                         "equipment",
+                         "attacks",
+                         "armor",
+                         "spells")
+        if not prop in allowed_props:
+            raise ValueError("check_unique_name: prop must be one of " + str(allowed_props))
+        # Gather names from the given property, and check if 'name' is 
+        # in the collection. If it is, it's not unique, and the 
+        # function returns False; otherwise, it returns True.
+        current_names = [item["name"] for item in getattr(self, prop)]
+        if name in current_names:
+            return False
+        else:
+            return True
+
     # Add a new class to the character; supports either named arguments 
     # or a dictionary
     #
