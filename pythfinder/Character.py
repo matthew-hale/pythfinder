@@ -499,6 +499,9 @@ class Character:
         # Validate that new_name is not null or empty
         if new_name == None or new_name == "":
             raise ValueError("add_class: name must not be null or empty")
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "classes"):
+            raise ValueError("add_class: name must be unique among classes")
         new_archetypes = data["archetypes"] if "archetypes" in keys else archetypes
         new_level = data["level"] if "level" in keys else level
         new_class = {
@@ -523,6 +526,9 @@ class Character:
         # Validate that new_name is not null or empty
         if new_name == None or new_name == "":
             raise ValueError("add_feat: name must not be null or empty")
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "feats"):
+            raise ValueError("add_feat: name must be unique among feats")
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
         new_feat = {
@@ -547,6 +553,9 @@ class Character:
         # Validate that new_name is not null or empty
         if new_name == None or new_name == "":
             raise ValueError("add_trait: name must not be null or empty")
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "traits"):
+            raise ValueError("add_trait: name must be unique among traits")
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
         new_trait = {
@@ -571,6 +580,9 @@ class Character:
         # Validate that new_name is not null or empty
         if new_name == None or new_name == "":
             raise ValueError("add_special: name must not be null or empty")
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "special"):
+            raise ValueError("add_special: name must be unique among specials")
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
         new_special = {
@@ -597,6 +609,9 @@ class Character:
         # Validate that new_name is not null or empty
         if new_name == None or new_name == "":
             raise ValueError("add_item: name must not be null or empty")
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "equipment"):
+            raise ValueError("add_item: name must be unique among equipment")
         new_weight = data["weight"] if "weight" in keys else weight
         new_count = data["count"] if "count" in keys else count
         new_pack = data["pack"] if "pack" in keys else pack
@@ -630,6 +645,9 @@ class Character:
         # Validate that new_name is not null or empty
         if new_name == None or new_name == "":
             raise ValueError("add_attack: name must not be null or empty")
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "attacks"):
+            raise ValueError("add_attack: name must be unique among attacks")
         new_attackType = data["attackType"] if "attackType" in keys else attackType
         new_damageType = data["damageType"] if "damageType" in keys else damageType
         new_damage = data["damage"] if "damage" in keys else damage
@@ -667,6 +685,9 @@ class Character:
         # Validate that new_name is not null or empty
         if new_name == None or new_name == "":
             raise ValueError("add_armor: name must not be null or empty")
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "armor"):
+            raise ValueError("add_armor: name must be unique among armor")
         new_acBonus = data["acBonus"] if "acBonus" in keys else acBonus
         new_acPenalty = data["acPenalty"] if "acPenalty" in keys else acPenalty
         new_maxDexBonus = data["maxDexBonus"] if "maxDexBonus" in keys else maxDexBonus
@@ -699,6 +720,9 @@ class Character:
         # Validate that new_name is not null or empty
         if new_name == None or new_name == "":
             raise ValueError("add_spell: name must not be null or empty")
+        # Validate that new_name is unique
+        if not c.is_unique_name(name = new_name, prop = "spells"):
+            raise ValueError("add_spell: name must be unique among spells")
         new_level = data["level"] if "level" in keys else level
         new_description = data["description"] if "description" in keys else description
         new_prepared = data["prepared"] if "prepared" in keys else prepared
