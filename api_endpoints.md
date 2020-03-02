@@ -63,7 +63,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's name property as a single JSON string:
+Returns the character's name property as a string:
 
 ```
 "<name>"
@@ -76,7 +76,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's race property as a single JSON string:
+Returns the character's race property as a string:
 
 ```
 "<race>"
@@ -89,7 +89,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's deity property as a single JSON string:
+Returns the character's deity property as a string:
 
 ```
 "<deity>"
@@ -102,7 +102,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's homeland property as a single JSON string:
+Returns the character's homeland property as a string:
 
 ```
 "<homeland>"
@@ -130,7 +130,7 @@ Returns the chraacter's speed properties:
 ```
 
 Accepts a `type` parameter, which will subsequently return only the 
-specified property, as a single JSON string:
+specified property, as a string:
 
 GET /character/speed?type=base
 ```
@@ -154,7 +154,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's CMB property as a single JSON string:
+Returns the character's CMB property as a string:
 
 ```
 "<CMB>"
@@ -167,7 +167,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's CMD property as a single JSON string:
+Returns the character's CMD property as a string:
 
 ```
 "<CMD>"
@@ -239,7 +239,7 @@ GET /character/classes?name=Fighter&archetypes=Pack%20Mule&level=2
 ### PATCH
 Allows changes to classes, specified by name:
 
-PATCH /character/classes?name=Fighter
+PATCH /character/classes/name:Fighter
 ```
 {
     "level": 3
@@ -280,7 +280,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's alignment property as a single JSON string:
+Returns the character's alignment property as a string:
 
 ```
 "<alignment>"
@@ -293,7 +293,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's description property as a single JSON string:
+Returns the character's description property as a string:
 
 ```
 "<description>"
@@ -306,7 +306,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's height property as a single JSON string:
+Returns the character's height property as a string:
 
 ```
 "<height>"
@@ -319,7 +319,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's weight property as a single JSON string:
+Returns the character's weight property as a string:
 
 ```
 "<weight>"
@@ -332,7 +332,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's size property as a single JSON string:
+Returns the character's size property as a string:
 
 ```
 "<size>"
@@ -345,7 +345,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's age property as a single JSON string:
+Returns the character's age property as a string:
 
 ```
 "<age>"
@@ -358,7 +358,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's hair property as a single JSON string:
+Returns the character's hair property as a string:
 
 ```
 "<hair>"
@@ -371,7 +371,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's eyes property as a single JSON string:
+Returns the character's eyes property as a string:
 
 ```
 "<eyes>"
@@ -514,7 +514,7 @@ GET /character/special?name=Special%20beam%20cannon&description=bwaoaoaoaoaom
 ### PATCH
 Allows changes to special abilities, specified by name:
 
-PATCH /character/special?name=Special%20beam%20cannon
+PATCH /character/special/name:Special%20beam%20cannon
 ```
 {
     "notes": "new ability notes"
@@ -545,7 +545,7 @@ Supports:
 + GET
 
 ### GET
-Returns the character's gold property as a single JSON string:
+Returns the character's gold property as a string:
 
 ```
 "<gold>"
@@ -576,7 +576,7 @@ Returns the character's equipment property as a list:
 ### PATCH
 Allows updates to items specified by name:
 
-PATCH /character/equipment?name=Torch
+PATCH /character/equipment/name:Torch
 ```
 {
     "count": 12
@@ -705,7 +705,7 @@ GET /character/skills?rank=5
 ### PATCH
 Allows for updates to specific skills, by name:
 
-PATCH /character/skills?name=Heal
+PATCH /character/skills/name:Heal
 ```
 {
     "rank": 5,
@@ -753,7 +753,7 @@ GET /character/attacks?name=Spear&damage=1d8
 ### PATCH
 Allows updates to specific attacks by name:
 
-PATCH /character/attacks?name=Spear
+PATCH /character/attacks/name:Spear
 ```
 {
     "critMulti": 3
@@ -800,7 +800,7 @@ Returns the character's armor property as a list:
 ### PATCH
 Allows updates to specific armor by name:
 
-PATCH /character/armor?name=Chainmail
+PATCH /character/armor/name:Chainmail
 ```
 {
     "acPenalty": 2,
