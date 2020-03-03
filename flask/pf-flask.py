@@ -26,8 +26,10 @@ def character_name():
 
 @app.route("/character/equipment")
 def character_equipment():
-    args = request.args
-    if args:
+    if request.args:
+        return json.dumps(pf.filter_list(c.equipment, request.args))
+    else:
+        return json.dumps(c.equipment)
 
 @app.route("/character/equipment/name:<name>")
 def character_equipment_name(name):
