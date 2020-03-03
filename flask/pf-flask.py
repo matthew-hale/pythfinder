@@ -4,10 +4,11 @@
 import sys
 sys.path.append("/home/matt/pythfinder")
 import pythfinder as pf
-from flask import Flask
+import json
+from flask import Flask, abort, request
 
-c = pf.Character()
-c.name = "Test character"
+with open("/home/matt/pythfinder/test.json") as f:
+    c = pf.Character(json.load(f))
 
 app = Flask(__name__)
 
@@ -22,3 +23,19 @@ def character():
 @app.route("/character/name")
 def character_name():
     return c.name
+
+@app.route("/character/equipment")
+def character_equipment():
+    args = request.args
+    if args:
+
+@app.route("/character/equipment/name:<name>")
+def character_equipment_name(name):
+    out = None
+    for item in c.equipment:
+        if item["name"] == name:
+            out = json.dumps(item)
+    if not out:
+        abort(404)
+    else:
+        return out
