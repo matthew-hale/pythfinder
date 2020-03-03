@@ -23,6 +23,7 @@ def filter_list(items, filters):
         # Prevent breakage of for loop
         current_results = result.copy()
         for item in current_results:
-            if item[key] != filters[key]:
+            # String conversion due to API requirements
+            if str(item[key]) != filters[key]:
                 result.remove(item)
     return result
