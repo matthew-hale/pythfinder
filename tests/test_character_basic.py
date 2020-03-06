@@ -17,7 +17,7 @@ _character_data = {
     "alignment": "CN",
     "description": "test character description",
     "height": "180cm",
-    "weight": "95kg",
+    "weight": 125,
     "size": "M",
     "age": 100,
     "hair": "black",
