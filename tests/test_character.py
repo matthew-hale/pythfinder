@@ -23,7 +23,7 @@ _character_data = {
     "hair": "black",
     "eyes": "purple",
     "languages": ["common", "elven"],
-    "baseAttacBonus": [6, 1],
+    "baseAttackBonus": [6, 1],
     "gold": 10
 }
 
@@ -70,3 +70,8 @@ def test_character_keys():
     should = should_dict.keys()
     actual = _character.getDict().keys()
     assert should == actual
+
+# Are the character's basic properties what they should be?
+def test_character_properties():
+    for key in _character_data.keys():
+        assert getattr(_character, key) == _character_data[key]
