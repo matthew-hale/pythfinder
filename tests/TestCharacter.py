@@ -4,6 +4,9 @@
 import pythfinder as pf
 import unittest
 
+# Initialize a character with some data for the basic parameters, and 
+# test that character's initialization, comparing its properties with 
+# those specified.
 class TestCharacterInitialization(unittest.TestCase):
     def setUp(self):
         character_data = {
@@ -27,6 +30,8 @@ class TestCharacterInitialization(unittest.TestCase):
             "gold": 10
         }
         self.character = pf.Character(data = character_data)
+    # Are the keys of the character.getKeys() method the same as what 
+    # they should be, as defined by should_dict?
     def test_character_keys(self):
         should_dict = {
             "name": "",
