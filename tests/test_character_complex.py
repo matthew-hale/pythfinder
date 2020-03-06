@@ -53,3 +53,17 @@ _character = pf.Character(data = _character_data)
 # _character_data?
 def test_complex_properties():
     assert _character.abilities == _character_data["abilities"]
+
+# Add a feat to the character
+_feat_data = {
+    "name": "feat name",
+    "description": "description",
+    "notes": "notes"
+}
+
+_feat = _character.add_feat(data = _feat_data)
+
+# Is the feat that was added equal to the data we provided?
+def test_add_feat():
+    for key in _feat_data.keys():
+        assert _feat[key] == _feat_data[key]
