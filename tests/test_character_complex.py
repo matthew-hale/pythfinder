@@ -45,14 +45,7 @@ _character_data = {
         "temporary": 8,
         "nonlethal": 7
     },
-    "AC": [1, 2, 3],
-    "feats": [
-        {
-            "name": "name",
-            "description": "description",
-            "notes": "notes"
-        }
-    ]
+    "AC": [1, 2, 3]
 }
 
 _character = pf.Character(data = _character_data)
