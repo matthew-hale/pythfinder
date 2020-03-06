@@ -69,19 +69,3 @@ _character = pf.Character(data = _character_data)
 def test_complex_properties():
     for key in _character_data.keys():
         assert getattr(_character, key) == _character_data[key]
-
-
-# Does add_feat return what we expect?
-def test_add_feat():
-    # Add a feat to a character
-    feat_data = {
-        "name": "feat name",
-        "description": "description",
-        "notes": "notes"
-    }
-    
-    c = pf.Character()
-    feat = c.add_feat(data = feat_data)
-
-    for key in feat_data.keys():
-        assert feat[key] == feat_data[key]
