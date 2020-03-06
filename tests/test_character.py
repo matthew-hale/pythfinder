@@ -6,7 +6,7 @@ import pythfinder as pf
 # Initialize a character with some data for the basic parameters, and 
 # test that character's initialization, comparing its properties with 
 # those specified.
-character_data = {
+_character_data = {
     "name": "test name",
     "race": "human",
     "deity": "god",
@@ -27,7 +27,7 @@ character_data = {
     "gold": 10
 }
 
-character = pf.Character(data = character_data)
+_character = pf.Character(data = _character_data)
 
 # Are the keys of the character.getKeys() method the same as what 
 # they should be, as defined by should_dict?
@@ -68,5 +68,5 @@ def test_character_keys():
         "armor": ""
     }
     should = should_dict.keys()
-    actual = character.getDict().keys()
+    actual = _character.getDict().keys()
     assert should == actual
