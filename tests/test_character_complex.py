@@ -52,7 +52,8 @@ _character = pf.Character(data = _character_data)
 # Are the character's abilities, speed, and hp the same as the those in 
 # _character_data?
 def test_complex_properties():
-    assert _character.abilities == _character_data["abilities"]
+    for key in _character_data.keys():
+        assert getattr(_character, key) == _character_data[key]
 
 # Add a feat to the character
 _feat_data = {
