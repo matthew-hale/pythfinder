@@ -44,7 +44,15 @@ _character_data = {
         "current": 9,
         "temporary": 8,
         "nonlethal": 7
-    }
+    },
+    "AC": [1, 2, 3],
+    "feats": [
+        {
+            "name": "name",
+            "description": "description",
+            "notes": "notes"
+        }
+    ]
 }
 
 _character = pf.Character(data = _character_data)
@@ -55,16 +63,18 @@ def test_complex_properties():
     for key in _character_data.keys():
         assert getattr(_character, key) == _character_data[key]
 
-# Add a feat to the character
-_feat_data = {
-    "name": "feat name",
-    "description": "description",
-    "notes": "notes"
-}
 
-_feat = _character.add_feat(data = _feat_data)
-
-# Is the feat that was added equal to the data we provided?
+# Does add_feat return what we expect?
 def test_add_feat():
-    for key in _feat_data.keys():
-        assert _feat[key] == _feat_data[key]
+    # Add a feat to a character
+    feat_data = {
+        "name": "feat name",
+        "description": "description",
+        "notes": "notes"
+    }
+    
+    c = pf.Character()
+    feat = c.add_feat(data = feat_data)
+
+    for key in feat_data.keys():
+        assert feat[key] == feat_data[key]
