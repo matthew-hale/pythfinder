@@ -1,33 +1,35 @@
 #!/bin/python3
-#
 
 import pythfinder as pf
 
-# Initialize a character with some data for the basic parameters, and 
-# test that character's initialization, comparing its properties with 
-# those specified.
-_character_data = {
-    "name": "test name",
-    "race": "human",
-    "deity": "god",
-    "homeland": "america",
-    "CMB": 5,
-    "CMD": 6,
-    "initiativeMods": [1, 2, 3],
-    "alignment": "CN",
-    "description": "test character description",
-    "height": "180cm",
-    "weight": 125,
-    "size": "M",
-    "age": 100,
-    "hair": "black",
-    "eyes": "purple",
-    "languages": ["common", "elven"],
-    "baseAttackBonus": [6, 1],
-    "gold": 10
-}
-
-_character = pf.Character(data = _character_data)
+# Generate test data
+_characters = []
+for i in range(5):
+    c_data = {
+        "name": "name {}".format(i),
+        "race": "race {}".format(i),
+        "deity": "deity {}".format(i),
+        "homeland": "homeland".format(i),
+        "CMB": i,
+        "CMD": i+10,
+        "initiativeMods": [i, i-5, i+5],
+        "alignment": "alignment {}".format(i),
+        "description": "description {}".format(i),
+        "height": "",
+        "weight": i+100,
+        "size": "M {}".format(i),
+        "age": i+20,
+        "hair": "hair {}".format(i),
+        "eyes": "eyes {}".format(i),
+        "languages": ["common {}".format(i), "elven {}".format(i)],
+        "baseAttackBonus": [i+5, i],
+        "gold": 10.21*i
+    }
+    # Append a dictionary containing the character and its input data
+    _characters.append({
+        "character": pf.Character(data = c_data),
+        "data": c_data
+    })
 
 # Are the keys of the character.getKeys() method the same as what 
 # they should be, as defined by should_dict?
@@ -68,10 +70,12 @@ def test_character_keys():
         "armor": ""
     }
     should = should_dict.keys()
-    actual = _character.getDict().keys()
-    assert should == actual
+    for c in _characters:
+        actual = c["character"].getDict().keys()
+        assert should == actual
 
-# Are the character's basic properties what they should be?
+# Are the characters' basic properties what they should be?
 def test_character_properties():
-    for key in _character_data.keys():
-        assert getattr(_character, key) == _character_data[key]
+    for c in _characters:
+        for key in c["data"].keys():
+            assert getattr(c["character"], key) == c["data"][key]
