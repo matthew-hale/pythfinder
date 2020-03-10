@@ -5,7 +5,7 @@ with open("readme.md", "r") as fh:
 
 setuptools.setup(
     name="pythfinder",
-    version="0.1.0",
+    version="0.2.0",
     author="Matthew Hale",
     author_email="matthew.hale@protonmail.com",
     description="A pathfinder character sheet python package",
