@@ -7,5 +7,5 @@ build:
 upload:
 	@TWINE_PASSWORD=$(API_KEY) TWINE_USERNAME=$(API_USER);python3 -m twine upload dist/*
 
-clean:
+clean: dist
 	rm -r build dist pythfinder.egg-info
