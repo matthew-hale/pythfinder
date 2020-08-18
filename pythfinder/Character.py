@@ -322,40 +322,10 @@ class Character:
 
     # Get the modifier for a given ability
     def getAbilityMod(self, ability):
-        if ability == 1:
+        if ability <= 1:
             return -5
-        elif ability in [2, 3]:
-            return -4
-        elif ability in [4, 5]:
-            return -3
-        elif ability in [6, 7]:
-            return -2
-        elif ability in [8, 9]:
-            return -1
-        elif ability in [10, 11]:
-            return 0
-        elif ability in [12, 13]:
-            return 1
-        elif ability in [14, 15]:
-            return 2
-        elif ability in [16, 17]:
-            return 3
-        elif ability in [18, 19]:
-            return 4
-        elif ability in [20, 21]:
-            return 5
-        elif ability in [22, 23]:
-            return 6
-        elif ability in [24, 25]:
-            return 7
-        elif ability in [26, 27]:
-            return 8
-        elif ability in [28, 29]:
-            return 9
-        elif ability in [30, 31]:
-            return 10
         else:
-            raise ValueError("getAbilityMod: ability must be within range of 1-31, inclusive.")
+            return int(0.5 * ability - 5) # ability modifier equation
 
     # Returns a dict containing the character object, without long elements 
     # like skills, feats, traits, spells, and equipment.
