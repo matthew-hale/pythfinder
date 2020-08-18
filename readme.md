@@ -1,3 +1,5 @@
+(Note: I went on a bit of a hiatus from development during the 4-5 months after the initial COVID lockdowns, so that's why this project looks like it's pretty dead. I'm getting back into it now, so development will continue very soon.)
+
 # Pythfinder
 
 A repository for an in-development Pathfinder 1e python app. The goal 
