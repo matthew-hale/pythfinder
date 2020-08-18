@@ -157,7 +157,7 @@ def getSpellString(c):
 
 # Formatted string of special abilities
 def getSpecialString(c):
-    outstring = "\n    Special:\n\n"
+    outstring = "\n    Special abilities:\n\n"
     for item in c.special:
         outstring += "    {}:\n    {}\n    {}\n\n".format(item["name"],item["description"],item["notes"])
     return outstring
