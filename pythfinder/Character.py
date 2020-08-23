@@ -1067,3 +1067,4 @@ class Character:
         # Ignore empty parameters
         target_ability["base"] = base or target_ability["base"]
         return target_ability
+
