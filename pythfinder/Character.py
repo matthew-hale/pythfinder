@@ -1,5 +1,7 @@
 import json
 
+from pythfinder.roll import roll
+
 # These vars are used for skill initialization
 _allowed_skill_names = (
     "Acrobatics", "Appraise", "Bluff",
@@ -1068,3 +1070,12 @@ class Character:
         target_ability["base"] = base or target_ability["base"]
         return target_ability
 
+    # Uses the roll function to make a skill check
+    #
+    # Accepts an additional integer modifier (e.g. situational boosts)
+    #
+    # returns the roll result as an integer
+    def roll_skill(self,
+                   skill_name,
+                   modifier = 0):
+        return 0
