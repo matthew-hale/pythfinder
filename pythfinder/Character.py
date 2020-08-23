@@ -1078,4 +1078,8 @@ class Character:
     def roll_skill(self,
                    skill_name,
                    modifier = 0):
-        return 0
+        skill_modifier = self.get_skill_value(skill_name)
+        total_modifier = skill_modifier + modifier
+        roll_string = "1d20+{}".format(total_modifier)
+        result = roll(roll_string)
+        return result
