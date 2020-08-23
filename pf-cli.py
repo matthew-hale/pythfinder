@@ -4,8 +4,24 @@
 
 import argparse
 import pythfinder as pf
+from pythfinder.roll import roll
 import json
 import sys
+
+_allowed_skill_names = (
+    "Acrobatics", "Appraise", "Bluff",
+    "Climb", "Craft", "Diplomacy",
+    "Disable Device", "Disguise", "Escape Artist",
+    "Fly", "Handle Animal", "Heal",
+    "Intimidate", "Knowledge (Arcana)", "Knowledge (Dungeoneering)",
+    "Knowledge (Engineering)", "Knowledge (Geography)", "Knowledge (History)",
+    "Knowledge (Local)", "Knowledge (Nature)", "Knowledge (Nobility)",
+    "Knowledge (Planes)", "Knowledge (Religion)", "Linguistics",
+    "Perception", "Perform", "Profession",
+    "Ride", "Sense Motive", "Sleight Of Hand",
+    "Spellcraft", "Stealth", "Survival",
+    "Swim", "Use Magic Device"
+)
 
 # Special function for argparse and boolean arguments
 def t_or_f(arg):
@@ -171,6 +187,13 @@ def getThrowString(c):
     outstring += "    Fortitude: {}\n\n    Reflex: {}\n\n    Will: {}\n\n".format(str(fort_total), str(ref_total), str(will_total))
     return outstring
 
+# Formatted string of a roll result
+def getRollString(c, skill_name, modifier):
+    outstring = "\n    {} result:\n\n".format(skill_name)
+    result = c.roll_skill(skill_name, modifier)
+    outstring += "        {}\n".format(result)
+    return outstring
+
 # Primary user input function
 def getInput():
     arg = ""
@@ -203,6 +226,22 @@ parser = argparse.ArgumentParser(description = "pathfinder 1E character sheet")
 # Subparsers for subcommands
 subparsers = parser.add_subparsers(help = "subcommand",
                                    dest = "subcommand_name")
+
+# Roll: roll skill checks
+parser_roll = subparsers.add_parser("roll",
+                                    help = "roll a skill check")
+
+parser_roll.add_argument("target",
+                         metavar = "target",
+                         choices = _allowed_skill_names,
+                         help = "roll target; choose from " + str(_allowed_skill_names),
+                         type = str)
+
+parser_roll.add_argument("-m", "--modifier",
+                         dest = "modifier",
+                         default = 0,
+                         type = int,
+                         help = "optional modifier")
 
 # List: read values
 parser_list = subparsers.add_parser("list",
@@ -518,6 +557,9 @@ if subcommand == "list":
         print(getTraitString(character))
     elif target == "special":
         print(getSpecialString(character))
+elif subcommand == "roll":
+    result = getRollString(character, args.target, args.modifier)
+    print(result)
 elif subcommand == "add":
     if target == "feat":
         new_feat = character.add_feat(name = args.name,
