@@ -357,6 +357,8 @@ class Character:
         total_armor_bonus = 0
         for item in self.armor:
             total_armor_bonus += item["acBonus"]
+            if item["maxDexBonus"] < total_dex_mod:
+                total_dex_mod = item["maxDexBonus"]
         # Touch sets armor bonuses to 0
         if touch:
             total_armor_bonus = 0
