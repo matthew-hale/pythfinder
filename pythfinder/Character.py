@@ -1,4 +1,5 @@
 import json
+import math
 
 from pythfinder.roll import roll
 
@@ -327,7 +328,7 @@ class Character:
         if ability <= 1:
             return -5
         else:
-            return int(0.5 * ability - 5) # ability modifier equation
+            return math.floor(0.5 * ability - 5) # ability modifier equation
 
     # Returns a dict containing the character object, without long elements 
     # like skills, feats, traits, spells, and equipment.
