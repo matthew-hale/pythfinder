@@ -23,7 +23,7 @@ _trained_only = (
     "Knowledge (Dungeoneering)", "Knowledge (Engineering)", "Knowledge (Geography)",
     "Knowledge (History)", "Knowledge (Local)", "Knowledge (Nature)",
     "Knowledge (Nobility)", "Knowledge (Planes)", "Knowledge (Religion)",
-    "Linguistics", "Perception", "Profession",
+    "Linguistics", "Profession",
     "Sleight Of Hand", "Spellcraft", "Use Magic Device"
 )
 _skill_mods = {
