@@ -301,7 +301,7 @@ class Character:
                 "rank": data["skills"][skill_name]["rank"] if "rank" in data_skill_entry_keys else 0,
                 "isClass": data["skills"][skill_name]["isClass"] if "isClass" in data_skill_entry_keys else 0,
                 "notes": data["skills"][skill_name]["notes"] if "notes" in data_skill_entry_keys else 0,
-                "misc": data["skills"][skill_name]["misc"] if "misc" in data_skill_entry_keys else 0,
+                "misc": data["skills"][skill_name]["misc"] if "misc" in data_skill_entry_keys else [],
                 "mod": _skill_mods[skill_name],
                 "useUntrained": False if skill_name in _trained_only else True
             }
