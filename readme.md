@@ -23,11 +23,27 @@ script, or by writing your own script using the
 
 ## Roadmap
 
++ Change skills to support multiple Craft, Profession, and Perform 
+skills
++ Change all modifiers/bonuses to be named & typed (e.g. temporary 
+bonuses to abilities/skills)
++ Add methods for adding/editing/removing bonuses/penalties
++ Change BAB to single int, and calculate multiple attacks from high 
+BAB instead of tracking multiple BAB values
++ Change equipment to include a "location" value, in addition to an 
+"on-person" flag for weight calculation
+    + Rework the current "pack" flag to a "camp" flag, to mark items 
+    as "camp items" to allow for quick toggle of the "on-person" flag 
+    when you set up camp (e.g., "I set up camp; put down all the camp 
+    items and leave them at camp")
++ Revisit use cases for the "notes" of every other property, and see if 
+they could be better served with real properties and methods
++ Add roll capability to attacks:
+    + Roll hit
+    + Roll damage
+    + Automatically re-roll to confirm criticals
+    + Rework attacks to have specific hit and damage modifiers (e.g. dex to hit, str to damage
 + ~~Rework script arguments into subcommand + argument~~
-+ ~~Add interactive flag for old behavior~~
-    + I'm going to get rid of this for now; it might end up being too 
-    much effort to implement an interactive prompt with the new 
-    argument structure. Will revisit in the future.
 + ~~Basic tracking of, and output for:~~
     + ~~attacks~~
     + ~~feats~~
@@ -88,10 +104,3 @@ script, or by writing your own script using the
     + `add_*` methods
     + `update_*` methods
     + `get_*` methods
-+ Define RESTful API endpoints
-+ Eventually:
-    + Decoupling of input and data processing, converting outputs to 
-    json format
-    + Option to have outputs be served via restful API (in addition to 
-    CLI)
-    + Web app frontend for restful API
