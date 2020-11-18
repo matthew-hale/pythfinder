@@ -42,7 +42,8 @@ they could be better served with real properties and methods
     + Roll hit
     + Roll damage
     + Automatically re-roll to confirm criticals
-    + Rework attacks to have specific hit and damage modifiers (e.g. dex to hit, str to damage
+    + Rework attacks to have specific hit and damage modifiers (e.g. 
+    dex to hit, str to damage)
 + ~~Rework script arguments into subcommand + argument~~
 + ~~Basic tracking of, and output for:~~
     + ~~attacks~~
