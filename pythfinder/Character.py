@@ -270,41 +270,22 @@ class Character:
         # Skill initialization
         #
         self.skills = {}
-        #
-        # This is pretty simple. For each allowed skill name, we'll 
-        # check the data to see if it has it. If it does, we'll 
-        # validate the data's structure as we assign values to our 
-        # skill. If any of the data doesn't match what we need, we'll 
-        # just use a default value. This way, malformed data doesn't 
-        # impact the Character object initialization, and we end up 
-        # with a consistent structure every time.
-        #
-        # First, we get all of the keys from the data:
-        #
-        data_skill_keys = data["skills"].keys() if "skills" in keys else []
-        #
-        # Note that if the data doesn't have any skills at all, our 
-        # data_skill_keys will be empty, resulting in default values 
-        # for everything.
-        #
-        # Now we can begin iterating through all of the allowed skills:
-        for skill_name in _allowed_skill_names:
-            # Here we do the same as above: if the skill name is in 
-            # data["skills"].keys(), we'll get that skill's keys; 
-            # otherwise, we'll just leave it blank.
-            data_skill_entry_keys = data["skills"][skill_name].keys() if skill_name in data_skill_keys else []
-            # Now we can create the actual skill entry, falling back to 
-            # default values if any of the above dictionary keys were 
-            # missing.
-            self.skills[skill_name] = {
-                "name": skill_name,
-                "rank": data["skills"][skill_name]["rank"] if "rank" in data_skill_entry_keys else 0,
-                "isClass": data["skills"][skill_name]["isClass"] if "isClass" in data_skill_entry_keys else 0,
-                "notes": data["skills"][skill_name]["notes"] if "notes" in data_skill_entry_keys else 0,
-                "misc": data["skills"][skill_name]["misc"] if "misc" in data_skill_entry_keys else [],
-                "mod": _skill_mods[skill_name],
-                "useUntrained": False if skill_name in _trained_only else True
-            }
+        if "skills" in keys:
+            for item in data["skills"]:
+                _ = self.add_skill(data = data["skills"][item])
+        # If there are no skills in the character data, initialize from 
+        # defaults
+        else:
+            for skill_name in _allowed_skill_names:
+                self.skills[skill_name] = {
+                    "name": skill_name,
+                    "rank": 0,
+                    "isClass":  False,
+                    "notes": "",
+                    "misc": [],
+                    "mod": _skill_mods[skill_name],
+                    "useUntrained": False if skill_name in _trained_only else True
+                }
 
         # Spells, attacks, and armor are all collections of 
         # dictionaries; their initialization is pretty boring
@@ -412,7 +393,7 @@ class Character:
     # + Skill's current ability modifier
     def get_skill_value(self, skill):
         total = 0
-        if not skill in _allowed_skill_names:
+        if not skill in _allowed_skills:
             raise ValueError("Character.skills: name must be one of: " + _allowed_skill_names)
         current_skill = self.skills[skill]
         if current_skill["isClass"] and current_skill["rank"] >= 1:
@@ -445,16 +426,21 @@ class Character:
                          "special",
                          "traits",
                          "feats",
+                         "skills",
                          "equipment",
                          "attacks",
                          "armor",
                          "spells")
         if not prop in allowed_props:
             raise ValueError("check_unique_name: prop must be one of " + str(allowed_props))
+        # Skills are a special case
+        if prop == "skills":
+            current_names = [item for item in self.skills]
+        else:
         # Gather names from the given property, and check if 'name' is 
         # in the collection. If it is, it's not unique, and the 
         # function returns False; otherwise, it returns True.
-        current_names = [item["name"] for item in getattr(self, prop)]
+            current_names = [item["name"] for item in getattr(self, prop)]
         if name in current_names:
             return False
         else:
@@ -567,6 +553,69 @@ class Character:
         }
         self.special.append(new_special)
         return new_special
+
+    # Add a skill to the character (craft, profession, and perform); 
+    # supports either named arguments or a dictionary
+    # 
+    # returns the newly created skill
+    def add_skill(self,
+                  name = "",
+                  rank = 0,
+                  isClass = False, 
+                  notes = "",
+                  misc = [],
+                  data = {}):
+        # Handle skills with variable names
+        valid_names = ("Perform", "Profession", "Craft")
+        skill_type = ""
+        keys = data.keys()
+        new_name = data["name"] if "name" in keys else name
+        # Validate that new_name is not null or empty
+        if new_name == None or new_name == "":
+            raise ValueError("add_item: name must not be null or empty")
+        # Validate skill name is in allowed_skills
+        # If so, we can use all the built-in values for things
+        if new_name in _allowed_skill_names:
+            new_mod = _skill_mods[new_name]
+            if new_name in _trained_only:
+                new_useUntrained = False
+            else:
+                new_useUntrained = True
+        # Validate skill name is one of the three above
+        # These skills can exist multiple times with variable names
+        else:
+            is_valid = False
+            for valid in valid_names:
+                if valid in new_name:
+                    is_valid = True
+                    skill_type = valid
+            if not is_valid:
+                raise ValueError("add_skill: skill with custom name must be a Perform, Profession, or Craft skill")
+            # Validate that new name is unique
+            if not self.is_unique_name(name = new_name, prop = "skills"):
+                raise ValueError("add_skill: name must be unique among skills")
+            if skill_type in _trained_only:
+                new_useUntrained = False
+            else:
+                new_useUntrained = True
+            new_mod = _skill_mods[skill_type]
+        # Get the rest of the properties
+        new_rank = data["rank"] if "rank" in keys else rank
+        new_isClass = data["isClass"] if "isClass" in keys else isClass
+        new_notes = data["notes"] if "notes" in keys else notes
+        new_misc = data["misc"] if "misc" in keys else misc
+        new_skill = {
+            "name": new_name,
+            "rank": new_rank,
+            "isClass": new_isClass,
+            "mod": new_mod,
+            "notes": new_notes,
+            "useUntrained": new_useUntrained,
+            "misc": new_misc,
+        }
+        self.skills[new_name] = new_skill
+        return new_skill
+
 
     # Add a new item to the character; supports either named arguments 
     # or a dictionary
