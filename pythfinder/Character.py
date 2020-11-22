@@ -393,8 +393,9 @@ class Character:
     # + Skill's current ability modifier
     def get_skill_value(self, skill):
         total = 0
-        if not skill in _allowed_skill_names:
-            raise ValueError("Character.skills: name must be one of: " + _allowed_skill_names)
+        skill_names = self.skills.keys()
+        if not skill in skill_names:
+            raise ValueError("get_skill_value: '" + skill + "' not in character skills")
         current_skill = self.skills[skill]
         if current_skill["isClass"] and current_skill["rank"] >= 1:
             total += 3
