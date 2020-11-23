@@ -1132,14 +1132,15 @@ class Character:
                        _type,
                        data = {}):
         valid_types = ("class",
-                 "feat",
-                 "trait",
+                 "feats",
+                 "traits",
                  "special",
-                 "skill",
-                 "item",
-                 "attack",
+                 "skills",
+                 "equipment",
+                 "attacks",
                  "armor",
-                 "spell")
+                 "spells")
+        keys = data.keys()
         name = data["name"] if "name" in keys else name
         _type = data["_type"] if "_type" in keys else _type
 
@@ -1150,13 +1151,17 @@ class Character:
         # Skills are a special case; we don't want to delete any skills 
         # that aren't craft, perform, or profession
         if _type == "skill":
-            names = skills that match: ["Craft", "Perform", "Profession"]
+            skill_keys = self.skills.keys()
+            names = [self.skills[item]["name"] for item in self.skills]
         else:
             names = [item["name"] for item in getattr(self, _type)]
 
         # Ensure a valid name
         if name not in names:
             raise ValueError("delete_element: name not found in element type: " + _type)
+
+        # Remove element
+        removed = getattr(self, _type)[name]
 
     # Uses the roll function to make a skill check
     #
