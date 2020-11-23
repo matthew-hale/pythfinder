@@ -1123,13 +1123,15 @@ class Character:
         target_ability["base"] = base or target_ability["base"]
         return target_ability
 
-    # Delete an element by name and type
+    # Delete an element by name and type; supports named arguments or a 
+    # dictionary
     #
     # returns the deleted element
     def delete_element(self,
                        name,
-                       _type):
-        types = ("class",
+                       _type,
+                       data = {}):
+        valid_types = ("class",
                  "feat",
                  "trait",
                  "special",
@@ -1138,10 +1140,12 @@ class Character:
                  "attack",
                  "armor",
                  "spell")
+        name = data["name"] if "name" in keys else name
+        _type = data["_type"] if "_type" in keys else _type
 
         # Ensure a valid element type
-        if _type not in types:
-            raise ValueError("delete_element: type must be one of: " + types)
+        if _type not in valid_types:
+            raise ValueError("delete_element: type must be one of: " + valid_types)
 
         # Skills are a special case; we don't want to delete any skills 
         # that aren't craft, perform, or profession
