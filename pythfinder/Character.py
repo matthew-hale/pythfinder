@@ -1152,7 +1152,7 @@ class Character:
         # that aren't craft, perform, or profession
         deletable_skills = ("Craft", "Perform", "Profession")
         valid_target = False
-        if _type == "skill":
+        if _type == "skills":
             skill_keys = self.skills.keys()
             names = [self.skills[item]["name"] for item in self.skills]
             for item in deletable_skills:
@@ -1160,15 +1160,25 @@ class Character:
                     valid_target = True
         else:
             names = [item["name"] for item in getattr(self, _type)]
+            valid_target = True
 
         # Ensure a valid name
         if name not in names:
             raise ValueError("delete_element: name not found in element type: " + _type)
         if not valid_target:
-            raise ValueError("delete_element: cannot delete skills that are not of the type: " deletable_skills)
+            raise ValueError("delete_element: cannot delete skills that are not of the type: " + str(deletable_skills))
 
         # Remove element and return
-        removed = getattr(self, _type).pop(name)
+        if _type == "skills":
+            removed = getattr(self, _type).pop(name)
+        else:
+            index = 0
+            for item in getattr(self, _type):
+                if item["name"] == name:
+                    break
+                index = index + 1
+            removed = getattr(self, _type)[index]
+            del getattr(self, _type)[index]
         return removed
 
     # Uses the roll function to make a skill check
