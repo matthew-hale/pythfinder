@@ -1128,8 +1128,8 @@ class Character:
     #
     # returns the deleted element
     def delete_element(self,
-                       name,
-                       _type,
+                       name = None,
+                       _type = None,
                        data = {}):
         valid_types = ("class",
                  "feats",
@@ -1150,15 +1150,22 @@ class Character:
 
         # Skills are a special case; we don't want to delete any skills 
         # that aren't craft, perform, or profession
+        deletable_skills = ("Craft", "Perform", "Profession")
+        valid_target = False
         if _type == "skill":
             skill_keys = self.skills.keys()
             names = [self.skills[item]["name"] for item in self.skills]
+            for item in deletable_skills:
+                if item in name:
+                    valid_target = True
         else:
             names = [item["name"] for item in getattr(self, _type)]
 
         # Ensure a valid name
         if name not in names:
             raise ValueError("delete_element: name not found in element type: " + _type)
+        if not valid_target:
+            raise ValueError("delete_element: cannot delete skills that are not of the type: " deletable_skills)
 
         # Remove element and return
         removed = getattr(self, _type).pop(name)
