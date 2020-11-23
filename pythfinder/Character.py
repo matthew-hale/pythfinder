@@ -1160,8 +1160,9 @@ class Character:
         if name not in names:
             raise ValueError("delete_element: name not found in element type: " + _type)
 
-        # Remove element
-        removed = getattr(self, _type)[name]
+        # Remove element and return
+        removed = getattr(self, _type).pop(name)
+        return removed
 
     # Uses the roll function to make a skill check
     #
