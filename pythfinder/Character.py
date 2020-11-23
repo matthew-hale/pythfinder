@@ -1123,6 +1123,37 @@ class Character:
         target_ability["base"] = base or target_ability["base"]
         return target_ability
 
+    # Delete an element by name and type
+    #
+    # returns the deleted element
+    def delete_element(self,
+                       name,
+                       _type):
+        types = ("class",
+                 "feat",
+                 "trait",
+                 "special",
+                 "skill",
+                 "item",
+                 "attack",
+                 "armor",
+                 "spell")
+
+        # Ensure a valid element type
+        if _type not in types:
+            raise ValueError("delete_element: type must be one of: " + types)
+
+        # Skills are a special case; we don't want to delete any skills 
+        # that aren't craft, perform, or profession
+        if _type == "skill":
+            names = skills that match: ["Craft", "Perform", "Profession"]
+        else:
+            names = [item["name"] for item in getattr(self, _type)]
+
+        # Ensure a valid name
+        if name not in names:
+            raise ValueError("delete_element: name not found in element type: " + _type)
+
     # Uses the roll function to make a skill check
     #
     # Accepts an additional integer modifier (e.g. situational boosts)
