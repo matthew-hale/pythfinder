@@ -141,3 +141,14 @@ def test_delete_element_skill_stop(setup_char):
     except ValueError as err:
         error_message = str(err)
     assert error_message == should_message
+
+# Does an invalid element name throw an error?
+def test_delete_element_invalid_name(setup_char):
+    c = setup_char[5]
+    error_message = ""
+    should_message = "delete_element: name not found in element type: feats"
+    try:
+        c.delete_element("doesn't exist", "feats")
+    except ValueError as err:
+        error_message = str(err)
+    assert error_message == should_message
