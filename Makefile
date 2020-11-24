@@ -1,4 +1,4 @@
-API_USER?=""
+API_USER?="__token__"
 API_KEY?=""
 
 build:
