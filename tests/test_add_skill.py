@@ -49,3 +49,22 @@ def test_add_skill_actual(setup_char):
     c = setup_char[2]
     skill = c.add_skill(data = skill_data)
     assert str(skill) == str(c.skills["Perform (Oratory)"])
+
+# Are the correct errors thrown?
+def test_add_skill_empty_name_error(setup_char):
+    c = setup_char[2]
+    error_message = ""
+    should_message = "add_item: name must not be null or empty"
+    try:
+        c.add_skill()
+    except ValueError as err:
+        error_message = str(err)
+
+def test_add_skill_invalid_skill_error(setup_char):
+    c = setup_char[2]
+    error_message = ""
+    should_message = "add_skill: skill with custom name must be a Perform, Profession, or Craft skill"
+    try:
+        c.add_skill(name = "Invalid skill name")
+    except ValueError as err:
+        error_message = str(err)
