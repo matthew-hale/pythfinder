@@ -1146,7 +1146,7 @@ class Character:
 
         # Ensure a valid element type
         if _type not in valid_types:
-            raise ValueError("delete_element: type must be one of: " + valid_types)
+            raise ValueError("delete_element: type must be one of: " + str(valid_types))
 
         # Skills are a special case; we don't want to delete any skills 
         # that aren't craft, perform, or profession
