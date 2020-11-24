@@ -21,8 +21,8 @@ script, or by writing your own script using the
 
 ## Roadmap
 
-+ Change skills to support multiple Craft, Profession, and Perform 
-skills
++ ~~Change skills to support multiple Craft, Profession, and Perform 
+skills~~
 + Change all modifiers/bonuses to be named & typed (e.g. temporary 
 bonuses to abilities/skills)
 + Add methods for adding/editing/removing bonuses/penalties
