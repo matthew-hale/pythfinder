@@ -1124,7 +1124,7 @@ class Character:
                 target_skill["misc"] = misc or target_skill["misc"]
                 return target_skill
 
-    # Update an existing skill based on name; supports either named 
+    # Update an existing ability based on name; supports either named 
     # arguments or a dictionary
     #
     # returns the updated ability dict
