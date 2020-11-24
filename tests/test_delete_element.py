@@ -163,3 +163,14 @@ def test_delete_element_invalid_type(setup_char):
     except ValueError as err:
         error_message = str(err)
     assert error_message == should_message
+
+# Did the delete method actually delete the element from the character?
+def test_delete_element_delete_actual(setup_char):
+    c = setup_char[5]
+    feat_count = len(c.feats)
+    c.delete_element("delete me", "feats")
+    new_feat_count = len(c.feats)
+    new_feats = str(c.feats)
+    should_feats = "[{'name': 'not me'}]"
+    assert new_feat_count == feat_count - 1
+    assert new_feats == should_feats
