@@ -1073,19 +1073,32 @@ class Character:
     # returns the updated skill 
     def update_skill(self,
                      name = None,
+                     new_name = "",
                      rank = None,
                      isClass = None,
                      notes = None,
+                     misc = [],
                      data = {}):
         keys = data.keys()
-        if "name" in keys:
-            name = data["name"]
-        if "rank" in keys:
-            rank = data["rank"]
-        if "isClass" in keys:
-            isClass = data["isClass"]
-        if "notes" in keys:
-            notes = data["notes"]
+        new_name = data["new_name"] if "new_name" in keys else new_name
+        name = data["name"] if "name" in keys else name
+        rank = data["rank"] if "rank" in keys else rank
+        isClass = data["isClass"] if "isClass" in keys else isClass
+        notes = data["notes"] if "notes" in keys else notes
+        misc = data["misk"] if "misc" in keys else misc
+        # Verify skill is a Craft, Profession, or Perform skill if 
+        # being renamed
+        allowed_rename = ("Craft", "Profession", "Perform")
+        allowed_start = False
+        allowed_end = False
+        for item in allowed_rename:
+            if item in name:
+                allowed_start = True
+        for item in allowed_rename:
+            if item in new_name:
+                allowed_end = True
+        if not (allowed_start and allowed_end):
+            raise ValueError("update_skill: cannot rename skills that are not of: " + str(allowed_rename))
         # Skill selection is selecting a dict key; if it doesn't error 
         # out, we're probably fine, but we'll check it just in case
         target_skill = self.skills[name]
@@ -1094,11 +1107,22 @@ class Character:
         except NameError:
             return None
         else:
-            # Ignore empty parameters
-            target_skill["rank"] = rank or target_skill["rank"]
-            target_skill["isClass"] = isClass or target_skill["isClass"]
-            target_skill["notes"] = notes or target_skill["notes"]
-            return target_skill
+            if new_name:
+                # Ignore empty parameters
+                new_skill = self.add_skill(name = new_name,
+                                           rank = target_skill["rank"] or rank,
+                                           isClass = target_skill["isClass"] or isClass,
+                                           notes = target_skill["notes"] or notes,
+                                           misc = target_skill["misc"] or misc,)
+                self.delete_element(name, "skills")
+                return new_skill
+            else:
+                # Ignore empty parameters
+                target_skill["rank"] = rank or target_skill["rank"]
+                target_skill["isClass"] = isClass or target_skill["isClass"]
+                target_skill["notes"] = notes or target_skill["notes"]
+                target_skill["misc"] = misc or target_skill["misc"]
+                return target_skill
 
     # Update an existing skill based on name; supports either named 
     # arguments or a dictionary
