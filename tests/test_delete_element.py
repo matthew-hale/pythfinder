@@ -130,3 +130,14 @@ def test_delete_element_skill_return(setup_char):
     return_skill = c.delete_element(name = "Perform (Oratory)", _type = "skills")
     assert skill_delete_data["name"] == return_skill["name"]
 
+# Are we stopped from deleting skills that aren't Perform, Profession, 
+# or Craft?
+def test_delete_element_skill_stop(setup_char):
+    c = setup_char[5]
+    error_message = ""
+    should_message = "delete_element: cannot delete skills that are not of the type: ('Craft', 'Perform', 'Profession')"
+    try:
+        c.delete_element("Perception", "skills")
+    except ValueError as err:
+        error_message = str(err)
+    assert error_message == should_message
