@@ -73,27 +73,52 @@ def setup_char():
     return (delete_data, non_delete_data, skills_pre_delete, skills_post_delete, c)
 
 # Is each returned item the same as what was put in?
-def test_delete_element_return(setup_char):
+def test_delete_element_feat_return(setup_char):
     delete_data = setup_char[0]
     c = setup_char[4]
 
     return_feat = c.delete_element(name = "delete me", _type = "feats")
     assert delete_data["name"] == return_feat["name"]
 
+def test_delete_element_trait_return(setup_char):
+    delete_data = setup_char[0]
+    c = setup_char[4]
+
     return_trait = c.delete_element(name = "delete me", _type = "traits")
     assert delete_data["name"] == return_trait["name"]
+
+def test_delete_element_special_return(setup_char):
+    delete_data = setup_char[0]
+    c = setup_char[4]
 
     return_special = c.delete_element(name = "delete me", _type = "special")
     assert delete_data["name"] == return_special["name"]
 
+def test_delete_element_equipment_return(setup_char):
+    delete_data = setup_char[0]
+    c = setup_char[4]
+
     return_equipment = c.delete_element(name = "delete me", _type = "equipment")
     assert delete_data["name"] == return_equipment["name"]
+
+def test_delete_element_attack_return(setup_char):
+    delete_data = setup_char[0]
+    c = setup_char[4]
 
     return_attack = c.delete_element(name = "delete me", _type = "attacks")
     assert delete_data["name"] == return_attack["name"]
 
+def test_delete_element_armor_return(setup_char):
+    delete_data = setup_char[0]
+    c = setup_char[4]
+
     return_armor = c.delete_element(name = "delete me", _type = "armor")
     assert delete_data["name"] == return_armor["name"]
 
+def test_delete_element_spell_return(setup_char):
+    delete_data = setup_char[0]
+    c = setup_char[4]
+
     return_spell = c.delete_element(name = "delete me", _type = "spells")
     assert delete_data["name"] == return_spell["name"]
+
