@@ -152,3 +152,14 @@ def test_delete_element_invalid_name(setup_char):
     except ValueError as err:
         error_message = str(err)
     assert error_message == should_message
+
+# Does an invalid element type throw an error?
+def test_delete_element_invalid_type(setup_char):
+    c = setup_char[5]
+    error_message = ""
+    should_message = "delete_element: type must be one of: ('class', 'feats', 'traits', 'special', 'skills', 'equipment', 'attacks', 'armor', 'spells')"
+    try:
+        c.delete_element("doesn't exist", "error")
+    except ValueError as err:
+        error_message = str(err)
+    assert error_message == should_message
