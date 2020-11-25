@@ -441,6 +441,7 @@ class Character:
         allowed_props = ("classes",
                          "special",
                          "traits",
+                         "bonuses",
                          "feats",
                          "skills",
                          "equipment",
@@ -811,6 +812,9 @@ class Character:
         target_keys = getattr(self, target_type).keys()
         if target not in target_keys:
             raise ValueError("add_bonus: target '" + target + "' not found in " + target_type)
+        # Validate a unique name
+        if not self.is_unique_name(name = name, prop = "bonuses"):
+            raise ValueError("add_bonus: name is not unique")
         # Create the bonus and append
         new_bonus = {
             "name": name,
