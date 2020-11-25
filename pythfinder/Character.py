@@ -771,6 +771,47 @@ class Character:
         self.spells.append(new_spell)
         return new_spell
 
+    # Add a new bonus to the character; supports either named arguments 
+    # or a dictionary
+    #
+    # returns the newly created bonus
+    def add_bonus(self,
+                  name = "",
+                  _type = "",
+                  value = 0,
+                  target_type = "",
+                  target = "",
+                  data = {}):
+        valid_target_types = (
+            "abilities",
+            "saving_throws",
+            "skills"
+        )
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        _type = data["_type"] if "_type" in keys else _type
+        value = data["value"] if "value" in keys else value
+        target = data["target"] if "target" in keys else target
+        target_type = data["target_type"] if "target_type" in keys else target_type
+        # Validate a valid bonus type
+        if _type not in _bonus_types:
+            raise ValueError("add_bonus: bonus type must be one of: " + str(_bonus_types))
+        # Validate a valid target type
+        if target_type not in valid_target_types:
+            raise ValueError("add_bonus: target type must be one of: " + str(valid_target_types))
+        # Validate a valid target
+        target_keys = getattr(self, target_type).keys()
+        if target not in target_keys:
+            raise ValueError("add_bonus: target '" + target + "' not found in " + target_type)
+        # Create the bonus and append
+        new_bonus = {
+            "name": name,
+            "type": _type,
+            "value": value
+        }
+        getattr(self, target_type)[target]["misc"].append(new_bonus)
+        return new_bonus
+
     # Update an existing feat based on name; supports either named 
     # arguments or a dictionary
     #
