@@ -68,7 +68,7 @@ _bonus_types = (
     "competence", "deflection", "dodge",
     "enhancement", "inherent", "insight",
     "luck", "morale", "natural armor",
-    "profane", "racial", "resistance",
+    "profane", "penalty", "racial", "resistance",
     "sacred", "shield", "size", "trait"
 )
 _stacking_bonus_types = ("dodge", "circumstance")
