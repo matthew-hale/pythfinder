@@ -120,6 +120,12 @@ class Character:
             for item in data["AC"]:
                 self.AC.append(item)
 
+        # Bonuses
+        self.bonuses = []
+        if "bonuses" in keys:
+            for item in data["bonuses"]:
+                _ = self.add_bonus(data = item)
+
         # Speed initialization
         if "speed" in keys:
             data_keys = data["speed"].keys()
@@ -808,7 +814,7 @@ class Character:
             "name": name,
             "type": _type,
             "value": value,
-            "target_type": target_type
+            "target_type": target_type,
             "target": target
         }
         self.bonuses.append(new_bonus)
