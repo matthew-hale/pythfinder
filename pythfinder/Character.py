@@ -1212,6 +1212,51 @@ class Character:
         target_ability["base"] = base or target_ability["base"]
         return target_ability
 
+    # Update an existing bonus based on name; supports either named 
+    # arguments or a dictionary
+    #
+    # returns the updated bonus dict
+    def update_bonus(self,
+                     name = "",
+                     new_name = "",
+                     _type = "",
+                     value = None,
+                     target_type = "",
+                     target = "",
+                     active = None,
+                     data = {}):
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        new_name = data["new_name"] if "new_name" in keys else new_name
+        # Validate that new_name is unique
+        if not self.is_unique_name(name = new_name, prop = "bonuses"):
+            raise ValueError("update_bonus: name must be unique among bonuses")
+        _type = data["_type"] if "_type" in keys else _type
+        value = data["value"] if "value" in keys else value
+        target_type = data["target_type"] if "target_type" in keys else target_type
+        target = data["target"] if "target" in keys else target
+        active = data["active"] if "active" in keys else active
+        # Lazy selection; if there are duplicates, this will just pick 
+        # up the first one that shows up
+        for item in self.bonuses:
+            if item["name"] == name:
+                target_bonus = item
+                break
+        try:
+            target_bonus
+        except NameError:
+            return None
+        else:
+            target_bonus["name"] = new_name or target_bonus["name"]
+            target_bonus["type"] = _type or target_bonus["type"]
+            if value != None:
+                target_bonus["value"] = value
+            target_bonus["target_type"] = target_type or target_bonus["target_type"]
+            target_bonus["target"] = target or target_bonus["target"]
+            if active != None:
+                target_bonus["active"] = active
+            return target_bonus
+
     # Delete an element by name and type; supports named arguments or a 
     # dictionary
     #
