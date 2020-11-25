@@ -109,7 +109,7 @@ class Character:
             "8": 0,
             "9": 0
         }
-        self.baseAttackBonus = data["baseAttackBonus"] if "baseAttackBonus" in keys else []
+        self.baseAttackBonus = data["baseAttackBonus"] if "baseAttackBonus" in keys else 0
         self.gold = data["gold"] if "gold" in keys else 0
 
         # Complex object members
