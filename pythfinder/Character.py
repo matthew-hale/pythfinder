@@ -807,9 +807,11 @@ class Character:
         new_bonus = {
             "name": name,
             "type": _type,
-            "value": value
+            "value": value,
+            "target_type": target_type
+            "target": target
         }
-        getattr(self, target_type)[target]["misc"].append(new_bonus)
+        self.bonuses.append(new_bonus)
         return new_bonus
 
     # Update an existing feat based on name; supports either named 
