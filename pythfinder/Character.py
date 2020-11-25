@@ -63,6 +63,15 @@ _skill_mods = {
     "Perform": "cha",
     "Use Magic Device": "cha"
 }
+_bonus_types = (
+    "alchemical", "armor", "circumstance",
+    "competence", "deflection", "dodge",
+    "enhancement", "inherent", "insight",
+    "luck", "morale", "natural armor",
+    "profane", "racial", "resistance",
+    "sacred", "shield", "size", "trait"
+)
+_stacking_bonus_types = ("dodge", "circumstance")
 
 # Main character class
 class Character:
