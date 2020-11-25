@@ -78,6 +78,7 @@ def test_character_keys():
         "baseAttackBonus": "",
         "gold": "",
         "AC": "",
+        "bonuses": "",
         "speed": "",
         "classes": "",
         "abilities": "",
