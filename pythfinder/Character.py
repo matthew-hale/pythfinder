@@ -787,6 +787,7 @@ class Character:
                   value = 0,
                   target_type = "",
                   target = "",
+                  active = False,
                   data = {}):
         valid_target_types = (
             "abilities",
@@ -799,6 +800,7 @@ class Character:
         value = data["value"] if "value" in keys else value
         target = data["target"] if "target" in keys else target
         target_type = data["target_type"] if "target_type" in keys else target_type
+        active = data["active"] if "active" in keys else active
         # Validate a valid bonus type
         if _type not in _bonus_types:
             raise ValueError("add_bonus: bonus type must be one of: " + str(_bonus_types))
@@ -815,7 +817,8 @@ class Character:
             "type": _type,
             "value": value,
             "target_type": target_type,
-            "target": target
+            "target": target,
+            "active": active
         }
         self.bonuses.append(new_bonus)
         return new_bonus
