@@ -16,7 +16,9 @@ def setup_char():
         "name": "item name",
         "weight": 5.25,
         "count": 2,
-        "pack": True,
+        "camp": False,
+        "on_person": True,
+        "location": "backpack",
         "notes": "item notes"
     }
     
