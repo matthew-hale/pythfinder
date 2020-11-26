@@ -73,6 +73,44 @@ _bonus_types = (
 )
 _stacking_bonus_types = ("dodge", "circumstance")
 
+# Helper functions
+
+# Remove duplicate dictionaries from a list of dictionaries
+def remove_duplicates(l):
+    out = [dict(tup) for tup in {tuple(d.items()) for d in l}]
+    return out
+
+# Perform a filtering operation on the provided list of dictionaries, 
+# based on a single property, using a dictionary of numeric comparisons.
+#
+# Treats all comparisons as an "or" operation; removes duplicates via 
+# remove_duplicates
+def numeric_filter(items,
+                   key,
+                   operations = {}):
+    allowed_operators = ("lt", "gt", "le", "ge", "eq", "ne")
+    subset = []
+    for item in items:
+        for operator in operations.keys():
+            if operator not in allowed_operators:
+                raise ValueError("numeric_filter: operator '" + operator + "' not in list of allowed operators: " + str(allowed_operators))
+            if key not in item.keys():
+                raise KeyError("numeric_filter: key '" + key + "' not in keys of given item")
+            if operator == "lt":
+                subset.append(item) if item[key] < operations["lt"] else None
+            if operator == "gt":
+                subset.append(item) if item[key] > operations["gt"] else None
+            if operator == "le":
+                subset.append(item) if item[key] <= operations["le"] else None
+            if operator == "ge":
+                subset.append(item) if item[key] >= operations["ge"] else None
+            if operator == "eq":
+                subset.append(item) if item[key] == operations["eq"] else None
+            if operator == "ne":
+                subset.append(item) if item[key] != operations["ne"] else None
+    return remove_duplicates(subset)
+
+
 # Main character class
 class Character:
     def __init__(self, data = {}):
