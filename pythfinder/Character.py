@@ -642,7 +642,9 @@ class Character:
                  name = "",
                  weight = 0.0,
                  count = 0,
-                 pack = False,
+                 camp = False,
+                 on_person = False,
+                 location = "",
                  notes = "",
                  data = {}):
         keys = data.keys()
@@ -655,13 +657,17 @@ class Character:
             raise ValueError("add_item: name must be unique among equipment")
         new_weight = data["weight"] if "weight" in keys else weight
         new_count = data["count"] if "count" in keys else count
-        new_pack = data["pack"] if "pack" in keys else pack
+        new_camp = data["camp"] if "camp" in keys else camp
+        new_on_person = data["on_person"] if "on_person" in keys else on_person
+        new_location = data["location"] if "location" in keys else location
         new_notes = data["notes"] if "notes" in keys else notes
         new_item = {
             "name": new_name,
             "weight": new_weight,
             "count": new_count,
-            "pack": new_pack,
+            "camp": new_camp,
+            "on_person": new_on_person,
+            "location": new_location,
             "notes": new_notes,
         }
         self.equipment.append(new_item)
