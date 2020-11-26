@@ -463,6 +463,78 @@ class Character:
         else:
             return True
 
+    # Returns items based on given filters; multiple values for a given 
+    # property are treated like an 'or', while each separate property 
+    # is treated like an 'and'.
+    #
+    # For example:
+    #
+    # If I want to get all of the items that:
+    #   * are currently on my person
+    #   * are either in my backpack or on my belt
+    # I would call this method as such:
+    #
+    # self.get_item(on_person = [True],
+    #               location = ["backpack", "belt"])
+    #
+    # Integer/number-based properties have a special syntax: they are 
+    # filtered using one or more dictionaries, with the operator as their key, and the number as their value.
+    #
+    # Accepted operators:
+    #   * eq
+    #   * ne
+    #   * lt
+    #   * le
+    #   * gt
+    #   * ge
+    def get_item(self,
+                 name = [],
+                 weight = [],
+                 count = [],
+                 camp = [],
+                 on_person = [],
+                 location = [],
+                 notes = [],
+                 data = {}):
+        keys = data.keys()
+        # Gather values from either parameters or data, converting 
+        # non-list values into lists
+        name = keys["name"] if "name" in keys else name
+        if type(name) is not list:
+            name = [name]
+        weight = keys["weight"] if "weight" in keys else weight
+        if type(weight) is not list:
+            weight = [weight]
+        count = keys["count"] if "count" in keys else count
+        if type(count) is not list:
+            count = [count]
+        camp = keys["camp"] if "camp" in keys else camp
+        if type(camp) is not list:
+            camp = [camp]
+        on_person = keys["on_person"] if "on_person" in keys else on_person
+        if type(on_person) is not list:
+            on_person = [on_person]
+        location = keys["location"] if "location" in keys else location
+        if type(location) is not list:
+            location = [location]
+        notes = keys["notes"] if "notes" in keys else notes
+        if type(notes) is not list:
+            notes = [notes]
+        # Filter items
+        items = self.equipment
+        if name:
+            items = [i for i in items if i["name"] in name]
+        if camp:
+            items = [i for i in items if i["camp"] in camp]
+        if on_person:
+            items = [i for i in items if i["on_person"] in on_person]
+        if location:
+            items = [i for i in items if i["location"] in location]
+        if notes:
+            items = [i for i in items if i["notes"] in notes]
+        # Filter items based on number-typed properties
+
+
     # Add a new class to the character; supports either named arguments 
     # or a dictionary
     #
