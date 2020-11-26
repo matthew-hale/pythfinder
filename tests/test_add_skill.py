@@ -54,7 +54,7 @@ def test_add_skill_actual(setup_char):
 def test_add_skill_empty_name_error(setup_char):
     c = setup_char[2]
     error_message = ""
-    should_message = "add_item: name must not be null or empty"
+    should_message = "add_skill: name must not be null or empty"
     try:
         c.add_skill()
     except ValueError as err:

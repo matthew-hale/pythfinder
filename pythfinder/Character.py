@@ -589,7 +589,7 @@ class Character:
         new_name = data["name"] if "name" in keys else name
         # Validate that new_name is not null or empty
         if new_name == None or new_name == "":
-            raise ValueError("add_item: name must not be null or empty")
+            raise ValueError("add_skill: name must not be null or empty")
         # Validate skill name is in allowed_skills
         # If so, we can use all the built-in values for things
         if new_name in _allowed_skill_names:
