@@ -947,7 +947,9 @@ class Character:
                     new_name = "",
                     weight = None,
                     count = None,
-                    pack = None,
+                    camp = None,
+                    location = "",
+                    on_person = None,
                     notes = "",
                     data = {}):
         keys = data.keys()
@@ -957,8 +959,10 @@ class Character:
         if not self.is_unique_name(name = new_name, prop = "equipment"):
             raise ValueError("update_item: name must be unique among equipment")
         weight = data["weight"] if "weight" in keys else weight
-        pack = data["pack"] if "pack" in keys else pack
         count = data["count"] if "count" in keys else count
+        camp = data["camp"] if "camp" in keys else camp
+        location = data["location"] if "location" in keys else location
+        on_person = data["on_person"] if "on_person" in keys else on_person
         notes = data["notes"] if "notes" in keys else notes
         # Lazy selection; if there are duplicates, this will just pick 
         # up the first one that shows up
@@ -979,9 +983,12 @@ class Character:
                 target_item["count"] = count
             target_item["name"] = new_name or target_item["name"]
             target_item["notes"] = notes or target_item["notes"]
-            # Pack is special
-            if pack != None:
-                target_item["pack"] = pack
+            target_item["location"] = location or target_item["location"]
+            # Boolean like ints
+            if camp != None:
+                target_item["camp"] = camp
+            if on_person != None:
+                target_item["on_person"] = on_person
             return target_item
 
     # Update an existing spell based on name; supports either named 
