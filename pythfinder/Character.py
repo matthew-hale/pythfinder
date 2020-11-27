@@ -775,7 +775,9 @@ class Character:
     def add_attack(self,
                    name = "",
                    attackType = "",
-                   damageType = [],
+                   damageType = "",
+                   attack_mod = "",
+                   damage_mod = ""
                    damage = "",
                    critRoll = 20,
                    critMulti = 2,
@@ -783,6 +785,7 @@ class Character:
                    notes = "",
                    data = {}):
         keys = data.keys()
+        allowed_mods = ("str", "", "", "", "", "")
         new_name = data["name"] if "name" in keys else name
         # Validate that new_name is not null or empty
         if new_name == None or new_name == "":
@@ -792,6 +795,13 @@ class Character:
             raise ValueError("add_attack: name must be unique among attacks")
         new_attackType = data["attackType"] if "attackType" in keys else attackType
         new_damageType = data["damageType"] if "damageType" in keys else damageType
+        new_attack_mod = data["attack_mod"] if "attack_mod" in keys else attack_mod
+        new_damage_mod = data["damage_mod"] if "damage_mod" in keys else damage_mod
+        # Ensure valid mod for attack & damage
+        if new_attack_mod not in allowed_mods:
+            raise ValueError("add_attack: attack_mod not an allowed modifier")
+        if new_damage_mod not in allowed_mods:
+            raise ValueError("add_attack: damage_mod not an allowed modifier")
         new_damage = data["damage"] if "damage" in keys else damage
         new_critRoll = data["critRoll"] if "critRoll" in keys else critRoll
         new_critMulti = data["critMulti"] if "critMulti" in keys else critMulti
@@ -801,6 +811,8 @@ class Character:
             "name": new_name,
             "attackType": new_attackType,
             "damageType": new_damageType,
+            "attack_mod": new_attack_mod,
+            "damage_mod": new_damage_mod,
             "damage": new_damage,
             "critRoll": new_critRoll,
             "critMulti": new_critMulti,
