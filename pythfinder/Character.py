@@ -546,7 +546,8 @@ class Character:
         # Filter items
         items = self.equipment
         if name:
-            items = [i for i in items if i["name"] in name]
+            for search in name:
+                items = [i for i in items if search in i["name"]]
         if weight:
             items = numeric_filter(items = items,
                                    key = "weight",
@@ -555,14 +556,18 @@ class Character:
             items = numeric_filter(items = items,
                                    key = "count",
                                    operations = count)
-        if camp:
-            items = [i for i in items if camp in i["camp"]]
-        if on_person:
-            items = [i for i in items if on_person in i["on_person"]]
+        if camp != None:
+            for search in camp:
+                items = [i for i in items if search == i["camp"]]
+        if on_person != None:
+            for search in on_person:
+                items = [i for i in items if search == i["on_person"]]
         if location:
-            items = [i for i in items if location in i["location"]]
+            for search in location:
+                items = [i for i in items if search in i["location"]]
         if notes:
-            items = [i for i in items if notes in i["notes"]]
+            for search in notes:
+                items = [i for i in items if search in i["notes"]]
         return items
 
 
@@ -1435,6 +1440,8 @@ class Character:
     # as 'camp' items.
     def set_up_camp(self):
         camp_items = self.get_item(camp = True)
+        for item in camp_items:
+            item["on_person"] = False
 
     # Uses the roll function to make a skill check
     #
