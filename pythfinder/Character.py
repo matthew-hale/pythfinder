@@ -1443,6 +1443,13 @@ class Character:
         for item in camp_items:
             item["on_person"] = False
 
+    # Set items' 'on_person' flags to True if they are also flagged 
+    # as 'camp' items.
+    def tear_down_camp(self):
+        camp_items = self.get_item(camp = True)
+        for item in camp_items:
+            item["on_person"] = True
+
     # Uses the roll function to make a skill check
     #
     # Accepts an additional integer modifier (e.g. situational boosts)
