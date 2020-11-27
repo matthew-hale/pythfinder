@@ -297,25 +297,12 @@ class Character:
             data_keys = data["saving_throws"].keys()
             for key in data_keys:
                 if key in ("fortitude","reflex","will"):
-                    data_subkeys = data["saving_throws"][key].keys()
-                    self.saving_throws[key] = {
-                        "base": data["saving_throws"][key]["base"] if "base" in data_subkeys else 0,
-                        "misc": data["saving_throws"][key]["misc"] if "misc" in data_subkeys else [],
-                    }
+                    self.saving_throws[key] = data["saving_throws"][key] 
         else:
             self.saving_throws = {
-                "fortitude": {
-                    "base": 0,
-                    "misc": []
-                },
-                "reflex": {
-                    "base": 0,
-                    "misc": []
-                },
-                "will": {
-                    "base": 0,
-                    "misc": []
-                }
+                "fortitude": 0,
+                "reflex": 0,
+                "will": 0
             }
         
         # Skill initialization
