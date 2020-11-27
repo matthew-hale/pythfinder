@@ -1431,6 +1431,11 @@ class Character:
             del getattr(self, _type)[index]
         return removed
 
+    # Set items' 'on_person' flags to False if they are also flagged 
+    # as 'camp' items.
+    def set_up_camp(self):
+        camp_items = self.get_item(camp = True)
+
     # Uses the roll function to make a skill check
     #
     # Accepts an additional integer modifier (e.g. situational boosts)
