@@ -83,33 +83,31 @@ def remove_duplicates(l):
 # Perform a filtering operation on the provided list of dictionaries, 
 # based on a single property, using a dictionary of numeric comparisons.
 #
-# Treats all comparisons as an "or" operation; removes duplicates via 
+# Treats all comparisons as an "and" operation; removes duplicates via 
 # remove_duplicates
 def numeric_filter(items,
                    key,
                    operations = {}):
     allowed_operators = ("lt", "gt", "le", "ge", "eq", "ne")
-    subset = []
     for item in items:
-        for operator in operations.keys():
-            if operator not in allowed_operators:
-                raise ValueError("numeric_filter: operator '" + operator + "' not in list of allowed operators: " + str(allowed_operators))
-            if key not in item.keys():
-                raise KeyError("numeric_filter: key '" + key + "' not in keys of given item")
-            if operator == "lt":
-                subset.append(item) if item[key] < operations["lt"] else None
-            if operator == "gt":
-                subset.append(item) if item[key] > operations["gt"] else None
-            if operator == "le":
-                subset.append(item) if item[key] <= operations["le"] else None
-            if operator == "ge":
-                subset.append(item) if item[key] >= operations["ge"] else None
-            if operator == "eq":
-                subset.append(item) if item[key] == operations["eq"] else None
-            if operator == "ne":
-                subset.append(item) if item[key] != operations["ne"] else None
-    return remove_duplicates(subset)
-
+        if key not in item.keys():
+            raise KeyError("numeric_filter: key '" + key + "' not in keys of given item")
+    for operator in operations.keys():
+        if operator not in allowed_operators:
+            raise ValueError("numeric_filter: operator '" + operator + "' not in list of allowed operators: " + str(allowed_operators))
+        if operator == "lt":
+            items = [i for i in items if i[key] < operations["lt"]]
+        if operator == "gt":
+            items = [i for i in items if i[key] > operations["gt"]]
+        if operator == "le":
+            items = [i for i in items if i[key] <= operations["le"]]
+        if operator == "ge":
+            items = [i for i in items if i[key] >= operations["ge"]]
+        if operator == "eq":
+            items = [i for i in items if i[key] == operations["eq"]]
+        if operator == "ne":
+            items = [i for i in items if i[key] != operations["ne"]]
+    return items
 
 # Main character class
 class Character:
@@ -515,20 +513,11 @@ class Character:
     # self.get_item(on_person = [True],
     #               location = ["backpack", "belt"])
     #
-    # Integer/number-based properties have a special syntax: they are 
-    # filtered using one or more dictionaries, with the operator as their key, and the number as their value.
-    #
-    # Accepted operators:
-    #   * eq
-    #   * ne
-    #   * lt
-    #   * le
-    #   * gt
-    #   * ge
+    # Numeric filters use the numeric_filter function
     def get_item(self,
                  name = [],
-                 weight = [],
-                 count = [],
+                 weight = {},
+                 count = {},
                  camp = [],
                  on_person = [],
                  location = [],
@@ -536,16 +525,12 @@ class Character:
                  data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
-        # non-list values into lists
+        # non-list values into lists, except for numeric values
         name = keys["name"] if "name" in keys else name
         if type(name) is not list:
             name = [name]
         weight = keys["weight"] if "weight" in keys else weight
-        if type(weight) is not list:
-            weight = [weight]
         count = keys["count"] if "count" in keys else count
-        if type(count) is not list:
-            count = [count]
         camp = keys["camp"] if "camp" in keys else camp
         if type(camp) is not list:
             camp = [camp]
@@ -562,15 +547,23 @@ class Character:
         items = self.equipment
         if name:
             items = [i for i in items if i["name"] in name]
+        if weight:
+            items = numeric_filter(items = items,
+                                   key = "weight",
+                                   operations = weight)
+        if count:
+            items = numeric_filter(items = items,
+                                   key = "count",
+                                   operations = count)
         if camp:
-            items = [i for i in items if i["camp"] in camp]
+            items = [i for i in items if camp in i["camp"]]
         if on_person:
-            items = [i for i in items if i["on_person"] in on_person]
+            items = [i for i in items if on_person in i["on_person"]]
         if location:
-            items = [i for i in items if i["location"] in location]
+            items = [i for i in items if location in i["location"]]
         if notes:
-            items = [i for i in items if i["notes"] in notes]
-        # Filter items based on number-typed properties
+            items = [i for i in items if notes in i["notes"]]
+        return items
 
 
     # Add a new class to the character; supports either named arguments 
