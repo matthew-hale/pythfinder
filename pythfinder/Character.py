@@ -897,7 +897,7 @@ class Character:
     # returns the newly created bonus
     def add_bonus(self,
                   name = "",
-                  _type = "",
+                  type_ = "",
                   value = 0,
                   target_type = "",
                   target = "",
@@ -910,13 +910,13 @@ class Character:
         )
         keys = data.keys()
         name = data["name"] if "name" in keys else name
-        _type = data["_type"] if "_type" in keys else _type
+        type_ = data["type"] if "type" in keys else type_
         value = data["value"] if "value" in keys else value
         target = data["target"] if "target" in keys else target
         target_type = data["target_type"] if "target_type" in keys else target_type
         active = data["active"] if "active" in keys else active
         # Validate a valid bonus type
-        if _type not in _bonus_types:
+        if type_ not in _bonus_types:
             raise ValueError("add_bonus: bonus type must be one of: " + str(_bonus_types))
         # Validate a valid target type
         if target_type not in valid_target_types:
@@ -931,7 +931,7 @@ class Character:
         # Create the bonus and append
         new_bonus = {
             "name": name,
-            "type": _type,
+            "type": type_,
             "value": value,
             "target_type": target_type,
             "target": target,
@@ -1339,7 +1339,7 @@ class Character:
     def update_bonus(self,
                      name = "",
                      new_name = "",
-                     _type = "",
+                     type_ = "",
                      value = None,
                      target_type = "",
                      target = "",
@@ -1351,7 +1351,7 @@ class Character:
         # Validate that new_name is unique
         if not self.is_unique_name(name = new_name, prop = "bonuses"):
             raise ValueError("update_bonus: name must be unique among bonuses")
-        _type = data["_type"] if "_type" in keys else _type
+        type_ = data["type"] if "type" in keys else type_
         value = data["value"] if "value" in keys else value
         target_type = data["target_type"] if "target_type" in keys else target_type
         target = data["target"] if "target" in keys else target
@@ -1368,7 +1368,7 @@ class Character:
             return None
         else:
             target_bonus["name"] = new_name or target_bonus["name"]
-            target_bonus["type"] = _type or target_bonus["type"]
+            target_bonus["type"] = type_ or target_bonus["type"]
             if value != None:
                 target_bonus["value"] = value
             target_bonus["target_type"] = target_type or target_bonus["target_type"]
@@ -1383,7 +1383,7 @@ class Character:
     # returns the deleted element
     def delete_element(self,
                        name = None,
-                       _type = None,
+                       type_ = None,
                        data = {}):
         valid_types = ("class",
                  "feats",
@@ -1396,43 +1396,43 @@ class Character:
                  "spells")
         keys = data.keys()
         name = data["name"] if "name" in keys else name
-        _type = data["_type"] if "_type" in keys else _type
+        type_ = data["type"] if "type" in keys else type_
 
         # Ensure a valid element type
-        if _type not in valid_types:
+        if type_ not in valid_types:
             raise ValueError("delete_element: type must be one of: " + str(valid_types))
 
         # Skills are a special case; we don't want to delete any skills 
         # that aren't craft, perform, or profession
         deletable_skills = ("Craft", "Perform", "Profession")
         valid_target = False
-        if _type == "skills":
+        if type_ == "skills":
             skill_keys = self.skills.keys()
             names = [self.skills[item]["name"] for item in self.skills]
             for item in deletable_skills:
                 if item in name:
                     valid_target = True
         else:
-            names = [item["name"] for item in getattr(self, _type)]
+            names = [item["name"] for item in getattr(self, type_)]
             valid_target = True
 
         # Ensure a valid name
         if name not in names:
-            raise ValueError("delete_element: name not found in element type: " + _type)
+            raise ValueError("delete_element: name not found in element type: " + type_)
         if not valid_target:
             raise ValueError("delete_element: cannot delete skills that are not of the type: " + str(deletable_skills))
 
         # Remove element and return
-        if _type == "skills":
-            removed = getattr(self, _type).pop(name)
+        if type_ == "skills":
+            removed = getattr(self, type_).pop(name)
         else:
             index = 0
-            for item in getattr(self, _type):
+            for item in getattr(self, type_):
                 if item["name"] == name:
                     break
                 index = index + 1
-            removed = getattr(self, _type)[index]
-            del getattr(self, _type)[index]
+            removed = getattr(self, type_)[index]
+            del getattr(self, type_)[index]
         return removed
 
     # Set items' 'on_person' flags to False if they are also flagged 
