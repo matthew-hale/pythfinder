@@ -777,7 +777,7 @@ class Character:
                    attackType = "",
                    damageType = "",
                    attack_mod = "",
-                   damage_mod = ""
+                   damage_mod = "",
                    damage = "",
                    critRoll = 20,
                    critMulti = 2,
