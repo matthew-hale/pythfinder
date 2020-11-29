@@ -69,9 +69,9 @@ _bonus_types = (
     "enhancement", "inherent", "insight",
     "luck", "morale", "natural armor",
     "profane", "penalty", "racial", "resistance",
-    "sacred", "shield", "size", "trait"
+    "sacred", "shield", "size", "trait", "untyped"
 )
-_stacking_bonus_types = ("dodge", "circumstance")
+_stacking_bonus_types = ("dodge", "circumstance", "untyped")
 
 # Helper functions
 
@@ -906,7 +906,9 @@ class Character:
         valid_target_types = (
             "abilities",
             "saving_throws",
-            "skills"
+            "skills",
+            "attacks",
+            "damage"
         )
         keys = data.keys()
         name = data["name"] if "name" in keys else name
@@ -921,10 +923,12 @@ class Character:
         # Validate a valid target type
         if target_type not in valid_target_types:
             raise ValueError("add_bonus: target type must be one of: " + str(valid_target_types))
-        # Validate a valid target
-        target_keys = getattr(self, target_type).keys()
-        if target not in target_keys:
-            raise ValueError("add_bonus: target '" + target + "' not found in " + target_type)
+        # Validate a valid target (attacks and damage do not require a 
+        # specific target)
+        if target_type not in ("attacks", "damage"):
+            target_keys = getattr(self, target_type).keys()
+            if target not in target_keys:
+                raise ValueError("add_bonus: target '" + target + "' not found in " + target_type)
         # Validate a unique name
         if not self.is_unique_name(name = name, prop = "bonuses"):
             raise ValueError("add_bonus: name is not unique")
