@@ -785,7 +785,7 @@ class Character:
                    notes = "",
                    data = {}):
         keys = data.keys()
-        allowed_mods = ("str", "", "", "", "", "")
+        allowed_mods = self.abilities.keys()
         new_name = data["name"] if "name" in keys else name
         # Validate that new_name is not null or empty
         if new_name == None or new_name == "":
@@ -1467,9 +1467,33 @@ class Character:
         result = roll(roll_string)
         return result
 
+    # Roll an attack, factoring in bonuses
+    #
+    # Will automatically roll twice if the attack threatens a crit
+    #
+    # returns a list of roll results
     def roll_attack(self,
                     attack_name):
         # Validate attack name
         attack_names = [item["name"] for item in self.attacks]
         if attack_name not in attack_names:
             raise ValueError("roll_attack: '" + attack_name + "' not in character's list of attacks")
+        attack = [item for item in self.attacks if item["name"] == attack_name]
+        # Roll attack
+        hit_modifier = self.getAbilityMod(self.get_total_ability_value(attack[0]["attack_mod"]))
+        roll_string = "1d20+{}+{}".format(self.baseAttackBonus, hit_modifier)
+        """
+        # Check for active attack bonuses
+        active_attack_bonuses = get_bonus(target_type = "attacks", active = True)
+        for bonus in active_attack_bonuses:
+            if bonus["value"] < 0:
+                roll_string += "{}".format(str(bonus["value"]))
+            else:
+                roll_string += "+{}".format(str(bonus["value"]))
+        """
+        roll_results = []
+        roll_results.append(roll(roll_string))
+        # If critical hit, roll again to confirm
+        if roll_results[0]["natural_rolls"][0][1] >= attack[0]["critRoll"]:
+            roll_results.append(roll(roll_string))
+        return roll_results
