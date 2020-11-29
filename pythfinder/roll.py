@@ -1,6 +1,5 @@
 import random
 import re
-import json
 
 # Roll dice, using the following syntax:
 #
@@ -23,16 +22,22 @@ def roll(roll_string = ""):
         raise ValueError("roll: improper dice format")
 
     subtotal = 0
+    natural_rolls = []
     for die in dice:
         dice_count = int(re.search("^[0-9]*", die).group(0))
         dice_size = int(re.search("[0-9]*$", die).group(0))
     
         # Sum each dice roll
         for d in range(dice_count):
-            subtotal += random.randrange(1,dice_size)
+            result = random.randrange(1,dice_size+1)
+            subtotal += result
+            natural_rolls.append((dice_size, result))
     # Sum each modifier
     if modifiers:
         for m in modifiers:
             subtotal += int(m)
 
-    return subtotal
+    return {
+        "natural_rolls": natural_rolls,
+        "total": subtotal
+    }
