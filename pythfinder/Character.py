@@ -1466,3 +1466,10 @@ class Character:
         roll_string = "1d20+{}".format(total_modifier)
         result = roll(roll_string)
         return result
+
+    def roll_attack(self,
+                    attack_name):
+        # Validate attack name
+        attack_names = [item["name"] for item in self.attacks]
+        if attack_name not in attack_names:
+            raise ValueError("roll_attack: '" + attack_name + "' not in character's list of attacks")
