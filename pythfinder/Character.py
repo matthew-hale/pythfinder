@@ -541,6 +541,81 @@ class Character:
                 items = [i for i in items if search in i["notes"]]
         return items
 
+    # Returns attacks based on given filters; multiple values for a 
+    # given property are treated like an 'or', while each separate 
+    # property is treated like an 'and'.
+    def get_attack(self,
+                   name = [],
+                   attackType = [],
+                   damageType = [],
+                   attack_mod = [],
+                   damage_mod = [],
+                   damage = [],
+                   critRoll = {},
+                   critMulti = {},
+                   range_ = {},
+                   notes = [],
+                   data = {}):
+        keys = data.keys()
+        # Gather values from either parameters or data, converting 
+        # non-list values into lists, except for numeric values
+        name = keys["name"] if "name" in keys else name
+        if type(name) is not list:
+            name = [name]
+        attackType = keys["attackType"] if "attackType" in keys else attackType
+        if type(attackType) is not list:
+            attackType = [attackType]
+        damageType = keys["damageType"] if "damageType" in keys else damageType
+        if type(damageType) is not list:
+            damageType = [damageType]
+        attack_mod = keys["attack_mod"] if "attack_mod" in keys else attack_mod
+        if type(attack_mod) is not list:
+            attack_mod = [attack_mod]
+        damage_mod = keys["damage_mod"] if "damage_mod" in keys else damage_mod
+        if type(damage_mod) is not list:
+            damage_mod = [damage_mod]
+        damage = keys["damage"] if "damage" in keys else damage
+        if type(damage) is not list:
+            damage = [damage]
+        critRoll = keys["critRoll"] if "critRoll" in keys else critRoll
+        critMulti = keys["critMulti"] if "critMulti" in keys else critMulti
+        range_ = keys["range"] if "range" in keys else range_
+        notes = keys["notes"] if "notes" in keys else notes
+        if type(notes) is not list:
+            notes = [notes]
+        # Filter attacks
+        attacks = self.attacks
+        if name:
+            for search in name:
+                attacks = [i for i in attacks if search in i["name"]]
+        if attackType:
+            for search in attackType:
+                attacks = [i for i in attacks if search in i["attackType"]]
+        if damageType:
+            for search in damageType:
+                attacks = [i for i in attacks if search in i["damageType"]]
+        if attack_mod:
+            for search in attack_mod:
+                attacks = [i for i in attacks if search in i["attack_mod"]]
+        if damage_mod:
+            for search in damage_mod:
+                attacks = [i for i in attacks if search in i["damage_mod"]]
+        if damage:
+            for search in damage:
+                attacks = [i for i in attacks if search in i["damage"]]
+        if critRoll:
+            items = numeric_filter(items = attacks,
+                                   key = "critRoll",
+                                   operations = critRoll)
+        if critMulti:
+            items = numeric_filter(items = attacks,
+                                   key = "critMulti",
+                                   operations = critMulti)
+        if range_:
+            items = numeric_filter(items = attacks,
+                                   key = "range",
+                                   operations = range_)
+        return attacks
 
     # Add a new class to the character; supports either named arguments 
     # or a dictionary
