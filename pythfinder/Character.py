@@ -517,8 +517,12 @@ class Character:
         # Filter items
         items = self.equipment
         if name:
+            subgroup = []
             for search in name:
-                items = [i for i in items if search in i["name"]]
+                for i in items:
+                    if search in i["name"]:
+                        subgroup.append(i)
+            items = remove_duplicates(subgroup)
         if weight:
             items = numeric_filter(items = items,
                                    key = "weight",
@@ -527,18 +531,34 @@ class Character:
             items = numeric_filter(items = items,
                                    key = "count",
                                    operations = count)
-        if camp != None:
+        if camp:
+            subgroup = []
             for search in camp:
-                items = [i for i in items if search == i["camp"]]
-        if on_person != None:
+                for i in items:
+                    if search == i["camp"]:
+                        subgroup.append(i)
+            items = remove_duplicates(subgroup)
+        if on_person:
+            subgroup = []
             for search in on_person:
-                items = [i for i in items if search == i["on_person"]]
+                for i in items:
+                    if search == i["on_person"]:
+                        subgroup.append(i)
+            items = remove_duplicates(subgroup)
         if location:
+            subgroup = []
             for search in location:
-                items = [i for i in items if search in i["location"]]
+                for i in items:
+                    if search in i["location"]:
+                        subgroup.append(i)
+            items = remove_duplicates(subgroup)
         if notes:
+            subgroup = []
             for search in notes:
-                items = [i for i in items if search in i["notes"]]
+                for i in items:
+                    if search in i["notes"]:
+                        subgroup.append(i)
+            items = remove_duplicates(subgroup)
         return items
 
     # Returns attacks based on given filters; multiple values for a 
