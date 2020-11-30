@@ -63,15 +63,6 @@ _skill_mods = {
     "Perform": "cha",
     "Use Magic Device": "cha"
 }
-_bonus_types = (
-    "alchemical", "armor", "circumstance",
-    "competence", "deflection", "dodge",
-    "enhancement", "inherent", "insight",
-    "luck", "morale", "natural armor",
-    "profane", "penalty", "racial", "resistance",
-    "sacred", "shield", "size", "trait", "untyped"
-)
-_stacking_bonus_types = ("dodge", "circumstance", "untyped")
 
 # Helper functions
 
@@ -155,12 +146,6 @@ class Character:
         if "AC" in keys:
             for item in data["AC"]:
                 self.AC.append(item)
-
-        # Bonuses
-        self.bonuses = []
-        if "bonuses" in keys:
-            for item in data["bonuses"]:
-                _ = self.add_bonus(data = item)
 
         # Speed initialization
         if "speed" in keys:
@@ -464,7 +449,6 @@ class Character:
         allowed_props = ("classes",
                          "special",
                          "traits",
-                         "bonuses",
                          "feats",
                          "skills",
                          "equipment",
@@ -891,59 +875,6 @@ class Character:
         self.spells.append(new_spell)
         return new_spell
 
-    # Add a new bonus to the character; supports either named arguments 
-    # or a dictionary
-    #
-    # returns the newly created bonus
-    def add_bonus(self,
-                  name = "",
-                  type_ = "",
-                  value = 0,
-                  target_type = "",
-                  target = "",
-                  active = False,
-                  data = {}):
-        valid_target_types = (
-            "abilities",
-            "saving_throws",
-            "skills",
-            "attacks",
-            "damage"
-        )
-        keys = data.keys()
-        name = data["name"] if "name" in keys else name
-        type_ = data["type"] if "type" in keys else type_
-        value = data["value"] if "value" in keys else value
-        target = data["target"] if "target" in keys else target
-        target_type = data["target_type"] if "target_type" in keys else target_type
-        active = data["active"] if "active" in keys else active
-        # Validate a valid bonus type
-        if type_ not in _bonus_types:
-            raise ValueError("add_bonus: bonus type must be one of: " + str(_bonus_types))
-        # Validate a valid target type
-        if target_type not in valid_target_types:
-            raise ValueError("add_bonus: target type must be one of: " + str(valid_target_types))
-        # Validate a valid target (attacks and damage do not require a 
-        # specific target)
-        if target_type not in ("attacks", "damage"):
-            target_keys = getattr(self, target_type).keys()
-            if target not in target_keys:
-                raise ValueError("add_bonus: target '" + target + "' not found in " + target_type)
-        # Validate a unique name
-        if not self.is_unique_name(name = name, prop = "bonuses"):
-            raise ValueError("add_bonus: name is not unique")
-        # Create the bonus and append
-        new_bonus = {
-            "name": name,
-            "type": type_,
-            "value": value,
-            "target_type": target_type,
-            "target": target,
-            "active": active
-        }
-        self.bonuses.append(new_bonus)
-        return new_bonus
-
     # Update an existing feat based on name; supports either named 
     # arguments or a dictionary
     #
@@ -1336,51 +1267,6 @@ class Character:
         target_ability["base"] = base or target_ability["base"]
         return target_ability
 
-    # Update an existing bonus based on name; supports either named 
-    # arguments or a dictionary
-    #
-    # returns the updated bonus dict
-    def update_bonus(self,
-                     name = "",
-                     new_name = "",
-                     type_ = "",
-                     value = None,
-                     target_type = "",
-                     target = "",
-                     active = None,
-                     data = {}):
-        keys = data.keys()
-        name = data["name"] if "name" in keys else name
-        new_name = data["new_name"] if "new_name" in keys else new_name
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "bonuses"):
-            raise ValueError("update_bonus: name must be unique among bonuses")
-        type_ = data["type"] if "type" in keys else type_
-        value = data["value"] if "value" in keys else value
-        target_type = data["target_type"] if "target_type" in keys else target_type
-        target = data["target"] if "target" in keys else target
-        active = data["active"] if "active" in keys else active
-        # Lazy selection; if there are duplicates, this will just pick 
-        # up the first one that shows up
-        for item in self.bonuses:
-            if item["name"] == name:
-                target_bonus = item
-                break
-        try:
-            target_bonus
-        except NameError:
-            return None
-        else:
-            target_bonus["name"] = new_name or target_bonus["name"]
-            target_bonus["type"] = type_ or target_bonus["type"]
-            if value != None:
-                target_bonus["value"] = value
-            target_bonus["target_type"] = target_type or target_bonus["target_type"]
-            target_bonus["target"] = target or target_bonus["target"]
-            if active != None:
-                target_bonus["active"] = active
-            return target_bonus
-
     # Delete an element by name and type; supports named arguments or a 
     # dictionary
     #
@@ -1473,7 +1359,8 @@ class Character:
     #
     # returns a list of roll results
     def roll_attack(self,
-                    attack_name):
+                    attack_name,
+                    modifiers = []):
         # Validate attack name
         attack_names = [item["name"] for item in self.attacks]
         if attack_name not in attack_names:
@@ -1482,15 +1369,13 @@ class Character:
         # Roll attack
         hit_modifier = self.getAbilityMod(self.get_total_ability_value(attack[0]["attack_mod"]))
         roll_string = "1d20+{}+{}".format(self.baseAttackBonus, hit_modifier)
-        """
-        # Check for active attack bonuses
-        active_attack_bonuses = get_bonus(target_type = "attacks", active = True)
-        for bonus in active_attack_bonuses:
-            if bonus["value"] < 0:
-                roll_string += "{}".format(str(bonus["value"]))
-            else:
-                roll_string += "+{}".format(str(bonus["value"]))
-        """
+        # Add any additional modifers
+        if modifiers:
+            for mod in modifiers:
+                if mod >= 0:
+                    roll_string += "+{}".format(mod)
+                else:
+                    roll_string += "{}".format(mod)
         roll_results = []
         roll_results.append(roll(roll_string))
         # If critical hit, roll again to confirm
