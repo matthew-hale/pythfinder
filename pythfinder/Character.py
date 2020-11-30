@@ -586,33 +586,57 @@ class Character:
         # Filter attacks
         attacks = self.attacks
         if name:
+            subgroup = []
             for search in name:
-                attacks = [i for i in attacks if search in i["name"]]
+                for i in attacks:
+                    if search in i["name"]:
+                        subgroup.append(i)
+            attacks = remove_duplicates(subgroup)
         if attackType:
+            subgroup = []
             for search in attackType:
-                attacks = [i for i in attacks if search in i["attackType"]]
+                for i in attacks:
+                    if search in i["attackType"]:
+                        subgroup.append(i)
+            attacks = remove_duplicates(subgroup)
         if damageType:
+            subgroup = []
             for search in damageType:
-                attacks = [i for i in attacks if search in i["damageType"]]
+                for i in attacks:
+                    if search in i["damageType"]:
+                        subgroup.append(i)
+            attacks = remove_duplicates(subgroup)
         if attack_mod:
+            subgroup = []
             for search in attack_mod:
-                attacks = [i for i in attacks if search in i["attack_mod"]]
+                for i in attacks:
+                    if search in i["attack_mod"]:
+                        subgroup.append(i)
+            attacks = remove_duplicates(subgroup)
         if damage_mod:
+            subgroup = []
             for search in damage_mod:
-                attacks = [i for i in attacks if search in i["damage_mod"]]
+                for i in attacks:
+                    if search in i["damage_mod"]:
+                        subgroup.append(i)
+            attacks = remove_duplicates(subgroup)
         if damage:
+            subgroup = []
             for search in damage:
-                attacks = [i for i in attacks if search in i["damage"]]
+                for i in attacks:
+                    if search in i["damage"]:
+                        subgroup.append(i)
+            attacks = remove_duplicates(subgroup)
         if critRoll:
-            items = numeric_filter(items = attacks,
+            attacks = numeric_filter(items = attacks,
                                    key = "critRoll",
                                    operations = critRoll)
         if critMulti:
-            items = numeric_filter(items = attacks,
+            attacks = numeric_filter(items = attacks,
                                    key = "critMulti",
                                    operations = critMulti)
         if range_:
-            items = numeric_filter(items = attacks,
+            attacks = numeric_filter(items = attacks,
                                    key = "range",
                                    operations = range_)
         return attacks
