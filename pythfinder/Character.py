@@ -1346,9 +1346,9 @@ class Character:
     # returns the roll result as an integer
     def roll_skill(self,
                    skill_name,
-                   modifier = 0):
+                   modifiers = []):
         skill_modifier = self.get_skill_value(skill_name)
-        total_modifier = skill_modifier + modifier
+        total_modifier = skill_modifier + sum(modifiers)
         roll_string = "1d20+{}".format(total_modifier)
         result = roll(roll_string)
         return result
