@@ -561,6 +561,25 @@ class Character:
             items = remove_duplicates(subgroup)
         return items
 
+    # Returns classes based on given filters; multiple values for a 
+    # given property are treated like an 'or', while each separate 
+    # property is treated like an 'and'.
+    def get_class(self,
+                  name = [],
+                  archetypes = [],
+                  level = {},
+                  data = {}):
+        keys = data.keys()
+        # Gather values from either parameters or data, converting 
+        # non-list values into lists, except for numeric values
+        name = data["name"] if "name" in keys else name
+        if type(name) is not list:
+            name = [name]
+        archetypes = data["archetypes"] if "archetypes" in keys else archetypes
+        if type(archetypes) is not list:
+            archetypes = [archetypes]
+
+
     # Returns attacks based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
@@ -577,6 +596,7 @@ class Character:
                    notes = [],
                    data = {}):
         keys = data.keys()
+
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
         name = keys["name"] if "name" in keys else name
