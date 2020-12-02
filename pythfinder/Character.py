@@ -497,21 +497,21 @@ class Character:
         keys = data.keys()
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
-        name = keys["name"] if "name" in keys else name
+        name = data["name"] if "name" in keys else name
         if type(name) is not list:
             name = [name]
-        weight = keys["weight"] if "weight" in keys else weight
-        count = keys["count"] if "count" in keys else count
-        camp = keys["camp"] if "camp" in keys else camp
+        weight = data["weight"] if "weight" in keys else weight
+        count = data["count"] if "count" in keys else count
+        camp = data["camp"] if "camp" in keys else camp
         if type(camp) is not list:
             camp = [camp]
-        on_person = keys["on_person"] if "on_person" in keys else on_person
+        on_person = data["on_person"] if "on_person" in keys else on_person
         if type(on_person) is not list:
             on_person = [on_person]
-        location = keys["location"] if "location" in keys else location
+        location = data["location"] if "location" in keys else location
         if type(location) is not list:
             location = [location]
-        notes = keys["notes"] if "notes" in keys else notes
+        notes = data["notes"] if "notes" in keys else notes
         if type(notes) is not list:
             notes = [notes]
         # Filter items
@@ -599,28 +599,28 @@ class Character:
 
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
-        name = keys["name"] if "name" in keys else name
+        name = data["name"] if "name" in keys else name
         if type(name) is not list:
             name = [name]
-        attackType = keys["attackType"] if "attackType" in keys else attackType
+        attackType = data["attackType"] if "attackType" in keys else attackType
         if type(attackType) is not list:
             attackType = [attackType]
-        damageType = keys["damageType"] if "damageType" in keys else damageType
+        damageType = data["damageType"] if "damageType" in keys else damageType
         if type(damageType) is not list:
             damageType = [damageType]
-        attack_mod = keys["attack_mod"] if "attack_mod" in keys else attack_mod
+        attack_mod = data["attack_mod"] if "attack_mod" in keys else attack_mod
         if type(attack_mod) is not list:
             attack_mod = [attack_mod]
-        damage_mod = keys["damage_mod"] if "damage_mod" in keys else damage_mod
+        damage_mod = data["damage_mod"] if "damage_mod" in keys else damage_mod
         if type(damage_mod) is not list:
             damage_mod = [damage_mod]
-        damage = keys["damage"] if "damage" in keys else damage
+        damage = data["damage"] if "damage" in keys else damage
         if type(damage) is not list:
             damage = [damage]
-        critRoll = keys["critRoll"] if "critRoll" in keys else critRoll
-        critMulti = keys["critMulti"] if "critMulti" in keys else critMulti
-        range_ = keys["range"] if "range" in keys else range_
-        notes = keys["notes"] if "notes" in keys else notes
+        critRoll = data["critRoll"] if "critRoll" in keys else critRoll
+        critMulti = data["critMulti"] if "critMulti" in keys else critMulti
+        range_ = data["range"] if "range" in keys else range_
+        notes = data["notes"] if "notes" in keys else notes
         if type(notes) is not list:
             notes = [notes]
         # Filter attacks
