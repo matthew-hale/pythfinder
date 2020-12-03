@@ -762,6 +762,69 @@ class Character:
         keys = data.keys()
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
+        name = data["name"] if "name" in keys else name
+        if type(name) is not list:
+            name = [name]
+        rank = data["rank"] if "rank" in keys else rank
+        isClass = data["isClass"] if "isClass" in keys else isClass
+        if type(isClass) is not list:
+            isClass = [isClass]
+        mod = data["mod"] if "mod" in keys else mod
+        if type(mod) is not list:
+            mod = [mod]
+        notes = data["notes"] if "notes" in keys else notes
+        if type(notes) is not list:
+            notes = [notes]
+        useUntrained = data["useUntrained"] if "useUntrained" in keys else useUntrained
+        if type(useUntrained) is not list:
+            useUntrained = [useUntrained]
+        misc = data["misc"] if "misc" in keys else misc
+        # Filter skills
+        skills = [skill for skill in self.skills.values()]
+        if name:
+            subgroup = []
+            for search in name:
+                for i in skills:
+                    if search in i["name"]:
+                        subgroup.append(i)
+            skills = remove_duplicates_by_name(subgroup)
+        if isClass:
+            subgroup = []
+            for search in isClass:
+                for i in skills:
+                    if search == i["isClass"]:
+                        subgroup.append(i)
+            skills = remove_duplicates_by_name(subgroup)
+        if mod:
+            subgroup = []
+            for search in mod:
+                for i in skills:
+                    if search in i["mod"]:
+                        subgroup.append(i)
+            skills = remove_duplicates_by_name(subgroup)
+        if useUntrained:
+            subgroup = []
+            for search in useUntrained:
+                for i in skills:
+                    if search == i["useUntrained"]:
+                        subgroup.append(i)
+            skills = remove_duplicates_by_name(subgroup)
+        if notes:
+            subgroup = []
+            for search in notes:
+                for i in skills:
+                    if search in i["notes"]:
+                        subgroup.append(i)
+            skills = remove_duplicates_by_name(subgroup)
+        if rank:
+            skills = numeric_filter(items = skills,
+                                    key = "rank",
+                                    operations = rank)
+        if misc:
+            skills = numeric_filter(items = skills,
+                                    key = "misc",
+                                    operations = misc)
+        return skills
 
     # Returns attacks based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
