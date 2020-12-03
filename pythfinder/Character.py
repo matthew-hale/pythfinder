@@ -620,7 +620,42 @@ class Character:
                  description = [],
                  notes = [],
                  data = {}):
-    keys = data.keys()
+        keys = data.keys()
+        # Gather values from either parameters or data, converting 
+        # non-list values into lists, except for numeric values
+        name = data["name"] if "name" in keys else name
+        if type(name) is not list:
+            name = [name]
+        description = data["description"] if "description" in keys else description
+        if type(description) is not list:
+            description = [description]
+        notes = data["notes"] if "notes" in keys else notes
+        if type(notes) is not list:
+            notes = [notes]
+        # Filter feats
+        feats = self.feats
+        if name:
+            subgroup = []
+            for search in name:
+                for i in feats:
+                    if search in i["name"]:
+                        subgroup.append(i)
+            feats = remove_duplicates_by_name(subgroup)
+        if description:
+            subgroup = []
+            for search in description:
+                for i in feats:
+                    if search in i["description"]:
+                        subgroup.append(i)
+            feats = remove_duplicates_by_name(subgroup)
+        if notes:
+            subgroup = []
+            for search in notes:
+                for i in feats:
+                    if search in i["notes"]:
+                        subgroup.append(i)
+            feats = remove_duplicates_by_name(subgroup)
+        return feats
 
     # Returns attacks based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
