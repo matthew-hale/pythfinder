@@ -747,6 +747,22 @@ class Character:
             special = remove_duplicates_by_name(subgroup)
         return special
 
+    # Returns skills based on given filters; multiple values for a 
+    # given property are treated like an 'or', while each separate 
+    # property is treated like an 'and'.
+    def get_skill(self,
+                  name = [],
+                  rank = {},
+                  isClass = [],
+                  mod = [],
+                  notes = [],
+                  useUntrained = [],
+                  misc = {},
+                  data = {}):
+        keys = data.keys()
+        # Gather values from either parameters or data, converting 
+        # non-list values into lists, except for numeric values
+
     # Returns attacks based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
