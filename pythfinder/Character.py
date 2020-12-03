@@ -66,16 +66,25 @@ _skill_mods = {
 
 # Helper functions
 
-# Remove duplicate dictionaries from a list of dictionaries
-def remove_duplicates(l):
-    out = [dict(tup) for tup in {tuple(d.items()) for d in l}]
+# Remove duplicate dictionaries from a list of dictionaries, using 
+# "name" as a primary key (assumes anything with the same name is 
+# identical)
+def remove_duplicates_by_name(l):
+    # Get unique names
+    item_names = list(set([i["name"] for i in l]))
+    out = []
+    for name in item_names:
+        for item in l:
+            if item["name"] == name:
+                out.append(item)
+                break
     return out
 
 # Perform a filtering operation on the provided list of dictionaries, 
 # based on a single property, using a dictionary of numeric comparisons.
 #
 # Treats all comparisons as an "and" operation; removes duplicates via 
-# remove_duplicates
+# remove_duplicates_by_name
 def numeric_filter(items,
                    key,
                    operations = {}):
@@ -522,7 +531,7 @@ class Character:
                 for i in items:
                     if search in i["name"]:
                         subgroup.append(i)
-            items = remove_duplicates(subgroup)
+            items = remove_duplicates_by_name(subgroup)
         if weight:
             items = numeric_filter(items = items,
                                    key = "weight",
@@ -537,28 +546,28 @@ class Character:
                 for i in items:
                     if search == i["camp"]:
                         subgroup.append(i)
-            items = remove_duplicates(subgroup)
+            items = remove_duplicates_by_name(subgroup)
         if on_person:
             subgroup = []
             for search in on_person:
                 for i in items:
                     if search == i["on_person"]:
                         subgroup.append(i)
-            items = remove_duplicates(subgroup)
+            items = remove_duplicates_by_name(subgroup)
         if location:
             subgroup = []
             for search in location:
                 for i in items:
                     if search in i["location"]:
                         subgroup.append(i)
-            items = remove_duplicates(subgroup)
+            items = remove_duplicates_by_name(subgroup)
         if notes:
             subgroup = []
             for search in notes:
                 for i in items:
                     if search in i["notes"]:
                         subgroup.append(i)
-            items = remove_duplicates(subgroup)
+            items = remove_duplicates_by_name(subgroup)
         return items
 
     # Returns classes based on given filters; multiple values for a 
@@ -578,6 +587,29 @@ class Character:
         archetypes = data["archetypes"] if "archetypes" in keys else archetypes
         if type(archetypes) is not list:
             archetypes = [archetypes]
+        level = data["level"] if "level" in keys else level
+        # Filter classes
+        classes = self.classes
+        if name:
+            subgroup = []
+            for search in name:
+                for i in classes:
+                    if search in i["name"]:
+                        subgroup.append(i)
+            classes = remove_duplicates_by_name(subgroup)
+        if archetypes:
+            subgroup = []
+            for search in archetypes:
+                for i in classes:
+                    for archetype in i["archetypes"]:
+                        if search in archetype:
+                            subgroup.append(i)
+            classes = remove_duplicates_by_name(subgroup)
+        if level:
+            classes = numeric_filter(items = classes,
+                                     key = "level",
+                                     operations = level)
+        return classes
 
 
     # Returns attacks based on given filters; multiple values for a 
@@ -631,42 +663,42 @@ class Character:
                 for i in attacks:
                     if search in i["name"]:
                         subgroup.append(i)
-            attacks = remove_duplicates(subgroup)
+            attacks = remove_duplicates_by_name(subgroup)
         if attackType:
             subgroup = []
             for search in attackType:
                 for i in attacks:
                     if search in i["attackType"]:
                         subgroup.append(i)
-            attacks = remove_duplicates(subgroup)
+            attacks = remove_duplicates_by_name(subgroup)
         if damageType:
             subgroup = []
             for search in damageType:
                 for i in attacks:
                     if search in i["damageType"]:
                         subgroup.append(i)
-            attacks = remove_duplicates(subgroup)
+            attacks = remove_duplicates_by_name(subgroup)
         if attack_mod:
             subgroup = []
             for search in attack_mod:
                 for i in attacks:
                     if search in i["attack_mod"]:
                         subgroup.append(i)
-            attacks = remove_duplicates(subgroup)
+            attacks = remove_duplicates_by_name(subgroup)
         if damage_mod:
             subgroup = []
             for search in damage_mod:
                 for i in attacks:
                     if search in i["damage_mod"]:
                         subgroup.append(i)
-            attacks = remove_duplicates(subgroup)
+            attacks = remove_duplicates_by_name(subgroup)
         if damage:
             subgroup = []
             for search in damage:
                 for i in attacks:
                     if search in i["damage"]:
                         subgroup.append(i)
-            attacks = remove_duplicates(subgroup)
+            attacks = remove_duplicates_by_name(subgroup)
         if critRoll:
             attacks = numeric_filter(items = attacks,
                                    key = "critRoll",
