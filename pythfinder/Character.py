@@ -657,6 +657,96 @@ class Character:
             feats = remove_duplicates_by_name(subgroup)
         return feats
 
+    # Returns traits based on given filters; multiple values for a 
+    # given property are treated like an 'or', while each separate 
+    # property is treated like an 'and'.
+    def get_trait(self,
+                 name = [],
+                 description = [],
+                 notes = [],
+                 data = {}):
+        keys = data.keys()
+        # Gather values from either parameters or data, converting 
+        # non-list values into lists, except for numeric values
+        name = data["name"] if "name" in keys else name
+        if type(name) is not list:
+            name = [name]
+        description = data["description"] if "description" in keys else description
+        if type(description) is not list:
+            description = [description]
+        notes = data["notes"] if "notes" in keys else notes
+        if type(notes) is not list:
+            notes = [notes]
+        # Filter traits
+        traits = self.traits
+        if name:
+            subgroup = []
+            for search in name:
+                for i in traits:
+                    if search in i["name"]:
+                        subgroup.append(i)
+            traits = remove_duplicates_by_name(subgroup)
+        if description:
+            subgroup = []
+            for search in description:
+                for i in traits:
+                    if search in i["description"]:
+                        subgroup.append(i)
+            traits = remove_duplicates_by_name(subgroup)
+        if notes:
+            subgroup = []
+            for search in notes:
+                for i in traits:
+                    if search in i["notes"]:
+                        subgroup.append(i)
+            traits = remove_duplicates_by_name(subgroup)
+        return traits
+
+    # Returns special abilities based on given filters; multiple values 
+    # for a given property are treated like an 'or', while each 
+    # separate property is treated like an 'and'.
+    def get_special(self,
+                 name = [],
+                 description = [],
+                 notes = [],
+                 data = {}):
+        keys = data.keys()
+        # Gather values from either parameters or data, converting 
+        # non-list values into lists, except for numeric values
+        name = data["name"] if "name" in keys else name
+        if type(name) is not list:
+            name = [name]
+        description = data["description"] if "description" in keys else description
+        if type(description) is not list:
+            description = [description]
+        notes = data["notes"] if "notes" in keys else notes
+        if type(notes) is not list:
+            notes = [notes]
+        # Filter special
+        special = self.special
+        if name:
+            subgroup = []
+            for search in name:
+                for i in special:
+                    if search in i["name"]:
+                        subgroup.append(i)
+            special = remove_duplicates_by_name(subgroup)
+        if description:
+            subgroup = []
+            for search in description:
+                for i in special:
+                    if search in i["description"]:
+                        subgroup.append(i)
+            special = remove_duplicates_by_name(subgroup)
+        if notes:
+            subgroup = []
+            for search in notes:
+                for i in special:
+                    if search in i["notes"]:
+                        subgroup.append(i)
+            special = remove_duplicates_by_name(subgroup)
+        return special
+
     # Returns attacks based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
