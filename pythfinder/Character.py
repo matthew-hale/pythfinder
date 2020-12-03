@@ -612,6 +612,16 @@ class Character:
         return classes
 
 
+    # Returns feats based on given filters; multiple values for a given 
+    # property are treated like an 'or', while each separate property 
+    # is treated like an 'and'.
+    def get_feat(self,
+                 name = [],
+                 description = [],
+                 notes = [],
+                 data = {}):
+    keys = data.keys()
+
     # Returns attacks based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
