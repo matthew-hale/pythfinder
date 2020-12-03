@@ -779,7 +779,6 @@ class Character:
                    notes = [],
                    data = {}):
         keys = data.keys()
-
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
         name = data["name"] if "name" in keys else name
