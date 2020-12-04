@@ -867,6 +867,23 @@ class Character:
                                     operations = misc)
         return skills
 
+    # Returns spells based on given filters; multiple values for a 
+    # given property are treated like an 'or', while each separate 
+    # property is treated like an 'and'.
+    def get_spell(self,
+                  name = [],
+                  level = {},
+                  description = [],
+                  prepared = {},
+                  cast = {},
+                  data = {}):
+        keys = data.keys()
+        # Gather values from either parameters or data, converting 
+        # non-list values into lists, except for numeric values
+        name = data["name"] if "name" in keys else name
+        if type(name) is not list:
+            name = [name]
+
     # Returns attacks based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
