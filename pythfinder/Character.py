@@ -883,6 +883,41 @@ class Character:
         name = data["name"] if "name" in keys else name
         if type(name) is not list:
             name = [name]
+        level = data["level"] if "level" in keys else level
+        prepared = data["prepared"] if "prepared" in keys else prepared
+        cast = data["cast"] if "cast" in keys else cast
+        description = data["description"] if "description" in keys else description
+        if type(description) is not list:
+            description = [description]
+        # Filter spells
+        spells = self.spells
+        if name:
+            subgroup = []
+            for search in name:
+                for i in spells:
+                    if search in i["name"]:
+                        subgroup.append(i)
+            spells = remove_duplicates_by_name(subgroup)
+        if level:
+            spells = numeric_filter(items = spells,
+                                    key = "level",
+                                    operations = level)
+        if description:
+            subgroup = []
+            for search in description:
+                for i in spells:
+                    if search in i["description"]:
+                        subgroup.append(i)
+            spells = remove_duplicates_by_name(subgroup)
+        if prepared:
+            spells = numeric_filter(items = spells,
+                                    key = "prepared",
+                                    operations = prepared)
+        if cast:
+            spells = numeric_filter(items = spells,
+                                    key = "cast",
+                                    operations = cast)
+        return spells
 
     # Returns attacks based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
