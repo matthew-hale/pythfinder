@@ -919,6 +919,53 @@ class Character:
                                     operations = cast)
         return spells
 
+    # Returns armor based on given filters; multiple values for a 
+    # given property are treated like an 'or', while each separate 
+    # property is treated like an 'and'.
+    def get_armor(self,
+                  name = [],
+                  acBonus = {},
+                  acPenalty = {},
+                  maxDexBonus = {},
+                  arcaneFailureChance = {},
+                  data = {}):
+        keys = data.keys()
+        # Gather values from either parameters or data, converting 
+        # non-list values into lists, except for numeric values
+        name = data["name"] if "name" in keys else name
+        if type(name) is not list:
+            name = [name]
+        acBonus = data["acBonus"] if "acBonus" in keys else acBonus
+        acPenalty = data["acPenalty"] if "acPenalty" in keys else acPenalty
+        maxDexBonus = data["maxDexBonus"] if "maxDexBonus" in keys else maxDexBonus
+        arcaneFailureChance = data["arcaneFailureChance"] if "arcaneFailureChance" in keys else arcaneFailureChance
+        # Filter armor
+        armor = self.armor
+        if name:
+            subgroup = []
+            for search in name:
+                for i in armor:
+                    if search in i["name"]:
+                        subgroup.append(i)
+            armor = remove_duplicates_by_name(subgroup)
+        if acBonus:
+            armor = numeric_filter(items = armor,
+                                    key = "acBonus",
+                                    operations = acBonus)
+        if acPenalty:
+            armor = numeric_filter(items = armor,
+                                    key = "acPenalty",
+                                    operations = acPenalty)
+        if maxDexBonus:
+            armor = numeric_filter(items = armor,
+                                    key = "maxDexBonus",
+                                    operations = maxDexBonus)
+        if arcaneFailureChance:
+            armor = numeric_filter(items = armor,
+                                    key = "arcaneFailureChance",
+                                    operations = arcaneFailureChance)
+        return armor
+
     # Returns attacks based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
