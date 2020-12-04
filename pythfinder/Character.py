@@ -83,8 +83,11 @@ def remove_duplicates_by_name(l):
 # Perform a filtering operation on the provided list of dictionaries, 
 # based on a single property, using a dictionary of numeric comparisons.
 #
-# Treats all comparisons as an "and" operation; removes duplicates via 
-# remove_duplicates_by_name
+# Treats the set of all comparisons as an "or" operation (this is to 
+# maintain consistency between different element properties for the 
+# get_* methods)
+#
+# removes duplicates via remove_duplicates_by_name
 def numeric_filter(items,
                    key,
                    operations = {}):
@@ -92,22 +95,60 @@ def numeric_filter(items,
     for item in items:
         if key not in item.keys():
             raise KeyError("numeric_filter: key '" + key + "' not in keys of given item")
+    out_items = []
     for operator in operations.keys():
         if operator not in allowed_operators:
             raise ValueError("numeric_filter: operator '" + operator + "' not in list of allowed operators: " + str(allowed_operators))
-        if operator == "lt":
-            items = [i for i in items if i[key] < operations["lt"]]
-        if operator == "gt":
-            items = [i for i in items if i[key] > operations["gt"]]
-        if operator == "le":
-            items = [i for i in items if i[key] <= operations["le"]]
-        if operator == "ge":
-            items = [i for i in items if i[key] >= operations["ge"]]
-        if operator == "eq":
-            items = [i for i in items if i[key] == operations["eq"]]
-        if operator == "ne":
-            items = [i for i in items if i[key] != operations["ne"]]
-    return items
+        for item in items:
+            if operator == "lt":
+                if type(item[key]) is list:
+                    for element in item[key]:
+                        if element < operations["lt"]:
+                            out_items.append(item)
+                            break
+                else:
+                    out_items.append(item) if item[key] < operations["lt"] else None
+            if operator == "gt":
+                if type(item[key]) is list:
+                    for element in item[key]:
+                        if element > operations["gt"]:
+                            out_items.append(item)
+                            break
+                else:
+                    out_items.append(item) if item[key] > operations["gt"] else None
+            if operator == "le":
+                if type(item[key]) is list:
+                    for element in item[key]:
+                        if element <= operations["le"]:
+                            out_items.append(item)
+                            break
+                else:
+                    out_items.append(item) if item[key] <= operations["le"] else None
+            if operator == "ge":
+                if type(item[key]) is list:
+                    for element in item[key]:
+                        if element >= operations["ge"]:
+                            out_items.append(item)
+                            break
+                else:
+                    out_items.append(item) if item[key] >= operations["ge"] else None
+            if operator == "eq":
+                if type(item[key]) is list:
+                    for element in item[key]:
+                        if element == operations["eq"]:
+                            out_items.append(item)
+                            break
+                else:
+                    out_items.append(item) if item[key] == operations["eq"] else None
+            if operator == "ne":
+                if type(item[key]) is list:
+                    for element in item[key]:
+                        if element != operations["ne"]:
+                            out_items.append(item)
+                            break
+                else:
+                    out_items.append(item) if item[key] != operations["ne"] else None
+    return remove_duplicates_by_name(out_items)
 
 # Main character class
 class Character:
