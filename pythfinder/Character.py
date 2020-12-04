@@ -1284,8 +1284,10 @@ class Character:
                    name = "",
                    attackType = "",
                    damageType = "",
-                   attack_mod = "",
-                   damage_mod = "",
+                   # default to str for mods so that attack creation 
+                   # does not fail if not provided
+                   attack_mod = "str",
+                   damage_mod = "str", 
                    damage = "",
                    critRoll = 20,
                    critMulti = 2,
