@@ -78,56 +78,56 @@ def test_delete_element_feat_return(setup_char):
     delete_data = setup_char[0]
     c = setup_char[5]
 
-    return_feat = c.delete_element(name = "delete me", _type = "feats")
+    return_feat = c.delete_element(name = "delete me", type_ = "feats")
     assert delete_data["name"] == return_feat["name"]
 
 def test_delete_element_trait_return(setup_char):
     delete_data = setup_char[0]
     c = setup_char[5]
 
-    return_trait = c.delete_element(name = "delete me", _type = "traits")
+    return_trait = c.delete_element(name = "delete me", type_ = "traits")
     assert delete_data["name"] == return_trait["name"]
 
 def test_delete_element_special_return(setup_char):
     delete_data = setup_char[0]
     c = setup_char[5]
 
-    return_special = c.delete_element(name = "delete me", _type = "special")
+    return_special = c.delete_element(name = "delete me", type_ = "special")
     assert delete_data["name"] == return_special["name"]
 
 def test_delete_element_equipment_return(setup_char):
     delete_data = setup_char[0]
     c = setup_char[5]
 
-    return_equipment = c.delete_element(name = "delete me", _type = "equipment")
+    return_equipment = c.delete_element(name = "delete me", type_ = "equipment")
     assert delete_data["name"] == return_equipment["name"]
 
 def test_delete_element_attack_return(setup_char):
     delete_data = setup_char[0]
     c = setup_char[5]
 
-    return_attack = c.delete_element(name = "delete me", _type = "attacks")
+    return_attack = c.delete_element(name = "delete me", type_ = "attacks")
     assert delete_data["name"] == return_attack["name"]
 
 def test_delete_element_armor_return(setup_char):
     delete_data = setup_char[0]
     c = setup_char[5]
 
-    return_armor = c.delete_element(name = "delete me", _type = "armor")
+    return_armor = c.delete_element(name = "delete me", type_ = "armor")
     assert delete_data["name"] == return_armor["name"]
 
 def test_delete_element_spell_return(setup_char):
     delete_data = setup_char[0]
     c = setup_char[5]
 
-    return_spell = c.delete_element(name = "delete me", _type = "spells")
+    return_spell = c.delete_element(name = "delete me", type_ = "spells")
     assert delete_data["name"] == return_spell["name"]
 
 def test_delete_element_skill_return(setup_char):
     skill_delete_data = setup_char[2]
     c = setup_char[5]
 
-    return_skill = c.delete_element(name = "Perform (Oratory)", _type = "skills")
+    return_skill = c.delete_element(name = "Perform (Oratory)", type_ = "skills")
     assert skill_delete_data["name"] == return_skill["name"]
 
 # Are we stopped from deleting skills that aren't Perform, Profession, 
@@ -154,7 +154,7 @@ def test_delete_element_invalid_name(setup_char):
     assert error_message == should_message
 
 # Does an invalid element type throw an error?
-def test_delete_element_invalid_type(setup_char):
+def test_delete_element_invalidtype_(setup_char):
     c = setup_char[5]
     error_message = ""
     should_message = "delete_element: type must be one of: ('class', 'feats', 'traits', 'special', 'skills', 'equipment', 'attacks', 'armor', 'spells')"
