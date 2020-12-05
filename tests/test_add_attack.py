@@ -16,6 +16,8 @@ def setup_char():
         "name": "attack name",
         "attackType": "attack type",
         "damageType": [],
+        "attack_mod": "str",
+        "damage_mod": "str", 
         "damage": "attack damage",
         "critRoll": 18,
         "critMulti": 4,
@@ -24,6 +26,32 @@ def setup_char():
     }
     
     c = pf.Character()
+    c.abilities = {
+        "str": {
+            "base": 10,
+            "misc": []
+        },
+        "dex": {
+            "base": 0,
+            "misc": []
+        },
+        "con": {
+            "base": 0,
+            "misc": []
+        },
+        "int": {
+            "base": 0,
+            "misc": []
+        },
+        "wis": {
+            "base": 0,
+            "misc": []
+        },
+        "cha": {
+            "base": 0,
+            "misc": []
+        }
+    }
     c.attacks = []
     attack = c.add_attack(data = attack_data)
 
