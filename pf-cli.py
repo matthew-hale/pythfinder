@@ -94,7 +94,7 @@ def getCombatString(c):
     outstring = "    Combat:\n\n"
     outstring += "    HP: " + str(c.hp["current"]) + "/" + str(c.hp["max"]) + "\n\n"
     outstring += "    Attacks:\n"
-    outstring += "    BAB: " + "/".join(map(str, c.baseAttackBonus)) + "\n"
+    outstring += "    BAB: " + str(c.baseAttackBonus) + "\n"
     outstring += "    Strength mod: {}\n".format(strength_mod)
     outstring += "    Dexterity mod: {}\n".format(dexterity_mod)
 
@@ -119,10 +119,10 @@ def getCombatString(c):
     outstring += "    Flat footed AC: {}\n\n".format(str(c.get_total_AC(flat_footed = True)))
 
     outstring += "    CMD: {}\n".format(str(sum([10,
-                                                 c.baseAttackBonus[0],
+                                                 c.baseAttackBonus,
                                                  strength_mod,
                                                  dexterity_mod])))
-    outstring += "    CMB: {}\n".format(str(sum([c.baseAttackBonus[0],
+    outstring += "    CMB: {}\n".format(str(sum([c.baseAttackBonus,
                                                  strength_mod])))
     return outstring
 
