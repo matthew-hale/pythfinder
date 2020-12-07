@@ -1506,6 +1506,41 @@ class Character:
             target_special["notes"] = notes or target_special["notes"]
             return target_special
 
+    # Update an existing class based on name; supports either named 
+    # arguments or a dictionary
+    #
+    # returns the updated class
+    def update_class(self,
+                     name = "",
+                     new_name = "",
+                     archetypes = None,
+                     level = None,
+                     data = {}):
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        new_name = data["new_name"] if "new_name" in keys else new_name
+        # Validate that new_name is unique
+        if not self.is_unique_name(name = new_name, prop = "class"):
+            raise ValueError("update_class: name must be unique among classes")
+        archetypes = data["archetypes"] if "archetypes" in keys else archetypes
+        level = data["level"] if "level" in keys else level
+        # Lazy selection; if there are duplicates, this will just pick 
+        # up the first one that shows up
+        for class_ in self.classes:
+            if class_["name"] == name:
+                target_class = class_
+                break
+        try:
+            target_class
+        except NameError:
+            return None
+        else:
+            # Ignore empty parameters
+            target_class["name"] = new_name or target_class["name"]
+            target_class["archetypes"] = archetypes or target_class["archetypes"]
+            target_class["level"] = level or target_class["level"]
+            return target_class
+
     # Update an existing item based on name; supports either named 
     # arguments or a dictionary
     #
