@@ -611,6 +611,15 @@ class Character:
             items = remove_duplicates_by_name(subgroup)
         return items
 
+    # Returns abilities based on given filters; multiple values for a 
+    # given property are treated like an 'or', while each separate 
+    # property is treated like an 'and'.
+    def get_ability(self,
+                    name = [],
+                    base = {},
+                    misc = {},
+                    data = {}):
+
     # Returns classes based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
