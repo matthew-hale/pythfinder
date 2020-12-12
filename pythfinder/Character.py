@@ -1,8 +1,6 @@
 import json
 import math
 
-from pythfinder.roll import roll
-
 # These vars are used for skill initialization
 _allowed_skill_names = (
     "Acrobatics", "Appraise", "Bluff",
@@ -1946,47 +1944,3 @@ class Character:
         camp_items = self.get_item(camp = True)
         for item in camp_items:
             item["on_person"] = True
-
-    # Uses the roll function to make a skill check
-    #
-    # Accepts an additional integer modifier (e.g. situational boosts)
-    #
-    # returns the roll result as an integer
-    def roll_skill(self,
-                   skill_name,
-                   modifiers = []):
-        skill_modifier = self.get_skill_value(skill_name)
-        total_modifier = skill_modifier + sum(modifiers)
-        roll_string = "1d20+{}".format(total_modifier)
-        result = roll(roll_string)
-        return result
-
-    # Roll an attack, factoring in bonuses
-    #
-    # Will automatically roll twice if the attack threatens a crit
-    #
-    # returns a list of roll results
-    def roll_attack(self,
-                    attack_name,
-                    modifiers = []):
-        # Validate attack name
-        attack_names = [item["name"] for item in self.attacks]
-        if attack_name not in attack_names:
-            raise ValueError("roll_attack: '" + attack_name + "' not in character's list of attacks")
-        attack = [item for item in self.attacks if item["name"] == attack_name]
-        # Roll attack
-        hit_modifier = self.getAbilityMod(self.get_total_ability_value(attack[0]["attack_mod"]))
-        roll_string = "1d20+{}+{}".format(self.baseAttackBonus, hit_modifier)
-        # Add any additional modifers
-        if modifiers:
-            for mod in modifiers:
-                if mod >= 0:
-                    roll_string += "+{}".format(mod)
-                else:
-                    roll_string += "{}".format(mod)
-        roll_results = []
-        roll_results.append(roll(roll_string))
-        # If critical hit, roll again to confirm
-        if roll_results[0]["natural_rolls"][0][1] >= attack[0]["critRoll"]:
-            roll_results.append(roll(roll_string))
-        return roll_results
