@@ -85,6 +85,9 @@ def remove_duplicates_by_name(l):
 # maintain consistency between different element properties for the 
 # get_* methods)
 #
+# If 'operations' is a single number, it assumes that the operator is 
+# 'eq'
+#
 # removes duplicates via remove_duplicates_by_name
 def numeric_filter(items,
                    key,
@@ -94,6 +97,10 @@ def numeric_filter(items,
         if key not in item.keys():
             raise KeyError("numeric_filter: key '" + key + "' not in keys of given item")
     out_items = []
+    if type(operations) is int or type(operations) is float:
+        operations = {
+            "eq": operations
+        }
     for operator in operations.keys():
         if operator not in allowed_operators:
             raise ValueError("numeric_filter: operator '" + operator + "' not in list of allowed operators: " + str(allowed_operators))
