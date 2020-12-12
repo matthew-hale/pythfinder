@@ -619,6 +619,44 @@ class Character:
                     base = {},
                     misc = {},
                     data = {}):
+        keys = data.keys()
+        # Gather values from either parameters or data, converting 
+        # non-list values into lists, except for numeric values
+        name = data["name"] if "name" in keys else name
+        if type(name) is not list:
+            name = [name]
+        base = data["base"] if "base" in keys else base
+        misc = data["misc"] if "misc" in keys else misc
+        # Convert abilities to list of dicts
+        abilities = []
+        for key in self.abilities.keys():
+            d = self.abilities[key]
+            d["name"] = key
+            abilities.append(d)
+        # Filter abilities
+        if name:
+            subgroup = []
+            for search in name:
+                for i in abilities:
+                    if search in i["name"]:
+                        subgroup.append(i)
+            abilities = remove_duplicates_by_name(subgroup)
+        if base:
+            abilities = numeric_filter(items = abilities,
+                                       key = "base",
+                                       operations = base)
+        if misc:
+            abilities = numeric_filter(items = abilities,
+                                       key = "misc",
+                                       operations = misc)
+        # Convert back into a single dict, with only those abilities 
+        # that passed the filters
+        out = {}
+        for a in abilities:
+            name = a["name"]
+            del a["name"]
+            out[name] = a
+        return out
 
     # Returns classes based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
