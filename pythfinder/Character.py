@@ -663,6 +663,53 @@ class Character:
             out[name] = a
         return out
 
+    # Returns saving_throws based on given filters; multiple values 
+    # for a given property are treated like an 'or', while each 
+    # separate property is treated like an 'and'.
+    def get_saving_throw(self,
+                         name = [],
+                         base = {},
+                         misc = {},
+                         data = {}):
+        keys = data.keys()
+        # Gather values from either parameters or data, converting 
+        # non-list values into lists, except for numeric values
+        name = data["name"] if "name" in keys else name
+        if type(name) is not list:
+            name = [name]
+        base = data["base"] if "base" in keys else base
+        misc = data["misc"] if "misc" in keys else misc
+        # Convert saving_throws to list of dicts
+        saving_throws = []
+        for key in self.saving_throws.keys():
+            d = self.saving_throws[key]
+            d["name"] = key
+            saving_throws.append(d)
+        # Filter saving_throws
+        if name:
+            subgroup = []
+            for search in name:
+                for i in saving_throws:
+                    if search in i["name"]:
+                        subgroup.append(i)
+            saving_throws = remove_duplicates_by_name(subgroup)
+        if base:
+            saving_throws = numeric_filter(items = saving_throws,
+                                       key = "base",
+                                       operations = base)
+        if misc:
+            saving_throws = numeric_filter(items = saving_throws,
+                                       key = "misc",
+                                       operations = misc)
+        # Convert back into a single dict, with only those saving_throws 
+        # that passed the filters
+        out = {}
+        for t in saving_throws:
+            name = t["name"]
+            del t["name"]
+            out[name] = a
+        return out
+
     # Returns classes based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
