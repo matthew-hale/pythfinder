@@ -707,7 +707,7 @@ class Character:
         for t in saving_throws:
             name = t["name"]
             del t["name"]
-            out[name] = a
+            out[name] = t
         return out
 
     # Returns classes based on given filters; multiple values for a 
