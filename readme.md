@@ -8,7 +8,7 @@ etc.
 NOTE: this is _very_ WIP, and is mostly for personal use at this time. 
 It's got lots of rough edges.
 
-## Requirements
+## Get started
 The pythfinder module itself uses zero external modules. Get started by 
 installing pythfinder from pypi:
 
