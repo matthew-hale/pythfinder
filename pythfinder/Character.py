@@ -980,6 +980,7 @@ class Character:
                   acPenalty = {},
                   maxDexBonus = {},
                   arcaneFailureChance = {},
+                  type_ = [],
                   data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
@@ -1016,6 +1017,13 @@ class Character:
             armor = numeric_filter(items = armor,
                                     key = "arcaneFailureChance",
                                     operations = arcaneFailureChance)
+        if type_:
+            subgroup = []
+            for search in type_:
+                for i in armor:
+                    if search in i["type"]:
+                        subgroup.append(i)
+            armor = remove_duplicates_by_name(subgroup)
         return armor
 
     # Returns attacks based on given filters; multiple values for a 
