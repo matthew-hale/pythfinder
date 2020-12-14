@@ -9,15 +9,23 @@ NOTE: this is _very_ WIP, and is mostly for personal use at this time.
 It's got lots of rough edges.
 
 ## Requirements
+The pythfinder module itself uses zero external modules. Get started by 
+installing pythfinder from pypi:
 
-+ python
-+ a character sheet in JSON format
+```
+$ pip install pythfinder
+```
 
-To get a character sheet, you can either copy the template in 
-data/template.json, or generate a blank one using either the cli 
-script, or by writing your own script using the 
-`pythfinder.writeCharacter()` function to save the output of 
-`pythfinder.Character()` to a file.
+The best way to get a blank character sheet is to use the Character 
+class directly, and save its contents to a file via writeCharacter():
+
+```python
+import pythfinder
+
+character = pythfinder.Character()
+
+pythfinder.writeCharacter(character, '/path/to/blank/sheet.json')
+```
 
 ## Roadmap
 
