@@ -1,5 +1,6 @@
 import json
 import math
+from uuid import uuid4
 
 # These vars are used for skill initialization
 _allowed_skill_names = (
@@ -65,15 +66,15 @@ _skill_mods = {
 # Helper functions
 
 # Remove duplicate dictionaries from a list of dictionaries, using 
-# "name" as a primary key (assumes anything with the same name is 
+# "uuid" as a primary key (assumes anything with the same uuid is 
 # identical)
-def remove_duplicates_by_name(l):
-    # Get unique names
-    item_names = list(set([i["name"] for i in l]))
+def remove_duplicates_by_id(l):
+    # Get unique uuids
+    item_uuids = list(set([i["uuid"] for i in l]))
     out = []
-    for name in item_names:
+    for uuid in item_uuids:
         for item in l:
-            if item["name"] == name:
+            if item["uuid"] == uuid:
                 out.append(item)
                 break
     return out
@@ -88,7 +89,7 @@ def remove_duplicates_by_name(l):
 # If 'operations' is a single number, it assumes that the operator is 
 # 'eq'
 #
-# removes duplicates via remove_duplicates_by_name
+# removes duplicates via remove_duplicates_by_id
 def numeric_filter(items,
                    key,
                    operations = {}):
@@ -153,7 +154,7 @@ def numeric_filter(items,
                             break
                 else:
                     out_items.append(item) if item[key] != operations["ne"] else None
-    return remove_duplicates_by_name(out_items)
+    return remove_duplicates_by_id(out_items)
 
 # Main character class
 class Character:
@@ -350,7 +351,7 @@ class Character:
         self.skills = []
         if "skills" in keys:
             for item in data["skills"]:
-                _ = self.add_skill(data = data["skills"][item])
+                _ = self.add_skill(data = item)
         # If there are no skills in the character data, initialize from 
         # defaults
         else:
@@ -496,6 +497,30 @@ class Character:
             raise ValueError("ability must be one of " + ability_strings)
         return sum(self.abilities[ability]["misc"], self.abilities[ability]["base"])
 
+    # Checks that the given UUID is unique within the collection
+    def is_unique_id(self,
+                     uuid,
+                     prop):
+        allowed_props = ("classes",
+                         "special",
+                         "traits",
+                         "feats",
+                         "skills",
+                         "equipment",
+                         "attacks",
+                         "armor",
+                         "spells")
+        if not prop in allowed_props:
+            raise ValueError("check_unique_name: prop must be one of " + str(allowed_props))
+        # Gather UUIDs from the given property, and check if 'uuid' is 
+        # in the collection. If it is, it's not unique, and the 
+        # function returns False; otherwise, it returns True.
+        current_uuids = [item["uuid"] for item in getattr(self, prop)]
+        if uuid in current_uuids:
+            return False
+        else:
+            return True
+
     # Checks that the given name string is unique among the collection 
     # contained within the property name
     def is_unique_name(self,
@@ -512,14 +537,10 @@ class Character:
                          "spells")
         if not prop in allowed_props:
             raise ValueError("check_unique_name: prop must be one of " + str(allowed_props))
-        # Skills are a special case
-        if prop == "skills":
-            current_names = [item for item in self.skills]
-        else:
         # Gather names from the given property, and check if 'name' is 
         # in the collection. If it is, it's not unique, and the 
         # function returns False; otherwise, it returns True.
-            current_names = [item["name"] for item in getattr(self, prop)]
+        current_names = [item["name"] for item in getattr(self, prop)]
         if name in current_names:
             return False
         else:
@@ -543,6 +564,7 @@ class Character:
     def get_item(self,
                  name_search_type = "substring",
                  name = [],
+                 uuid = [],
                  weight = {},
                  count = {},
                  camp = [],
@@ -559,6 +581,9 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
+        uuid = data["uuid"] if "uuid" in keys else uuid
+        if type(uuid) is not list:
+            uuid = [uuid]
         weight = data["weight"] if "weight" in keys else weight
         count = data["count"] if "count" in keys else count
         camp = data["camp"] if "camp" in keys else camp
@@ -589,7 +614,14 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_item: invalid name_search_type")
-            items = remove_duplicates_by_name(subgroup)
+            items = remove_duplicates_by_id(subgroup)
+        if uuid:
+            subgroup = []
+            for search in uuid:
+                for i in items:
+                    if search == i["uuid"]:
+                        subgroup.append(i)
+            items = remove_duplicates_by_id(subgroup)
         if weight:
             items = numeric_filter(items = items,
                                    key = "weight",
@@ -604,28 +636,28 @@ class Character:
                 for i in items:
                     if search == i["camp"]:
                         subgroup.append(i)
-            items = remove_duplicates_by_name(subgroup)
+            items = remove_duplicates_by_id(subgroup)
         if on_person:
             subgroup = []
             for search in on_person:
                 for i in items:
                     if search == i["on_person"]:
                         subgroup.append(i)
-            items = remove_duplicates_by_name(subgroup)
+            items = remove_duplicates_by_id(subgroup)
         if location:
             subgroup = []
             for search in location:
                 for i in items:
                     if search in i["location"]:
                         subgroup.append(i)
-            items = remove_duplicates_by_name(subgroup)
+            items = remove_duplicates_by_id(subgroup)
         if notes:
             subgroup = []
             for search in notes:
                 for i in items:
                     if search in i["notes"]:
                         subgroup.append(i)
-            items = remove_duplicates_by_name(subgroup)
+            items = remove_duplicates_by_id(subgroup)
         return items
 
     # Returns abilities based on given filters; multiple values for a 
@@ -669,7 +701,7 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_ability: invalid name_search_type")
-            abilities = remove_duplicates_by_name(subgroup)
+            abilities = remove_duplicates_by_id(subgroup)
         if base:
             abilities = numeric_filter(items = abilities,
                                        key = "base",
@@ -728,7 +760,7 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_saving_throw: invalid name_search_type")
-            saving_throws = remove_duplicates_by_name(subgroup)
+            saving_throws = remove_duplicates_by_id(subgroup)
         if base:
             saving_throws = numeric_filter(items = saving_throws,
                                        key = "base",
@@ -752,6 +784,7 @@ class Character:
     def get_class(self,
                   name_search_type = "substring",
                   name = [],
+                  uuid = [],
                   archetypes = [],
                   level = {},
                   data = {}):
@@ -764,6 +797,9 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
+        uuid = data["uuid"] if "uuid" in keys else uuid
+        if type(uuid) is not list:
+            uuid = [uuid]
         archetypes = data["archetypes"] if "archetypes" in keys else archetypes
         if type(archetypes) is not list:
             archetypes = [archetypes]
@@ -784,7 +820,14 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_class: invalid name_search_type")
-            classes = remove_duplicates_by_name(subgroup)
+            classes = remove_duplicates_by_id(subgroup)
+        if uuid:
+            subgroup = []
+            for search in uuid:
+                for i in classes:
+                    if search == i["uuid"]:
+                        subgroup.append(i)
+            classes = remove_duplicates_by_id(subgroup)
         if archetypes:
             subgroup = []
             for search in archetypes:
@@ -792,7 +835,7 @@ class Character:
                     for archetype in i["archetypes"]:
                         if search in archetype:
                             subgroup.append(i)
-            classes = remove_duplicates_by_name(subgroup)
+            classes = remove_duplicates_by_id(subgroup)
         if level:
             classes = numeric_filter(items = classes,
                                      key = "level",
@@ -806,6 +849,7 @@ class Character:
     def get_feat(self,
                  name_search_type = "substring",
                  name = [],
+                 uuid = [],
                  description = [],
                  notes = [],
                  data = {}):
@@ -818,6 +862,9 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
+        uuid = data["uuid"] if "uuid" in keys else uuid
+        if type(uuid) is not list:
+            uuid = [uuid]
         description = data["description"] if "description" in keys else description
         if type(description) is not list:
             description = [description]
@@ -840,21 +887,28 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_feat: invalid name_search_type")
-            feats = remove_duplicates_by_name(subgroup)
+            feats = remove_duplicates_by_id(subgroup)
+        if uuid:
+            subgroup = []
+            for search in uuid:
+                for i in feats:
+                    if search == i["uuid"]:
+                        subgroup.append(i)
+            feats = remove_duplicates_by_id(subgroup)
         if description:
             subgroup = []
             for search in description:
                 for i in feats:
                     if search in i["description"]:
                         subgroup.append(i)
-            feats = remove_duplicates_by_name(subgroup)
+            feats = remove_duplicates_by_id(subgroup)
         if notes:
             subgroup = []
             for search in notes:
                 for i in feats:
                     if search in i["notes"]:
                         subgroup.append(i)
-            feats = remove_duplicates_by_name(subgroup)
+            feats = remove_duplicates_by_id(subgroup)
         return feats
 
     # Returns traits based on given filters; multiple values for a 
@@ -863,6 +917,7 @@ class Character:
     def get_trait(self,
                  name_search_type = "substring",
                  name = [],
+                 uuid = [],
                  description = [],
                  notes = [],
                  data = {}):
@@ -875,6 +930,9 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
+        uuid = data["uuid"] if "uuid" in keys else uuid
+        if type(uuid) is not list:
+            uuid = [uuid]
         description = data["description"] if "description" in keys else description
         if type(description) is not list:
             description = [description]
@@ -897,21 +955,27 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_trait: invalid name_search_type")
-            traits = remove_duplicates_by_name(subgroup)
+            traits = remove_duplicates_by_id(subgroup)
+        if uuid:
+            subgroup = []
+            for search in uuid:
+                for i in traits:
+                    if search == i["uuid"]:
+                        subgroup.append(i)
         if description:
             subgroup = []
             for search in description:
                 for i in traits:
                     if search in i["description"]:
                         subgroup.append(i)
-            traits = remove_duplicates_by_name(subgroup)
+            traits = remove_duplicates_by_id(subgroup)
         if notes:
             subgroup = []
             for search in notes:
                 for i in traits:
                     if search in i["notes"]:
                         subgroup.append(i)
-            traits = remove_duplicates_by_name(subgroup)
+            traits = remove_duplicates_by_id(subgroup)
         return traits
 
     # Returns special abilities based on given filters; multiple values 
@@ -920,6 +984,7 @@ class Character:
     def get_special(self,
                  name_search_type = "substring",
                  name = [],
+                 uuid = [],
                  description = [],
                  notes = [],
                  data = {}):
@@ -932,6 +997,9 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
+        uuid = data["uuid"] if "uuid" in keys else uuid
+        if type(uuid) is not list:
+            uuid = [uuid]
         description = data["description"] if "description" in keys else description
         if type(description) is not list:
             description = [description]
@@ -954,21 +1022,27 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_special: invalid name_search_type")
-            special = remove_duplicates_by_name(subgroup)
+            special = remove_duplicates_by_id(subgroup)
+        if uuid:
+            subgroup = []
+            for search in uuid:
+                for i in special:
+                    if search in i["uuid"]:
+                        subgroup.append(i)
         if description:
             subgroup = []
             for search in description:
                 for i in special:
                     if search in i["description"]:
                         subgroup.append(i)
-            special = remove_duplicates_by_name(subgroup)
+            special = remove_duplicates_by_id(subgroup)
         if notes:
             subgroup = []
             for search in notes:
                 for i in special:
                     if search in i["notes"]:
                         subgroup.append(i)
-            special = remove_duplicates_by_name(subgroup)
+            special = remove_duplicates_by_id(subgroup)
         return special
 
     # Returns skills based on given filters; multiple values for a 
@@ -977,6 +1051,7 @@ class Character:
     def get_skill(self,
                   name_search_type = "substring",
                   name = [],
+                  uuid = [],
                   rank = {},
                   isClass = [],
                   mod = [],
@@ -993,6 +1068,9 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
+        uuid = data["uuid"] if "uuid" in keys else uuid
+        if type(uuid) is not list:
+            uuid = [uuid]
         rank = data["rank"] if "rank" in keys else rank
         isClass = data["isClass"] if "isClass" in keys else isClass
         if type(isClass) is not list:
@@ -1023,35 +1101,42 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_skill: invalid name_search_type")
-            skills = remove_duplicates_by_name(subgroup)
+            skills = remove_duplicates_by_id(subgroup)
+        if uuid:
+            subgroup = []
+            for search in uuid:
+                for i in skills:
+                    if search == i["uuid"]:
+                        subgroup.append(i)
+            skills = remove_duplicates_by_id(subgroup)
         if isClass:
             subgroup = []
             for search in isClass:
                 for i in skills:
                     if search == i["isClass"]:
                         subgroup.append(i)
-            skills = remove_duplicates_by_name(subgroup)
+            skills = remove_duplicates_by_id(subgroup)
         if mod:
             subgroup = []
             for search in mod:
                 for i in skills:
                     if search in i["mod"]:
                         subgroup.append(i)
-            skills = remove_duplicates_by_name(subgroup)
+            skills = remove_duplicates_by_id(subgroup)
         if useUntrained:
             subgroup = []
             for search in useUntrained:
                 for i in skills:
                     if search == i["useUntrained"]:
                         subgroup.append(i)
-            skills = remove_duplicates_by_name(subgroup)
+            skills = remove_duplicates_by_id(subgroup)
         if notes:
             subgroup = []
             for search in notes:
                 for i in skills:
                     if search in i["notes"]:
                         subgroup.append(i)
-            skills = remove_duplicates_by_name(subgroup)
+            skills = remove_duplicates_by_id(subgroup)
         if rank:
             skills = numeric_filter(items = skills,
                                     key = "rank",
@@ -1068,6 +1153,7 @@ class Character:
     def get_spell(self,
                   name_search_type = "substring",
                   name = [],
+                  uuid = [],
                   level = {},
                   description = [],
                   prepared = {},
@@ -1082,6 +1168,9 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
+        uuid = data["uuid"] if "uuid" in keys else uuid
+        if type(uuid) is not list:
+            uuid = [uuid]
         level = data["level"] if "level" in keys else level
         prepared = data["prepared"] if "prepared" in keys else prepared
         cast = data["cast"] if "cast" in keys else cast
@@ -1104,18 +1193,25 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_spell: invalid name_search_type")
-            spells = remove_duplicates_by_name(subgroup)
+            spells = remove_duplicates_by_id(subgroup)
         if level:
             spells = numeric_filter(items = spells,
                                     key = "level",
                                     operations = level)
+        if uuid:
+            subgroup = []
+            for search in uuid:
+                for i in spells:
+                    if search == i["uuid"]:
+                        subgroup.append(i)
+            spells = remove_duplicates_by_id(subgroup)
         if description:
             subgroup = []
             for search in description:
                 for i in spells:
                     if search in i["description"]:
                         subgroup.append(i)
-            spells = remove_duplicates_by_name(subgroup)
+            spells = remove_duplicates_by_id(subgroup)
         if prepared:
             spells = numeric_filter(items = spells,
                                     key = "prepared",
@@ -1132,6 +1228,7 @@ class Character:
     def get_armor(self,
                   name_search_type = "substring",
                   name = [],
+                  uuid = [],
                   acBonus = {},
                   acPenalty = {},
                   maxDexBonus = {},
@@ -1147,6 +1244,9 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
+        uuid = data["uuid"] if "uuid" in keys else uuid
+        if type(uuid) is not list:
+            uuid = [uuid]
         acBonus = data["acBonus"] if "acBonus" in keys else acBonus
         acPenalty = data["acPenalty"] if "acPenalty" in keys else acPenalty
         maxDexBonus = data["maxDexBonus"] if "maxDexBonus" in keys else maxDexBonus
@@ -1167,7 +1267,13 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_armor: invalid name_search_type")
-            armor = remove_duplicates_by_name(subgroup)
+            armor = remove_duplicates_by_id(subgroup)
+        if uuid:
+            subgroup = []
+            for search in uuid:
+                for i in armor:
+                    if search == i["uuid"]:
+                        subgroup.append(i)
         if acBonus:
             armor = numeric_filter(items = armor,
                                     key = "acBonus",
@@ -1190,7 +1296,7 @@ class Character:
                 for i in armor:
                     if search in i["type"]:
                         subgroup.append(i)
-            armor = remove_duplicates_by_name(subgroup)
+            armor = remove_duplicates_by_id(subgroup)
         return armor
 
     # Returns attacks based on given filters; multiple values for a 
@@ -1199,6 +1305,7 @@ class Character:
     def get_attack(self,
                    name_search_type = "substring",
                    name = [],
+                   uuid = [],
                    attackType = [],
                    damageType = [],
                    attack_mod = [],
@@ -1218,6 +1325,9 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
+        uuid = data["uuid"] if "uuid" in keys else uuid
+        if type(uuid) is not list:
+            uuid = [uuid]
         attackType = data["attackType"] if "attackType" in keys else attackType
         if type(attackType) is not list:
             attackType = [attackType]
@@ -1255,42 +1365,49 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_attack: invalid name_search_type")
-            attacks = remove_duplicates_by_name(subgroup)
+            attacks = remove_duplicates_by_id(subgroup)
+        if uuid:
+            subgroup = []
+            for search in uuid:
+                for i in attacks:
+                    if search == i["uuid"]:
+                        subgroup.append(i)
+            attacks = remove_duplicates_by_id(subgroup)
         if attackType:
             subgroup = []
             for search in attackType:
                 for i in attacks:
                     if search in i["attackType"]:
                         subgroup.append(i)
-            attacks = remove_duplicates_by_name(subgroup)
+            attacks = remove_duplicates_by_id(subgroup)
         if damageType:
             subgroup = []
             for search in damageType:
                 for i in attacks:
                     if search in i["damageType"]:
                         subgroup.append(i)
-            attacks = remove_duplicates_by_name(subgroup)
+            attacks = remove_duplicates_by_id(subgroup)
         if attack_mod:
             subgroup = []
             for search in attack_mod:
                 for i in attacks:
                     if search in i["attack_mod"]:
                         subgroup.append(i)
-            attacks = remove_duplicates_by_name(subgroup)
+            attacks = remove_duplicates_by_id(subgroup)
         if damage_mod:
             subgroup = []
             for search in damage_mod:
                 for i in attacks:
                     if search in i["damage_mod"]:
                         subgroup.append(i)
-            attacks = remove_duplicates_by_name(subgroup)
+            attacks = remove_duplicates_by_id(subgroup)
         if damage:
             subgroup = []
             for search in damage:
                 for i in attacks:
                     if search in i["damage"]:
                         subgroup.append(i)
-            attacks = remove_duplicates_by_name(subgroup)
+            attacks = remove_duplicates_by_id(subgroup)
         if critRoll:
             attacks = numeric_filter(items = attacks,
                                    key = "critRoll",
@@ -1311,21 +1428,23 @@ class Character:
     # returns the newly created class
     def add_class(self,
                   name = "",
+                  uuid = "",
                   archetypes = [],
                   level = 0,
                   data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        # Validate that new_name is not null or empty
-        if new_name == None or new_name == "":
-            raise ValueError("add_class: name must not be null or empty")
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "classes"):
-            raise ValueError("add_class: name must be unique among classes")
+        new_uuid = data["uuid"] if "uuid" in keys else uuid
+        if not new_uuid:
+            new_uuid = uuid4()
+        # Validate that new_uuid is unique
+        if not self.is_unique_id(uuid = new_uuid, prop = "classes"):
+            raise ValueError("add_class: uuid must be unique among classes")
         new_archetypes = data["archetypes"] if "archetypes" in keys else archetypes
         new_level = data["level"] if "level" in keys else level
         new_class = {
             "name": new_name,
+            "uuid": new_uuid,
             "archetypes": new_archetypes,
             "level": new_level
         }
@@ -1338,21 +1457,23 @@ class Character:
     # returns the newly created feat
     def add_feat(self,
                  name = "",
+                 uuid = "",
                  description = "",
                  notes = "",
                  data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        # Validate that new_name is not null or empty
-        if new_name == None or new_name == "":
-            raise ValueError("add_feat: name must not be null or empty")
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "feats"):
-            raise ValueError("add_feat: name must be unique among feats")
+        new_uuid = data["uuid"] if "uuid" in keys else uuid
+        if not new_uuid:
+            new_uuid = uuid4()
+        # Validate that new_uuid is unique
+        if not self.is_unique_id(uuid = new_uuid, prop = "feats"):
+            raise ValueError("add_feat: uuid must be unique among feats")
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
         new_feat = {
             "name": new_name,
+            "uuid": new_uuid,
             "description": new_description,
             "notes": new_notes,
         }
@@ -1365,21 +1486,23 @@ class Character:
     # returns the newly created trait
     def add_trait(self,
                   name = "",
+                  uuid = "",
                   description = "",
                   notes = "",
                   data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        # Validate that new_name is not null or empty
-        if new_name == None or new_name == "":
-            raise ValueError("add_trait: name must not be null or empty")
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "traits"):
-            raise ValueError("add_trait: name must be unique among traits")
+        new_uuid = data["uuid"] if "uuid" in keys else uuid
+        if not new_uuid:
+            new_uuid = uuid4()
+        # Validate that new_uuid is unique
+        if not self.is_unique_id(uuid = new_uuid, prop = "traits"):
+            raise ValueError("add_trait: uuid must be unique among traits")
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
         new_trait = {
             "name": new_name,
+            "uuid": new_uuid,
             "description": new_description,
             "notes": new_notes,
         }
@@ -1392,21 +1515,23 @@ class Character:
     # returns the newly created special ability
     def add_special(self,
                     name = "",
+                    uuid = "",
                     description = "",
                     notes = "",
                     data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        # Validate that new_name is not null or empty
-        if new_name == None or new_name == "":
-            raise ValueError("add_special: name must not be null or empty")
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "special"):
-            raise ValueError("add_special: name must be unique among specials")
+        new_uuid = data["uuid"] if "uuid" in keys else uuid
+        if not new_uuid:
+            new_uuid = uuid4()
+        # Validate that new_uuid is unique
+        if not self.is_unique_id(uuid = new_uuid, prop = "special"):
+            raise ValueError("add_special: uuid must be unique among special abilities")
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
         new_special = {
             "name": new_name,
+            "uuid": new_uuid,
             "description": new_description,
             "notes": new_notes,
         }
@@ -1419,6 +1544,7 @@ class Character:
     # returns the newly created skill
     def add_skill(self,
                   name = "",
+                  uuid = "",
                   rank = 0,
                   isClass = False, 
                   notes = "",
@@ -1429,9 +1555,12 @@ class Character:
         skill_type = ""
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        # Validate that new_name is not null or empty
-        if new_name == None or new_name == "":
-            raise ValueError("add_skill: name must not be null or empty")
+        new_uuid = data["uuid"] if "uuid" in keys else uuid
+        if not new_uuid:
+            new_uuid = uuid4()
+        # Validate that new_uuid is unique
+        if not self.is_unique_id(uuid = new_uuid, prop = "skills"):
+            raise ValueError("add_skill: uuid must be unique among skills")
         # Validate skill name is in allowed_skills
         # If so, we can use all the built-in values for things
         if new_name in _allowed_skill_names:
@@ -1465,6 +1594,7 @@ class Character:
         new_misc = data["misc"] if "misc" in keys else misc
         new_skill = {
             "name": new_name,
+            "uuid": new_uuid,
             "rank": new_rank,
             "isClass": new_isClass,
             "mod": new_mod,
@@ -1482,6 +1612,7 @@ class Character:
     # returns the newly created item
     def add_item(self,
                  name = "",
+                 uuid = "",
                  weight = 0.0,
                  count = 0,
                  camp = False,
@@ -1491,12 +1622,12 @@ class Character:
                  data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        # Validate that new_name is not null or empty
-        if new_name == None or new_name == "":
-            raise ValueError("add_item: name must not be null or empty")
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "equipment"):
-            raise ValueError("add_item: name must be unique among equipment")
+        new_uuid = data["uuid"] if "uuid" in keys else uuid
+        if not new_uuid:
+            new_uuid = uuid4()
+        # Validate that new_uuid is unique
+        if not self.is_unique_id(uuid = new_uuid, prop = "equipment"):
+            raise ValueError("add_item: uuid must be unique among items")
         new_weight = data["weight"] if "weight" in keys else weight
         new_count = data["count"] if "count" in keys else count
         new_camp = data["camp"] if "camp" in keys else camp
@@ -1505,6 +1636,7 @@ class Character:
         new_notes = data["notes"] if "notes" in keys else notes
         new_item = {
             "name": new_name,
+            "uuid": new_uuid,
             "weight": new_weight,
             "count": new_count,
             "camp": new_camp,
@@ -1521,6 +1653,7 @@ class Character:
     # returns the newly created attack
     def add_attack(self,
                    name = "",
+                   uuid = "",
                    attackType = "",
                    damageType = "",
                    # default to str for mods so that attack creation 
@@ -1536,12 +1669,12 @@ class Character:
         keys = data.keys()
         allowed_mods = self.abilities.keys()
         new_name = data["name"] if "name" in keys else name
-        # Validate that new_name is not null or empty
-        if new_name == None or new_name == "":
-            raise ValueError("add_attack: name must not be null or empty")
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "attacks"):
-            raise ValueError("add_attack: name must be unique among attacks")
+        new_uuid = data["uuid"] if "uuid" in keys else uuid
+        if not new_uuid:
+            new_uuid = uuid4()
+        # Validate that new_uuid is unique
+        if not self.is_unique_id(uuid = new_uuid, prop = "attacks"):
+            raise ValueError("add_attack: uuid must be unique among attacks")
         new_attackType = data["attackType"] if "attackType" in keys else attackType
         new_damageType = data["damageType"] if "damageType" in keys else damageType
         new_attack_mod = data["attack_mod"] if "attack_mod" in keys else attack_mod
@@ -1558,6 +1691,7 @@ class Character:
         new_notes = data["notes"] if "notes" in keys else notes
         new_attack = {
             "name": new_name,
+            "uuid": new_uuid,
             "attackType": new_attackType,
             "damageType": new_damageType,
             "attack_mod": new_attack_mod,
@@ -1577,6 +1711,7 @@ class Character:
     # returns the newly created armor
     def add_armor(self,
                   name = "",
+                  uuid = "",
                   acBonus = 0,
                   acPenalty = 0,
                   maxDexBonus = 0,
@@ -1585,12 +1720,12 @@ class Character:
                   data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        # Validate that new_name is not null or empty
-        if new_name == None or new_name == "":
-            raise ValueError("add_armor: name must not be null or empty")
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "armor"):
-            raise ValueError("add_armor: name must be unique among armor")
+        new_uuid = data["uuid"] if "uuid" in keys else uuid
+        if not new_uuid:
+            new_uuid = uuid4()
+        # Validate that new_uuid is unique
+        if not self.is_unique_id(uuid = new_uuid, prop = "armor"):
+            raise ValueError("add_armor: uuid must be unique among armors")
         new_acBonus = data["acBonus"] if "acBonus" in keys else acBonus
         new_acPenalty = data["acPenalty"] if "acPenalty" in keys else acPenalty
         new_maxDexBonus = data["maxDexBonus"] if "maxDexBonus" in keys else maxDexBonus
@@ -1598,6 +1733,7 @@ class Character:
         new_type = data["type"] if "type" in keys else type_
         new_armor = {
             "name": new_name,
+            "uuid": new_uuid,
             "acBonus": new_acBonus,
             "acPenalty": new_acPenalty,
             "maxDexBonus": new_maxDexBonus,
@@ -1613,6 +1749,7 @@ class Character:
     # returns the newly created spell
     def add_spell(self,
                   name = "",
+                  uuid = "",
                   level = 0,
                   description = "",
                   prepared = 0,
@@ -1620,18 +1757,19 @@ class Character:
                   data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        # Validate that new_name is not null or empty
-        if new_name == None or new_name == "":
-            raise ValueError("add_spell: name must not be null or empty")
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "spells"):
-            raise ValueError("add_spell: name must be unique among spells")
+        new_uuid = data["uuid"] if "uuid" in keys else uuid
+        if not new_uuid:
+            new_uuid = uuid4()
+        # Validate that new_uuid is unique
+        if not self.is_unique_id(uuid = new_uuid, prop = "spells"):
+            raise ValueError("add_spell: uuid must be unique among spells")
         new_level = data["level"] if "level" in keys else level
         new_description = data["description"] if "description" in keys else description
         new_prepared = data["prepared"] if "prepared" in keys else prepared
         new_cast = data["cast"] if "cast" in keys else cast
         new_spell = {
             "name": new_name,
+            "uuid": new_uuid,
             "level": new_level,
             "description": new_description,
             "prepared": new_prepared,
@@ -2081,68 +2219,134 @@ class Character:
         target_ability["base"] = base or target_ability["base"]
         return target_ability
 
-    # Delete an element by name and type; supports named arguments or a 
-    # dictionary
+    # Delete a class by uuid
+    def delete_class(self,
+                     uuid):
+        # Ensure a valid target
+        target_list = get_class(uuid = uuid)
+        if not target_list:
+            raise ValueError("delete_class: no class with uuid '{}'".format(uuid))
+        else:
+            target = target_list[0]
+        # Delete target
+        self.classes.remove(target)
+
+    # Delete a feat by uuid
+    def delete_feat(self,
+                    uuid):
+        # Ensure a valid target
+        target_list = get_feat(uuid = uuid)
+        if not target_list:
+            raise ValueError("delete_feat: no feat with uuid '{}'".format(uuid))
+        else:
+            target = target_list[0]
+        # Delete target
+        self.feats.remove(target)
+
+    # Delete a trait by uuid
+    def delete_trait(self,
+                     uuid):
+        # Ensure a valid target
+        target_list = get_trait(uuid = uuid)
+        if not target_list:
+            raise ValueError("delete_trait: no trait with uuid '{}'".format(uuid))
+        else:
+            target = target_list[0]
+        # Delete target
+        self.traits.remove(target)
+
+    # Delete a special ability by uuid
+    def delete_special(self,
+                       uuid):
+        # Ensure a valid target
+        target_list = get_special(uuid = uuid)
+        if not target_list:
+            raise ValueError("delete_special: no special with uuid '{}'".format(uuid))
+        else:
+            target = target_list[0]
+        # Delete target
+        self.special.remove(target)
+
+    # Delete a skill by uuid
     #
-    # returns the deleted element
-    def delete_element(self,
-                       name = None,
-                       type_ = None,
-                       data = {}):
-        valid_types = ("class",
-                 "feats",
-                 "traits",
-                 "special",
-                 "skills",
-                 "equipment",
-                 "attacks",
-                 "armor",
-                 "spells")
-        keys = data.keys()
-        name = data["name"] if "name" in keys else name
-        type_ = data["type"] if "type" in keys else type_
-
-        # Ensure a valid element type
-        if type_ not in valid_types:
-            raise ValueError("delete_element: type must be one of: " + str(valid_types))
-
-        # Skills are a special case; we don't want to delete any skills 
-        # that aren't craft, perform, or profession
+    # only deletes skills that a character can normally have multiple 
+    # of, e.g. Craft, Profession, Perform
+    def delete_skill(self,
+                     uuid):
+        # Ensure a valid target
+        target_list = get_skill(uuid = uuid)
+        if not target_list:
+            raise ValueError("delete_skill: no skill with uuid '{}'".format(uuid))
+        else:
+            target = target_list[0]
         deletable_skills = ("Craft", "Perform", "Profession")
         valid_target = False
-        names = [item["name"] for item in getattr(self, type_)]
-        if type_ == "skills":
-            for item in deletable_skills:
-                if item in name:
-                    valid_target = True
-        else:
-            valid_target = True
-
-        # Ensure a valid name
-        if name not in names:
-            raise ValueError("delete_element: name not found in element type: " + type_)
-        if not valid_target:
-            raise ValueError("delete_element: cannot delete skills that are not of the type: " + str(deletable_skills))
-
-        # Remove element and return
-        index = 0
-        for item in getattr(self, type_):
-            if item["name"] == name:
+        for name in deletable_skills:
+            if name in target["name"]:
+                valid_target = True
                 break
-            index = index + 1
-        removed = getattr(self, type_)[index]
-        del getattr(self, type_)[index]
-        return removed
+        if not valid_target:
+            raise ValueError("delete_skill: cannot delete skills which are not of type: {}".format(deletable_skills))
+        # Delete target
+        self.skills.remove(target)
 
-    # Set items' 'on_person' flags to False if they are also flagged 
-    # as 'camp' items.
+    # Delete a piece of equipment by uuid
+    def delete_equipment(self,
+                         uuid):
+        # Ensure a valid target
+        target_list = get_equipment(uuid = uuid)
+        if not target_list:
+            raise ValueError("delete_equipment: no equipment with uuid '{}'".format(uuid))
+        else:
+            target = target_list[0]
+        # Delete target
+        self.equipment.remove(target)
+
+    # Delete an attack by uuid
+    def delete_attack(self,
+                      uuid):
+        # Ensure a valid target
+        target_list = get_attack(uuid = uuid)
+        if not target_list:
+            raise ValueError("delete_attack: no attack with uuid '{}'".format(uuid))
+        else:
+            target = target_list[0]
+        # Delete target
+        self.attacks.remove(target)
+
+    # Delete a piece of armor by uuid
+    def delete_armor(self,
+                     uuid):
+        # Ensure a valid target
+        target_list = get_armor(uuid = uuid)
+        if not target_list:
+            raise ValueError("delete_armor: no armor with uuid '{}'".format(uuid))
+        else:
+            target = target_list[0]
+        # Delete target
+        self.armor.remove(target)
+
+    # Delete a spell by uuid
+    def delete_spell(self,
+                      uuid):
+        # Ensure a valid target
+        target_list = get_spell(uuid = uuid)
+        if not target_list:
+            raise ValueError("delete_spell: no spell with uuid '{}'".format(uuid))
+        else:
+            target = target_list[0]
+        # Delete target
+        self.spells.remove(target)
+
+    # Set items' "on_person" flags to False if they are also flagged 
+    # as "camp" items.
     def set_up_camp(self):
         camp_items = self.get_item(camp = True)
         for item in camp_items:
             item["on_person"] = False
 
-    # Set items' 'on_person' flags to True if they are also flagged 
-    # as 'camp' items.
+    # Set items' "on_person" flags to True if they are also flagged 
+    # as "camp" items.
     def tear_down_camp(self):
         camp_items = self.get_item(camp = True)
         for item in camp_items:
