@@ -541,7 +541,7 @@ class Character:
     #
     # Numeric filters use the numeric_filter function
     def get_item(self,
-                 absolute_name = False,
+                 name_search_type = "substring",
                  name = [],
                  weight = {},
                  count = {},
@@ -574,16 +574,18 @@ class Character:
         items = self.equipment
         if name:
             subgroup = []
-            if absolute_name:
+            if name_search_type == "absolute":
                 for search in name:
                     for i in items:
                         if search == i["name"]:
                             subgroup.append(i)
-            else:
+            elif name_search_type == "substring":
                 for search in name:
                     for i in items:
                         if search in i["name"]:
                             subgroup.append(i)
+            else:
+                raise ValueError("get_item: invalid name_search_type")
             items = remove_duplicates_by_name(subgroup)
         if weight:
             items = numeric_filter(items = items,
@@ -627,7 +629,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_ability(self,
-                    absolute_name = False,
+                    name_search_type = "substring",
                     name = [],
                     base = {},
                     misc = {},
@@ -649,16 +651,18 @@ class Character:
         # Filter abilities
         if name:
             subgroup = []
-            if absolute_name:
+            if name_search_type == "absolute":
                 for search in name:
                     for i in abilities:
                         if search == i["name"]:
                             subgroup.append(i)
-            else:
+            elif name_search_type == "substring":
                 for search in name:
                     for i in abilities:
                         if search in i["name"]:
                             subgroup.append(i)
+            else:
+                raise ValueError("get_ability: invalid name_search_type")
             abilities = remove_duplicates_by_name(subgroup)
         if base:
             abilities = numeric_filter(items = abilities,
@@ -681,7 +685,7 @@ class Character:
     # for a given property are treated like an 'or', while each 
     # separate property is treated like an 'and'.
     def get_saving_throw(self,
-                         absolute_name = False,
+                         name_search_type = "substring",
                          name = [],
                          base = {},
                          misc = {},
@@ -703,16 +707,18 @@ class Character:
         # Filter saving_throws
         if name:
             subgroup = []
-            if absolute_name:
+            if name_search_type == "absolute":
                 for search in name:
                     for i in saving_throws:
                         if search == i["name"]:
                             subgroup.append(i)
-            else:
+            elif name_search_type == "substring":
                 for search in name:
                     for i in saving_throws:
                         if search in i["name"]:
                             subgroup.append(i)
+            else:
+                raise ValueError("get_saving_throw: invalid name_search_type")
             saving_throws = remove_duplicates_by_name(subgroup)
         if base:
             saving_throws = numeric_filter(items = saving_throws,
@@ -735,7 +741,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_class(self,
-                  absolute_name = False,
+                  name_search_type = "substring",
                   name = [],
                   archetypes = [],
                   level = {},
@@ -754,16 +760,18 @@ class Character:
         classes = self.classes
         if name:
             subgroup = []
-            if absolute_name:
+            if name_search_type == "absolute":
                 for search in name:
                     for i in classes:
                         if search == i["name"]:
                             subgroup.append(i)
-            else:
+            elif name_search_type == "substring":
                 for search in name:
                     for i in classes:
                         if search in i["name"]:
                             subgroup.append(i)
+            else:
+                raise ValueError("get_class: invalid name_search_type")
             classes = remove_duplicates_by_name(subgroup)
         if archetypes:
             subgroup = []
@@ -784,7 +792,7 @@ class Character:
     # property are treated like an 'or', while each separate property 
     # is treated like an 'and'.
     def get_feat(self,
-                 absolute_name = False,
+                 name_search_type = "substring",
                  name = [],
                  description = [],
                  notes = [],
@@ -805,16 +813,18 @@ class Character:
         feats = self.feats
         if name:
             subgroup = []
-            if absolute_name:
+            if name_search_type == "absolute":
                 for search in name:
                     for i in feats:
                         if search == i["name"]:
                             subgroup.append(i)
-            else:
+            elif name_search_type == "substring":
                 for search in name:
                     for i in feats:
                         if search in i["name"]:
                             subgroup.append(i)
+            else:
+                raise ValueError("get_feat: invalid name_search_type")
             feats = remove_duplicates_by_name(subgroup)
         if description:
             subgroup = []
@@ -836,7 +846,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_trait(self,
-                 absolute_name = False,
+                 name_search_type = "substring",
                  name = [],
                  description = [],
                  notes = [],
@@ -857,16 +867,18 @@ class Character:
         traits = self.traits
         if name:
             subgroup = []
-            if absolute_name:
+            if name_search_type == "absolute":
                 for search in name:
                     for i in traits:
                         if search == i["name"]:
                             subgroup.append(i)
-            else:
+            elif name_search_type == "substring":
                 for search in name:
                     for i in traits:
                         if search in i["name"]:
                             subgroup.append(i)
+            else:
+                raise ValueError("get_trait: invalid name_search_type")
             traits = remove_duplicates_by_name(subgroup)
         if description:
             subgroup = []
@@ -888,7 +900,7 @@ class Character:
     # for a given property are treated like an 'or', while each 
     # separate property is treated like an 'and'.
     def get_special(self,
-                 absolute_name = False,
+                 name_search_type = "substring",
                  name = [],
                  description = [],
                  notes = [],
@@ -909,16 +921,18 @@ class Character:
         special = self.special
         if name:
             subgroup = []
-            if absolute_name:
+            if name_search_type == "absolute":
                 for search in name:
                     for i in special:
                         if search == i["name"]:
                             subgroup.append(i)
-            else:
+            elif name_search_type == "substring":
                 for search in name:
                     for i in special:
                         if search in i["name"]:
                             subgroup.append(i)
+            else:
+                raise ValueError("get_special: invalid name_search_type")
             special = remove_duplicates_by_name(subgroup)
         if description:
             subgroup = []
@@ -940,7 +954,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_skill(self,
-                  absolute_name = False,
+                  name_search_type = "substring",
                   name = [],
                   rank = {},
                   isClass = [],
@@ -973,16 +987,18 @@ class Character:
         skills = [skill for skill in self.skills.values()]
         if name:
             subgroup = []
-            if absolute_name:
+            if name_search_type == "absolute":
                 for search in name:
                     for i in skills:
                         if search == i["name"]:
                             subgroup.append(i)
-            else:
+            elif name_search_type == "substring":
                 for search in name:
                     for i in skills:
                         if search in i["name"]:
                             subgroup.append(i)
+            else:
+                raise ValueError("get_skill: invalid name_search_type")
             skills = remove_duplicates_by_name(subgroup)
         if isClass:
             subgroup = []
@@ -1026,7 +1042,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_spell(self,
-                  absolute_name = False,
+                  name_search_type = "substring",
                   name = [],
                   level = {},
                   description = [],
@@ -1049,16 +1065,18 @@ class Character:
         spells = self.spells
         if name:
             subgroup = []
-            if absolute_name:
+            if name_search_type == "absolute":
                 for search in name:
                     for i in spells:
                         if search == i["name"]:
                             subgroup.append(i)
-            else:
+            elif name_search_type == "substring":
                 for search in name:
                     for i in spells:
                         if search in i["name"]:
                             subgroup.append(i)
+            else:
+                raise ValueError("get_spell: invalid name_search_type")
             spells = remove_duplicates_by_name(subgroup)
         if level:
             spells = numeric_filter(items = spells,
@@ -1085,7 +1103,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_armor(self,
-                  absolute_name = False,
+                  name_search_type = "substring",
                   name = [],
                   acBonus = {},
                   acPenalty = {},
@@ -1107,16 +1125,18 @@ class Character:
         armor = self.armor
         if name:
             subgroup = []
-            if absolute_name:
+            if name_search_type == "absolute":
                 for search in name:
                     for i in armor:
                         if search == i["name"]:
                             subgroup.append(i)
-            else:
+            elif name_search_type == "substring":
                 for search in name:
                     for i in armor:
                         if search in i["name"]:
                             subgroup.append(i)
+            else:
+                raise ValueError("get_armor: invalid name_search_type")
             armor = remove_duplicates_by_name(subgroup)
         if acBonus:
             armor = numeric_filter(items = armor,
@@ -1147,7 +1167,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_attack(self,
-                   absolute_name = False,
+                   name_search_type = "substring",
                    name = [],
                    attackType = [],
                    damageType = [],
@@ -1190,16 +1210,18 @@ class Character:
         attacks = self.attacks
         if name:
             subgroup = []
-            if absolute_name:
+            if name_search_type == "absolute":
                 for search in name:
                     for i in attacks:
                         if search == i["name"]:
                             subgroup.append(i)
-            else:
+            elif name_search_type == "substring":
                 for search in name:
                     for i in attacks:
                         if search in i["name"]:
                             subgroup.append(i)
+            else:
+                raise ValueError("get_attack: invalid name_search_type")
             attacks = remove_duplicates_by_name(subgroup)
         if attackType:
             subgroup = []
