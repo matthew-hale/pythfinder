@@ -1775,9 +1775,12 @@ class Character:
             return None
         else:
             # Ignore empty parameters
+            # Handle falsey values
+            if level is not None:
+                target_class["level"] = level
+            if archetypes is not None:
+                target_class["archetypes"] = archetypes
             target_class["name"] = new_name or target_class["name"]
-            target_class["archetypes"] = archetypes or target_class["archetypes"]
-            target_class["level"] = level or target_class["level"]
             return target_class
 
     # Update an existing item based on name; supports either named 
@@ -1790,9 +1793,9 @@ class Character:
                     weight = None,
                     count = None,
                     camp = None,
-                    location = "",
+                    location = None,
                     on_person = None,
-                    notes = "",
+                    notes = None,
                     data = {}):
         keys = data.keys()
         name = data["name"] if "name" in keys else name
@@ -1818,19 +1821,20 @@ class Character:
             return None
         else:
             # Ignore empty parameters
-            # Handle zero ints
-            if weight != None:
+            # Handle falsey values
+            if weight is not None:
                 target_item["weight"] = weight
-            if count != None:
+            if count is not None:
                 target_item["count"] = count
-            target_item["name"] = new_name or target_item["name"]
-            target_item["notes"] = notes or target_item["notes"]
-            target_item["location"] = location or target_item["location"]
-            # Boolean like ints
-            if camp != None:
+            if notes is not None:
+                target_item["notes"] = notes
+            if location is not None:
+                target_item["location"] = location
+            if camp is not None:
                 target_item["camp"] = camp
-            if on_person != None:
+            if on_person is not None:
                 target_item["on_person"] = on_person
+            target_item["name"] = new_name or target_item["name"]
             return target_item
 
     # Update an existing spell based on name; supports either named 
@@ -1838,7 +1842,7 @@ class Character:
     #
     # returns the updated spell 
     def update_spell(self,
-                     name = None,
+                     name = "",
                      new_name = "",
                      level = None,
                      description = None,
@@ -1846,20 +1850,15 @@ class Character:
                      cast = None,
                      data = {}):
         keys = data.keys()
-        if "name" in keys:
-            name = data["name"]
+        name = data["name"] if "name" in keys else name
         new_name = data["new_name"] if "new_name" in keys else new_name
         # Validate that new_name is unique
         if not self.is_unique_name(name = new_name, prop = "spells"):
             raise ValueError("update_spell: name must be unique among spells")
-        if "level" in keys:
-            level = data["level"]
-        if "description" in keys:
-            description = data["description"]
-        if "prepared" in keys:
-            prepared = data["prepared"]
-        if "cast" in keys:
-            cast = data["cast"]
+        level = data["level"] if "level" in keys else level
+        description = data["description"] if "description" in keys else description
+        prepared = data["prepared"] if "prepared" in keys else prepared
+        cast = data["cast"] if "cast" in keys else cast
         # Lazy selection; if there are duplicates, this will just pick 
         # up the first one that shows up
         for spell in self.spells:
@@ -1872,11 +1871,16 @@ class Character:
             return None
         else:
             # Ignore empty parameters
+            # Handle falsey values
+            if level is not None:
+                target_spell["level"] = level
+            if prepared is not None:
+                target_spell["prepared"] = prepared
+            if cast is not None:
+                target_spell["cast"] = cast
+            if description is not None:
+                target_spell["description"] = description
             target_spell["name"] = new_name or target_spell["name"]
-            target_spell["level"] = level or target_spell["level"]
-            target_spell["description"] = description or target_spell["description"]
-            target_spell["prepared"] = prepared or target_spell["prepared"]
-            target_spell["cast"] = cast or target_spell["cast"]
             return target_spell
 
     # Update an existing piece of armor based on name; supports either 
@@ -1884,7 +1888,7 @@ class Character:
     #
     # returns the updated armor
     def update_armor(self,
-                     name = None,
+                     name = "",
                      new_name = "",
                      acBonus = None,
                      acPenalty = None,
@@ -1893,22 +1897,16 @@ class Character:
                      type_ = None,
                      data = {}):
         keys = data.keys()
-        if "name" in keys:
-            name = data["name"]
+        name = data["name"] if "name" in keys else name
         new_name = data["new_name"] if "new_name" in keys else new_name
         # Validate that new_name is unique
         if not self.is_unique_name(name = new_name, prop = "armor"):
             raise ValueError("update_armor: name must be unique among armor")
-        if "acBonus" in keys:
-            acBonus = data["acBonus"]
-        if "acPenalty" in keys:
-            acPenalty = data["acPenalty"]
-        if "maxDexBonus" in keys:
-            maxDexBonus = data["maxDexBonus"]
-        if "arcaneFailureChance" in keys:
-            arcaneFailureChance = data["arcaneFailureChance"]
-        if "type" in keys:
-            type_ = data["type"]
+        acBonus = data["acBonus"] if "acBonus" in keys else acBonus
+        acPenalty = data["acPenalty"] if "acPenalty" in keys else acPenalty
+        maxDexBonus = data["maxDexBonus"] if "maxDexBonus" in keys else maxDexBonus
+        arcaneFailureChance = data["arcaneFailureChance"] if "arcaneFailureChance" in keys else arcaneFailureChance
+        type_ = data["type"] if "type" in keys else type_
         # Lazy selection; if there are duplicates, this will just pick 
         # up the first one that shows up
         for armor in self.armor:
@@ -1921,12 +1919,18 @@ class Character:
             return None
         else:
             # Ignore empty parameters
+            # Handle falsey values
+            if acBonus is not None:
+                target_spell["acBonus"] = acBonus
+            if acPenalty is not None:
+                target_spell["acPenalty"] = acPenalty
+            if maxDexBonus is not None:
+                target_spell["maxDexBonus"] = maxDexBonus
+            if arcaneFailureChance is not None:
+                target_spell["arcaneFailureChance"] = arcaneFailureChance
+            if type_ is not None:
+                target_spell["type"] = type_
             target_armor["name"] = new_name or target_armor["name"]
-            target_armor["acBonus"] = acBonus or target_armor["acBonus"]
-            target_armor["acPenalty"] = acPenalty or target_armor["acPenalty"]
-            target_armor["maxDexBonus"] = maxDexBonus or target_armor["maxDexBonus"]
-            target_armor["arcaneFailureChance"] = arcaneFailureChance or target_armor["arcaneFailureChance"]
-            target_armor["type"] = type_ or target_armor["type"]
             return target_armor
 
     # Update an existing attack based on name; supports either named 
@@ -1934,37 +1938,34 @@ class Character:
     #
     # returns the updated attack 
     def update_attack(self,
-                      name = None,
+                      name = "",
                       new_name = "",
                       attackType = None,
                       damageType = None,
                       damage = None,
+                      attack_mod = None,
+                      damage_mod = None,
                       critRoll = None,
                       critMulti = None,
                       range_ = None,
                       notes = None,
                       data = {}):
         keys = data.keys()
-        if "name" in keys:
-            name = data["name"]
+        allowed_mods = self.abilities.keys()
+        name = data["name"] if "name" in keys else name
         new_name = data["new_name"] if "new_name" in keys else new_name
         # Validate that new_name is unique
         if not self.is_unique_name(name = new_name, prop = "attacks"):
             raise ValueError("update_attack: name must be unique among attacks")
-        if "attackType" in keys:
-            attackType = data["attackType"]
-        if "damageType" in keys:
-            damageType = data["damageType"]
-        if "damage" in keys:
-            damage = data["damage"]
-        if "critRoll" in keys:
-            critRoll = data["critRoll"]
-        if "critMulti" in keys:
-            critMulti = data["critMulti"]
-        if "range_" in keys:
-            range_ = data["range_"]
-        if "notes" in keys:
-            notes = data["notes"]
+        attackType = data["attackType"] if "attackType" in keys else attackType
+        damageType = data["damageType"] if "damageType" in keys else damageType
+        damage = data["damage"] if "damage" in keys else damage
+        attack_mod = data["attack_mod"] if "attack_mod" in keys else attack_mod
+        damage_mod = data["damage_mod"] if "damage_mod" in keys else damage_mod
+        critRoll = data["critRoll"] if "critRoll" in keys else critRoll
+        critMulti = data["critMulti"] if "critMulti" in keys else critMulti
+        range_ = data["range"] if "range" in keys else range_
+        notes = data["notes"] if "notes" in keys else notes
         # Lazy selection; if there are duplicates, this will just pick 
         # up the first one that shows up
         for attack in self.attacks:
@@ -1977,14 +1978,33 @@ class Character:
             return None
         else:
             # Ignore empty parameters
+            # Handle falsey values
+            if attackType is not None:
+                target_attack["attackType"] = attackType
+            if damageType is not None:
+                target_attack["damageType"] = damageType
+            if damage is not None:
+                target_attack["damage"] = damage
+            if attack_mod is not None:
+                # validate mods
+                if attack_mod in allowed_mods:
+                    target_attack["attack_mod"] = attack_mod
+                else:
+                    raise ValueError("update_attack: attack_mod not an allowed modifier")
+            if damage_mod is not None:
+                if attack_mod in allowed_mods:
+                    target_damage["damage_mod"] = damage_mod
+                else:
+                    raise ValueError("update_attack: damage_mod not an allowed modifier")
+            if critRoll is not None:
+                target_attack["critRoll"] = critRoll
+            if critMulti is not None:
+                target_attack["critMulti"] = critMulti
+            if range_ is not None:
+                target_attack["range"] = range_
+            if notes is not None:
+                target_attack["notes"] = notes
             target_attack["name"] = new_name or target_attack["name"]
-            target_attack["attackType"] = attackType or target_attack["attackType"]
-            target_attack["damageType"] = damageType or target_attack["damageType"]
-            target_attack["damage"] = damage or target_attack["damage"]
-            target_attack["critRoll"] = critRoll or target_attack["critRoll"]
-            target_attack["critMulti"] = critMulti or target_attack["critMulti"]
-            target_attack["range"] = range_ or target_attack["range"]
-            target_attack["notes"] = notes or target_attack["notes"]
             return target_attack
 
     # Update an existing skill based on name; supports either named 
@@ -1997,7 +2017,7 @@ class Character:
                      rank = None,
                      isClass = None,
                      notes = None,
-                     misc = [],
+                     misc = None,
                      data = {}):
         keys = data.keys()
         new_name = data["new_name"] if "new_name" in keys else new_name
@@ -2038,10 +2058,15 @@ class Character:
                 return new_skill
             else:
                 # Ignore empty parameters
-                target_skill["rank"] = rank or target_skill["rank"]
-                target_skill["isClass"] = isClass or target_skill["isClass"]
-                target_skill["notes"] = notes or target_skill["notes"]
-                target_skill["misc"] = misc or target_skill["misc"]
+                # Handle falsey values
+                if rank is not None:
+                    target_skill["rank"] = rank
+                if isClass is not None:
+                    target_skill["isClass"] = isClass
+                if notes is not None:
+                    target_skill["notes"] = notes
+                if misc is not None:
+                    target_skill["misc"] = misc
                 return target_skill
 
     # Update an existing ability based on name; supports either named 
@@ -2051,16 +2076,16 @@ class Character:
     def update_ability(self,
                        name = None,
                        base = None,
+                       misc = None,
                        data = {}):
         keys = data.keys()
-        if "name" in keys:
-            name = data["name"]
-        if "base" in keys:
-            base = data["base"]
+        name = data["name"] if "name" in keys else name
+        base = data["base"] if "base" in keys else base
+        misc = data["misc"] if "misc" in keys else misc
         # Abilities are all fixed, so selection is easy
         allowed_values = self.abilities.keys()
-        if not name in allowed_values:
-            raise ValueError("Character().update_ability: name must be one of " + allowed_values)
+        if name not in allowed_values:
+            raise ValueError("update_ability: name must be one of " + allowed_values)
         else:
             target_ability = self.abilities[name]
         # Ignore empty parameters
