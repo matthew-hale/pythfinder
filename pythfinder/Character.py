@@ -541,6 +541,7 @@ class Character:
     #
     # Numeric filters use the numeric_filter function
     def get_item(self,
+                 absolute_name = False,
                  name = [],
                  weight = {},
                  count = {},
@@ -573,10 +574,16 @@ class Character:
         items = self.equipment
         if name:
             subgroup = []
-            for search in name:
-                for i in items:
-                    if search in i["name"]:
-                        subgroup.append(i)
+            if absolute_name:
+                for search in name:
+                    for i in items:
+                        if search == i["name"]:
+                            subgroup.append(i)
+            else:
+                for search in name:
+                    for i in items:
+                        if search in i["name"]:
+                            subgroup.append(i)
             items = remove_duplicates_by_name(subgroup)
         if weight:
             items = numeric_filter(items = items,
@@ -620,6 +627,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_ability(self,
+                    absolute_name = False,
                     name = [],
                     base = {},
                     misc = {},
@@ -641,10 +649,16 @@ class Character:
         # Filter abilities
         if name:
             subgroup = []
-            for search in name:
-                for i in abilities:
-                    if search in i["name"]:
-                        subgroup.append(i)
+            if absolute_name:
+                for search in name:
+                    for i in abilities:
+                        if search == i["name"]:
+                            subgroup.append(i)
+            else:
+                for search in name:
+                    for i in abilities:
+                        if search in i["name"]:
+                            subgroup.append(i)
             abilities = remove_duplicates_by_name(subgroup)
         if base:
             abilities = numeric_filter(items = abilities,
@@ -667,6 +681,7 @@ class Character:
     # for a given property are treated like an 'or', while each 
     # separate property is treated like an 'and'.
     def get_saving_throw(self,
+                         absolute_name = False,
                          name = [],
                          base = {},
                          misc = {},
@@ -688,10 +703,16 @@ class Character:
         # Filter saving_throws
         if name:
             subgroup = []
-            for search in name:
-                for i in saving_throws:
-                    if search in i["name"]:
-                        subgroup.append(i)
+            if absolute_name:
+                for search in name:
+                    for i in saving_throws:
+                        if search == i["name"]:
+                            subgroup.append(i)
+            else:
+                for search in name:
+                    for i in saving_throws:
+                        if search in i["name"]:
+                            subgroup.append(i)
             saving_throws = remove_duplicates_by_name(subgroup)
         if base:
             saving_throws = numeric_filter(items = saving_throws,
@@ -714,6 +735,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_class(self,
+                  absolute_name = False,
                   name = [],
                   archetypes = [],
                   level = {},
@@ -732,10 +754,16 @@ class Character:
         classes = self.classes
         if name:
             subgroup = []
-            for search in name:
-                for i in classes:
-                    if search in i["name"]:
-                        subgroup.append(i)
+            if absolute_name:
+                for search in name:
+                    for i in classes:
+                        if search == i["name"]:
+                            subgroup.append(i)
+            else:
+                for search in name:
+                    for i in classes:
+                        if search in i["name"]:
+                            subgroup.append(i)
             classes = remove_duplicates_by_name(subgroup)
         if archetypes:
             subgroup = []
@@ -756,6 +784,7 @@ class Character:
     # property are treated like an 'or', while each separate property 
     # is treated like an 'and'.
     def get_feat(self,
+                 absolute_name = False,
                  name = [],
                  description = [],
                  notes = [],
@@ -776,10 +805,16 @@ class Character:
         feats = self.feats
         if name:
             subgroup = []
-            for search in name:
-                for i in feats:
-                    if search in i["name"]:
-                        subgroup.append(i)
+            if absolute_name:
+                for search in name:
+                    for i in feats:
+                        if search == i["name"]:
+                            subgroup.append(i)
+            else:
+                for search in name:
+                    for i in feats:
+                        if search in i["name"]:
+                            subgroup.append(i)
             feats = remove_duplicates_by_name(subgroup)
         if description:
             subgroup = []
@@ -801,6 +836,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_trait(self,
+                 absolute_name = False,
                  name = [],
                  description = [],
                  notes = [],
@@ -821,10 +857,16 @@ class Character:
         traits = self.traits
         if name:
             subgroup = []
-            for search in name:
-                for i in traits:
-                    if search in i["name"]:
-                        subgroup.append(i)
+            if absolute_name:
+                for search in name:
+                    for i in traits:
+                        if search == i["name"]:
+                            subgroup.append(i)
+            else:
+                for search in name:
+                    for i in traits:
+                        if search in i["name"]:
+                            subgroup.append(i)
             traits = remove_duplicates_by_name(subgroup)
         if description:
             subgroup = []
@@ -846,6 +888,7 @@ class Character:
     # for a given property are treated like an 'or', while each 
     # separate property is treated like an 'and'.
     def get_special(self,
+                 absolute_name = False,
                  name = [],
                  description = [],
                  notes = [],
@@ -866,10 +909,16 @@ class Character:
         special = self.special
         if name:
             subgroup = []
-            for search in name:
-                for i in special:
-                    if search in i["name"]:
-                        subgroup.append(i)
+            if absolute_name:
+                for search in name:
+                    for i in special:
+                        if search == i["name"]:
+                            subgroup.append(i)
+            else:
+                for search in name:
+                    for i in special:
+                        if search in i["name"]:
+                            subgroup.append(i)
             special = remove_duplicates_by_name(subgroup)
         if description:
             subgroup = []
@@ -891,6 +940,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_skill(self,
+                  absolute_name = False,
                   name = [],
                   rank = {},
                   isClass = [],
@@ -923,10 +973,16 @@ class Character:
         skills = [skill for skill in self.skills.values()]
         if name:
             subgroup = []
-            for search in name:
-                for i in skills:
-                    if search in i["name"]:
-                        subgroup.append(i)
+            if absolute_name:
+                for search in name:
+                    for i in skills:
+                        if search == i["name"]:
+                            subgroup.append(i)
+            else:
+                for search in name:
+                    for i in skills:
+                        if search in i["name"]:
+                            subgroup.append(i)
             skills = remove_duplicates_by_name(subgroup)
         if isClass:
             subgroup = []
@@ -970,6 +1026,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_spell(self,
+                  absolute_name = False,
                   name = [],
                   level = {},
                   description = [],
@@ -992,10 +1049,16 @@ class Character:
         spells = self.spells
         if name:
             subgroup = []
-            for search in name:
-                for i in spells:
-                    if search in i["name"]:
-                        subgroup.append(i)
+            if absolute_name:
+                for search in name:
+                    for i in spells:
+                        if search == i["name"]:
+                            subgroup.append(i)
+            else:
+                for search in name:
+                    for i in spells:
+                        if search in i["name"]:
+                            subgroup.append(i)
             spells = remove_duplicates_by_name(subgroup)
         if level:
             spells = numeric_filter(items = spells,
@@ -1022,6 +1085,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_armor(self,
+                  absolute_name = False,
                   name = [],
                   acBonus = {},
                   acPenalty = {},
@@ -1043,10 +1107,16 @@ class Character:
         armor = self.armor
         if name:
             subgroup = []
-            for search in name:
-                for i in armor:
-                    if search in i["name"]:
-                        subgroup.append(i)
+            if absolute_name:
+                for search in name:
+                    for i in armor:
+                        if search == i["name"]:
+                            subgroup.append(i)
+            else:
+                for search in name:
+                    for i in armor:
+                        if search in i["name"]:
+                            subgroup.append(i)
             armor = remove_duplicates_by_name(subgroup)
         if acBonus:
             armor = numeric_filter(items = armor,
@@ -1077,6 +1147,7 @@ class Character:
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
     def get_attack(self,
+                   absolute_name = False,
                    name = [],
                    attackType = [],
                    damageType = [],
@@ -1119,10 +1190,16 @@ class Character:
         attacks = self.attacks
         if name:
             subgroup = []
-            for search in name:
-                for i in attacks:
-                    if search in i["name"]:
-                        subgroup.append(i)
+            if absolute_name:
+                for search in name:
+                    for i in attacks:
+                        if search == i["name"]:
+                            subgroup.append(i)
+            else:
+                for search in name:
+                    for i in attacks:
+                        if search in i["name"]:
+                            subgroup.append(i)
             attacks = remove_duplicates_by_name(subgroup)
         if attackType:
             subgroup = []
