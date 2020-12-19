@@ -347,7 +347,7 @@ class Character:
         
         # Skill initialization
         #
-        self.skills = {}
+        self.skills = []
         if "skills" in keys:
             for item in data["skills"]:
                 _ = self.add_skill(data = data["skills"][item])
@@ -355,7 +355,7 @@ class Character:
         # defaults
         else:
             for skill_name in _allowed_skill_names:
-                self.skills[skill_name] = {
+                _ = self.add_skill(data = {
                     "name": skill_name,
                     "rank": 0,
                     "isClass":  False,
@@ -363,7 +363,7 @@ class Character:
                     "misc": [],
                     "mod": _skill_mods[skill_name],
                     "useUntrained": False if skill_name in _trained_only else True
-                }
+                })
 
         # Spells, attacks, and armor are all collections of 
         # dictionaries; their initialization is pretty boring
@@ -1008,7 +1008,7 @@ class Character:
             useUntrained = [useUntrained]
         misc = data["misc"] if "misc" in keys else misc
         # Filter skills
-        skills = [skill for skill in self.skills.values()]
+        skills = self.skills
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -1472,7 +1472,7 @@ class Character:
             "useUntrained": new_useUntrained,
             "misc": new_misc,
         }
-        self.skills[new_name] = new_skill
+        self.skills.append(new_skill)
         return new_skill
 
 
@@ -2028,46 +2028,35 @@ class Character:
         misc = data["misk"] if "misc" in keys else misc
         # Verify skill is a Craft, Profession, or Perform skill if 
         # being renamed
-        allowed_rename = ("Craft", "Profession", "Perform")
-        allowed_start = False
-        allowed_end = False
-        for item in allowed_rename:
-            if item in name:
-                allowed_start = True
-        for item in allowed_rename:
-            if item in new_name:
-                allowed_end = True
-        if not (allowed_start and allowed_end):
-            raise ValueError("update_skill: cannot rename skills that are not of: " + str(allowed_rename))
-        # Skill selection is selecting a dict key; if it doesn't error 
-        # out, we're probably fine, but we'll check it just in case
-        target_skill = self.skills[name]
-        try:
-            target_skill
-        except NameError:
-            return None
-        else:
-            if new_name:
-                # Ignore empty parameters
-                new_skill = self.add_skill(name = new_name,
-                                           rank = target_skill["rank"] or rank,
-                                           isClass = target_skill["isClass"] or isClass,
-                                           notes = target_skill["notes"] or notes,
-                                           misc = target_skill["misc"] or misc,)
-                self.delete_element(name, "skills")
-                return new_skill
-            else:
-                # Ignore empty parameters
-                # Handle falsey values
-                if rank is not None:
-                    target_skill["rank"] = rank
-                if isClass is not None:
-                    target_skill["isClass"] = isClass
-                if notes is not None:
-                    target_skill["notes"] = notes
-                if misc is not None:
-                    target_skill["misc"] = misc
-                return target_skill
+        if new_name:
+            allowed_rename = ("Craft", "Profession", "Perform")
+            allowed_start = False
+            allowed_end = False
+            for item in allowed_rename:
+                if item in name:
+                    allowed_start = True
+            for item in allowed_rename:
+                if item in new_name:
+                    allowed_end = True
+            if not (allowed_start and allowed_end):
+                raise ValueError("update_skill: cannot rename skills that are not of: " + str(allowed_rename))
+        # Get skill by name
+        target_skill_list = self.get_skill(name = name, name_search_type = "absolute")
+        if not target_skill_list:
+            raise ValueError("update_skill: no matching skill")
+        target_skill = target_skill_list[0]
+        # Ignore empty parameters
+        # Handle falsey values
+        if rank is not None:
+            target_skill["rank"] = rank
+        if isClass is not None:
+            target_skill["isClass"] = isClass
+        if notes is not None:
+            target_skill["notes"] = notes
+        if misc is not None:
+            target_skill["misc"] = misc
+        target_skill["name"] = new_name or target_skill["name"]
+        return target_skill
 
     # Update an existing ability based on name; supports either named 
     # arguments or a dictionary
