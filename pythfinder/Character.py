@@ -2110,14 +2110,12 @@ class Character:
         # that aren't craft, perform, or profession
         deletable_skills = ("Craft", "Perform", "Profession")
         valid_target = False
+        names = [item["name"] for item in getattr(self, type_)]
         if type_ == "skills":
-            skill_keys = self.skills.keys()
-            names = [self.skills[item]["name"] for item in self.skills]
             for item in deletable_skills:
                 if item in name:
                     valid_target = True
         else:
-            names = [item["name"] for item in getattr(self, type_)]
             valid_target = True
 
         # Ensure a valid name
@@ -2127,16 +2125,13 @@ class Character:
             raise ValueError("delete_element: cannot delete skills that are not of the type: " + str(deletable_skills))
 
         # Remove element and return
-        if type_ == "skills":
-            removed = getattr(self, type_).pop(name)
-        else:
-            index = 0
-            for item in getattr(self, type_):
-                if item["name"] == name:
-                    break
-                index = index + 1
-            removed = getattr(self, type_)[index]
-            del getattr(self, type_)[index]
+        index = 0
+        for item in getattr(self, type_):
+            if item["name"] == name:
+                break
+            index = index + 1
+        removed = getattr(self, type_)[index]
+        del getattr(self, type_)[index]
         return removed
 
     # Set items' 'on_person' flags to False if they are also flagged 
