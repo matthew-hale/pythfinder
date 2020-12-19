@@ -555,7 +555,7 @@ class Character:
         # non-list values into lists, except for numeric values
         name = data["name"] if "name" in keys else name
         name_search_type = data["name_search_type"] if "name_search_type" in keys else name_search_type
-        if ~name_search_type:
+        if not name_search_type:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
@@ -642,7 +642,7 @@ class Character:
         # non-list values into lists, except for numeric values
         name = data["name"] if "name" in keys else name
         name_search_type = data["name_search_type"] if "name_search_type" in keys else name_search_type
-        if ~name_search_type:
+        if not name_search_type:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
@@ -701,7 +701,7 @@ class Character:
         # non-list values into lists, except for numeric values
         name = data["name"] if "name" in keys else name
         name_search_type = data["name_search_type"] if "name_search_type" in keys else name_search_type
-        if ~name_search_type:
+        if not name_search_type:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
@@ -760,7 +760,7 @@ class Character:
         # non-list values into lists, except for numeric values
         name = data["name"] if "name" in keys else name
         name_search_type = data["name_search_type"] if "name_search_type" in keys else name_search_type
-        if ~name_search_type:
+        if not name_search_type:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
@@ -814,7 +814,7 @@ class Character:
         # non-list values into lists, except for numeric values
         name = data["name"] if "name" in keys else name
         name_search_type = data["name_search_type"] if "name_search_type" in keys else name_search_type
-        if ~name_search_type:
+        if not name_search_type:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
@@ -871,7 +871,7 @@ class Character:
         # non-list values into lists, except for numeric values
         name = data["name"] if "name" in keys else name
         name_search_type = data["name_search_type"] if "name_search_type" in keys else name_search_type
-        if ~name_search_type:
+        if not name_search_type:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
@@ -928,7 +928,7 @@ class Character:
         # non-list values into lists, except for numeric values
         name = data["name"] if "name" in keys else name
         name_search_type = data["name_search_type"] if "name_search_type" in keys else name_search_type
-        if ~name_search_type:
+        if not name_search_type:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
@@ -989,7 +989,7 @@ class Character:
         # non-list values into lists, except for numeric values
         name = data["name"] if "name" in keys else name
         name_search_type = data["name_search_type"] if "name_search_type" in keys else name_search_type
-        if ~name_search_type:
+        if not name_search_type:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
@@ -1078,7 +1078,7 @@ class Character:
         # non-list values into lists, except for numeric values
         name = data["name"] if "name" in keys else name
         name_search_type = data["name_search_type"] if "name_search_type" in keys else name_search_type
-        if ~name_search_type:
+        if not name_search_type:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
@@ -1143,7 +1143,7 @@ class Character:
         # non-list values into lists, except for numeric values
         name = data["name"] if "name" in keys else name
         name_search_type = data["name_search_type"] if "name_search_type" in keys else name_search_type
-        if ~name_search_type:
+        if not name_search_type:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
@@ -1214,7 +1214,7 @@ class Character:
         # non-list values into lists, except for numeric values
         name = data["name"] if "name" in keys else name
         name_search_type = data["name_search_type"] if "name_search_type" in keys else name_search_type
-        if ~name_search_type:
+        if not name_search_type:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
