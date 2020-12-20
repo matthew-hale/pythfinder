@@ -2095,7 +2095,7 @@ class Character:
     #
     # returns the updated skill 
     def update_skill(self,
-                     uuid = ""
+                     uuid = "",
                      name = None,
                      rank = None,
                      isClass = None,
