@@ -79,6 +79,20 @@ def remove_duplicates_by_id(l):
                 break
     return out
 
+# Remove duplicate dictionaries from a list of dictionaries, using 
+# "name" as a primary key (assumes anything with the same name is 
+# identical)
+def remove_duplicates_by_name(l):
+    # Get unique names
+    item_names = list(set([i["name"] for i in l]))
+    out = []
+    for name in item_names:
+        for item in l:
+            if item["name"] == name:
+                out.append(item)
+                break
+    return out
+
 # Perform a filtering operation on the provided list of dictionaries, 
 # based on a single property, using a dictionary of numeric comparisons.
 #
@@ -701,7 +715,7 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_ability: invalid name_search_type")
-            abilities = remove_duplicates_by_id(subgroup)
+            abilities = remove_duplicates_by_name(subgroup)
         if base:
             abilities = numeric_filter(items = abilities,
                                        key = "base",
