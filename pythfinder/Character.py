@@ -1778,156 +1778,133 @@ class Character:
         self.spells.append(new_spell)
         return new_spell
 
-    # Update an existing feat based on name; supports either named 
+    # Update an existing feat based on uuid; supports either named 
     # arguments or a dictionary
     #
     # returns the updated feat
     def update_feat(self,
-                    name = "",
-                    new_name = "",
-                    description = "",
-                    notes = "",
+                    uuid = "",
+                    name = None,
+                    description = None,
+                    notes = None,
                     data = {}):
         keys = data.keys()
+        uuid = data["uuid"] if "uuid" in keys else uuid
         name = data["name"] if "name" in keys else name
-        new_name = data["new_name"] if "new_name" in keys else new_name
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "feats"):
-            raise ValueError("update_feat: name must be unique among feats")
         description = data["description"] if "description" in keys else description
         notes = data["notes"] if "notes" in keys else notes
-        # Lazy selection; if there are duplicates, this will just pick 
-        # up the first one that shows up
-        for feat in self.feats:
-            if feat["name"] == name:
-                target_feat = feat
-                break
-        try:
-            target_feat
-        except NameError:
-            return None
+        # Get target feat
+        target_list = self.get_feat(uuid = uuid)
+        if not target_list:
+            raise ValueError("update_feat: no feat found with uuid '{}'".format(uuid))
         else:
-            # Ignore empty parameters
-            target_feat["name"] = new_name or target_feat["name"]
-            target_feat["description"] = description or target_feat["description"]
-            target_feat["notes"] = notes or target_feat["notes"]
-            return target_feat
+            target = target_list[0]
+        # Ignore parameters not provided, allowing for "falsey" values
+        if name is not None:
+            target["name"] = name
+        if description is not None:
+            target["description"] = description
+        if notes is not None:
+            target["notes"] = notes
+        return target_feat
 
-    # Update an existing trait based on name; supports either named 
+    # Update an existing trait based on uuid; supports either named 
     # arguments or a dictionary
     #
     # returns the updated trait
     def update_trait(self,
-                     name = "",
-                     new_name = "",
-                     description = "",
-                     notes = "",
+                     uuid = "",
+                     name = None,
+                     description = None,
+                     notes = None,
                      data = {}):
         keys = data.keys()
+        uuid = data["uuid"] if "uuid" in keys else uuid
         name = data["name"] if "name" in keys else name
-        new_name = data["new_name"] if "new_name" in keys else new_name
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "traits"):
-            raise ValueError("update_trait: name must be unique among traits")
         description = data["description"] if "description" in keys else description
         notes = data["notes"] if "notes" in keys else notes
-        # Lazy selection; if there are duplicates, this will just pick 
-        # up the first one that shows up
-        for trait in self.traits:
-            if trait["name"] == name:
-                target_trait = trait
-                break
-        try:
-            target_trait
-        except NameError:
-            return None
+        # Get target trait
+        target_list = self.get_trait(uuid = uuid)
+        if not target_list:
+            raise ValueError("update_trait: no trait found with uuid '{}'".format(uuid))
         else:
-            # Ignore empty parameters
-            target_trait["name"] = new_name or target_trait["name"]
-            target_trait["description"] = description or target_trait["description"]
-            target_trait["notes"] = notes or target_trait["notes"]
-            return target_trait
+            target = target_list[0]
+        # Ignore parameters not provided, allowing for "falsey" values
+        if name is not None:
+            target["name"] = name
+        if description is not None:
+            target["description"] = description
+        if notes is not None:
+            target["notes"] = notes
+        return target
 
-    # Update an existing special ability based on name; supports either 
+    # Update an existing special ability based on uuid; supports either 
     # named arguments or a dictionary
     #
     # returns the updated special ability
     def update_special(self,
-                       name = "",
-                       new_name = "",
-                       description = "",
-                       notes = "",
+                       uuid = "",
+                       name = None,
+                       description = None,
+                       notes = None,
                        data = {}):
         keys = data.keys()
+        uuid = data["uuid"] if "uuid" in keys else uuid
         name = data["name"] if "name" in keys else name
-        new_name = data["new_name"] if "new_name" in keys else new_name
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "special"):
-            raise ValueError("update_special: name must be unique among specials")
         description = data["description"] if "description" in keys else description
         notes = data["notes"] if "notes" in keys else notes
-        # Lazy selection; if there are duplicates, this will just pick 
-        # up the first one that shows up
-        for special in self.special:
-            if special["name"] == name:
-                target_special = special
-                break
-        try:
-            target_special
-        except NameError:
-            return None
+        # Get target special ability
+        target_list = self.get_special(uuid = uuid)
+        if not target_list:
+            raise ValueError("update_special: no special ability found with uuid '{}'".format(uuid))
         else:
-            # Ignore empty parameters
-            target_special["name"] = new_name or target_special["name"]
-            target_special["description"] = description or target_special["description"]
-            target_special["notes"] = notes or target_special["notes"]
-            return target_special
+            target = target_list[0]
+        # Ignore parameters not provided, allowing for "falsey" values
+        if name is not None:
+            target["name"] = name
+        if description is not None:
+            target["description"] = description
+        if notes is not None:
+            target["notes"] = notes
+        return target
 
-    # Update an existing class based on name; supports either named 
+    # Update an existing class based on uuid; supports either named 
     # arguments or a dictionary
     #
     # returns the updated class
     def update_class(self,
-                     name = "",
-                     new_name = "",
+                     uuid = "",
+                     name = None,
                      archetypes = None,
                      level = None,
                      data = {}):
         keys = data.keys()
+        uuid = data["uuid"] if "uuid" in keys else uuid
         name = data["name"] if "name" in keys else name
-        new_name = data["new_name"] if "new_name" in keys else new_name
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "class"):
-            raise ValueError("update_class: name must be unique among classes")
         archetypes = data["archetypes"] if "archetypes" in keys else archetypes
         level = data["level"] if "level" in keys else level
-        # Lazy selection; if there are duplicates, this will just pick 
-        # up the first one that shows up
-        for class_ in self.classes:
-            if class_["name"] == name:
-                target_class = class_
-                break
-        try:
-            target_class
-        except NameError:
-            return None
+        # Get target class
+        target_list = self.get_class(uuid = uuid)
+        if not target_list:
+            raise ValueError("update_class: no class found with uuid '{}'".format(uuid))
         else:
-            # Ignore empty parameters
-            # Handle falsey values
-            if level is not None:
-                target_class["level"] = level
-            if archetypes is not None:
-                target_class["archetypes"] = archetypes
-            target_class["name"] = new_name or target_class["name"]
-            return target_class
+            target = target_list[0]
+        # Ignore parameters not provided, allowing for "falsey" values
+        if name is not None:
+            target["name"] = name
+        if level is not None:
+            target["level"] = level
+        if archetypes is not None:
+            target["archetypes"] = archetypes
+        return target
 
-    # Update an existing item based on name; supports either named 
+    # Update an existing item based on uuid; supports either named 
     # arguments or a dictionary
     #
     # returns the updated item 
     def update_item(self,
-                    name = "",
-                    new_name = "",
+                    uuid = "",
+                    name = None,
                     weight = None,
                     count = None,
                     camp = None,
@@ -1936,98 +1913,82 @@ class Character:
                     notes = None,
                     data = {}):
         keys = data.keys()
+        uuid = data["uuid"] if "uuid" in keys else uuid
         name = data["name"] if "name" in keys else name
-        new_name = data["new_name"] if "new_name" in keys else new_name
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "equipment"):
-            raise ValueError("update_item: name must be unique among equipment")
         weight = data["weight"] if "weight" in keys else weight
         count = data["count"] if "count" in keys else count
         camp = data["camp"] if "camp" in keys else camp
         location = data["location"] if "location" in keys else location
         on_person = data["on_person"] if "on_person" in keys else on_person
         notes = data["notes"] if "notes" in keys else notes
-        # Lazy selection; if there are duplicates, this will just pick 
-        # up the first one that shows up
-        for item in self.equipment:
-            if item["name"] == name:
-                target_item = item
-                break
-        try:
-            target_item
-        except NameError:
-            return None
+        # Get target item
+        target_list = self.get_item(uuid = uuid)
+        if not target_list:
+            raise ValueError("update_item: no item found with uuid '{}'".format(uuid))
         else:
-            # Ignore empty parameters
-            # Handle falsey values
-            if weight is not None:
-                target_item["weight"] = weight
-            if count is not None:
-                target_item["count"] = count
-            if notes is not None:
-                target_item["notes"] = notes
-            if location is not None:
-                target_item["location"] = location
-            if camp is not None:
-                target_item["camp"] = camp
-            if on_person is not None:
-                target_item["on_person"] = on_person
-            target_item["name"] = new_name or target_item["name"]
-            return target_item
+            target = target_list[0]
+        # Ignore parameters not provided, allowing for "falsey" values
+        if name is not None:
+            target["name"] = name
+        if weight is not None:
+            target["weight"] = weight
+        if count is not None:
+            target["count"] = count
+        if notes is not None:
+            target["notes"] = notes
+        if location is not None:
+            target["location"] = location
+        if camp is not None:
+            target["camp"] = camp
+        if on_person is not None:
+            target["on_person"] = on_person
+        return target
 
-    # Update an existing spell based on name; supports either named 
+    # Update an existing spell based on uuid; supports either named 
     # arguments or a dictionary
     #
     # returns the updated spell 
     def update_spell(self,
-                     name = "",
-                     new_name = "",
+                     uuid = "",
+                     name = None,
                      level = None,
                      description = None,
                      prepared = None,
                      cast = None,
                      data = {}):
         keys = data.keys()
+        uuid = data["uuid"] if "uuid" in keys else uuid
         name = data["name"] if "name" in keys else name
-        new_name = data["new_name"] if "new_name" in keys else new_name
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "spells"):
-            raise ValueError("update_spell: name must be unique among spells")
         level = data["level"] if "level" in keys else level
         description = data["description"] if "description" in keys else description
         prepared = data["prepared"] if "prepared" in keys else prepared
         cast = data["cast"] if "cast" in keys else cast
-        # Lazy selection; if there are duplicates, this will just pick 
-        # up the first one that shows up
-        for spell in self.spells:
-            if spell["name"] == name:
-                target_spell = spell
-                break
-        try:
-            target_spell
-        except NameError:
-            return None
+        # Get target spell
+        target_list = self.get_spell(uuid = uuid)
+        if not target_list:
+            raise ValueError("update_spell: no spell found with uuid '{}'".format(uuid))
         else:
-            # Ignore empty parameters
-            # Handle falsey values
-            if level is not None:
-                target_spell["level"] = level
-            if prepared is not None:
-                target_spell["prepared"] = prepared
-            if cast is not None:
-                target_spell["cast"] = cast
-            if description is not None:
-                target_spell["description"] = description
-            target_spell["name"] = new_name or target_spell["name"]
-            return target_spell
+            target = target_list[0]
+        # Ignore parameters not provided, allowing for "falsey" values
+        if name is not None:
+            target["name"] = name
+        if level is not None:
+            target["level"] = level
+        if prepared is not None:
+            target["prepared"] = prepared
+        if cast is not None:
+            target["cast"] = cast
+        if description is not None:
+            target["description"] = description
+        return target
 
-    # Update an existing piece of armor based on name; supports either 
+    # Update an existing piece of armor based on uuid; supports either 
     # named arguments or a dictionary
     #
     # returns the updated armor
     def update_armor(self,
-                     name = "",
-                     new_name = "",
+                     uuid = "",
+                     name = None,
                      acBonus = None,
                      acPenalty = None,
                      maxDexBonus = None,
@@ -2035,49 +1996,41 @@ class Character:
                      type_ = None,
                      data = {}):
         keys = data.keys()
+        uuid = data["uuid"] if "uuid" in keys else uuid
         name = data["name"] if "name" in keys else name
-        new_name = data["new_name"] if "new_name" in keys else new_name
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "armor"):
-            raise ValueError("update_armor: name must be unique among armor")
         acBonus = data["acBonus"] if "acBonus" in keys else acBonus
         acPenalty = data["acPenalty"] if "acPenalty" in keys else acPenalty
         maxDexBonus = data["maxDexBonus"] if "maxDexBonus" in keys else maxDexBonus
         arcaneFailureChance = data["arcaneFailureChance"] if "arcaneFailureChance" in keys else arcaneFailureChance
         type_ = data["type"] if "type" in keys else type_
-        # Lazy selection; if there are duplicates, this will just pick 
-        # up the first one that shows up
-        for armor in self.armor:
-            if armor["name"] == name:
-                target_armor = armor
-                break
-        try:
-            target_armor
-        except NameError:
-            return None
+        # Get target armor
+        target_list = self.get_armor(uuid = uuid)
+        if not target_list:
+            raise ValueError("update_armor: no armor found with uuid '{}'".format(uuid))
         else:
-            # Ignore empty parameters
-            # Handle falsey values
-            if acBonus is not None:
-                target_spell["acBonus"] = acBonus
-            if acPenalty is not None:
-                target_spell["acPenalty"] = acPenalty
-            if maxDexBonus is not None:
-                target_spell["maxDexBonus"] = maxDexBonus
-            if arcaneFailureChance is not None:
-                target_spell["arcaneFailureChance"] = arcaneFailureChance
-            if type_ is not None:
-                target_spell["type"] = type_
-            target_armor["name"] = new_name or target_armor["name"]
-            return target_armor
+            target = target_list[0]
+        # Ignore parameters not provided, allowing for "falsey" values
+        if name is not None:
+            target["name"] = name
+        if acBonus is not None:
+            target["acBonus"] = acBonus
+        if acPenalty is not None:
+            target["acPenalty"] = acPenalty
+        if maxDexBonus is not None:
+            target["maxDexBonus"] = maxDexBonus
+        if arcaneFailureChance is not None:
+            target["arcaneFailureChance"] = arcaneFailureChance
+        if type_ is not None:
+            target["type"] = type_
+        return target
 
-    # Update an existing attack based on name; supports either named 
+    # Update an existing attack based on uuid; supports either named 
     # arguments or a dictionary
     #
     # returns the updated attack 
     def update_attack(self,
-                      name = "",
-                      new_name = "",
+                      uuid = "",
+                      name = None,
                       attackType = None,
                       damageType = None,
                       damage = None,
@@ -2090,11 +2043,8 @@ class Character:
                       data = {}):
         keys = data.keys()
         allowed_mods = self.abilities.keys()
+        uuid = data["uuid"] if "uuid" in keys else uuid
         name = data["name"] if "name" in keys else name
-        new_name = data["new_name"] if "new_name" in keys else new_name
-        # Validate that new_name is unique
-        if not self.is_unique_name(name = new_name, prop = "attacks"):
-            raise ValueError("update_attack: name must be unique among attacks")
         attackType = data["attackType"] if "attackType" in keys else attackType
         damageType = data["damageType"] if "damageType" in keys else damageType
         damage = data["damage"] if "damage" in keys else damage
@@ -2104,97 +2054,92 @@ class Character:
         critMulti = data["critMulti"] if "critMulti" in keys else critMulti
         range_ = data["range"] if "range" in keys else range_
         notes = data["notes"] if "notes" in keys else notes
-        # Lazy selection; if there are duplicates, this will just pick 
-        # up the first one that shows up
-        for attack in self.attacks:
-            if attack["name"] == name:
-                target_attack = attack
-                break
-        try:
-            target_attack
-        except NameError:
-            return None
+        # Get target attack
+        target_list = self.get_attack(uuid = uuid)
+        if not target_list:
+            raise ValueError("update_attack: no attack found with uuid '{}'".format(uuid))
         else:
-            # Ignore empty parameters
-            # Handle falsey values
-            if attackType is not None:
-                target_attack["attackType"] = attackType
-            if damageType is not None:
-                target_attack["damageType"] = damageType
-            if damage is not None:
-                target_attack["damage"] = damage
-            if attack_mod is not None:
-                # validate mods
-                if attack_mod in allowed_mods:
-                    target_attack["attack_mod"] = attack_mod
-                else:
-                    raise ValueError("update_attack: attack_mod not an allowed modifier")
-            if damage_mod is not None:
-                if attack_mod in allowed_mods:
-                    target_damage["damage_mod"] = damage_mod
-                else:
-                    raise ValueError("update_attack: damage_mod not an allowed modifier")
-            if critRoll is not None:
-                target_attack["critRoll"] = critRoll
-            if critMulti is not None:
-                target_attack["critMulti"] = critMulti
-            if range_ is not None:
-                target_attack["range"] = range_
-            if notes is not None:
-                target_attack["notes"] = notes
-            target_attack["name"] = new_name or target_attack["name"]
-            return target_attack
+            target = target_list[0]
+        # Ignore parameters not provided, allowing for "falsey" values
+        if name is not None:
+            target["name"] = name
+        if attackType is not None:
+            target["attackType"] = attackType
+        if damageType is not None:
+            target["damageType"] = damageType
+        if damage is not None:
+            target["damage"] = damage
+        if attack_mod is not None:
+            # validate mods
+            if attack_mod in allowed_mods:
+                target["attack_mod"] = attack_mod
+            else:
+                raise ValueError("update_attack: attack_mod '{}' not an allowed modifier".format(attack_mod))
+        if damage_mod is not None:
+            if attack_mod in allowed_mods:
+                target["damage_mod"] = damage_mod
+            else:
+                raise ValueError("update_attack: damage_mod '{}' not an allowed modifier".format(damage_mod))
+        if critRoll is not None:
+            target["critRoll"] = critRoll
+        if critMulti is not None:
+            target["critMulti"] = critMulti
+        if range_ is not None:
+            target["range"] = range_
+        if notes is not None:
+            target["notes"] = notes
+        return target
 
-    # Update an existing skill based on name; supports either named 
+    # Update an existing skill based on uuid; supports either named 
     # arguments or a dictionary
     #
     # returns the updated skill 
     def update_skill(self,
+                     uuid = ""
                      name = None,
-                     new_name = "",
                      rank = None,
                      isClass = None,
                      notes = None,
                      misc = None,
                      data = {}):
         keys = data.keys()
-        new_name = data["new_name"] if "new_name" in keys else new_name
+        uuid = data["uuid"] if "uuid" in keys else uuid
         name = data["name"] if "name" in keys else name
         rank = data["rank"] if "rank" in keys else rank
         isClass = data["isClass"] if "isClass" in keys else isClass
         notes = data["notes"] if "notes" in keys else notes
         misc = data["misk"] if "misc" in keys else misc
+        # Get target skill
+        target_list = self.get_skill(uuid = uuid)
+        if not target_list:
+            raise ValueError("update_skill: no skill found with uuid '{}'".format(uuid))
+        else:
+            target = target_list[0]
+        # Ignore parameters not provided, allowing for "falsey" values
         # Verify skill is a Craft, Profession, or Perform skill if 
         # being renamed
-        if new_name:
+        if name is not None:
             allowed_rename = ("Craft", "Profession", "Perform")
             allowed_start = False
             allowed_end = False
             for item in allowed_rename:
-                if item in name:
+                if item in target["name"]: # if the skill is currently one of the above
                     allowed_start = True
             for item in allowed_rename:
-                if item in new_name:
+                if item in name:           # if the provided name is one of the above
                     allowed_end = True
             if not (allowed_start and allowed_end):
                 raise ValueError("update_skill: cannot rename skills that are not of: " + str(allowed_rename))
-        # Get skill by name
-        target_skill_list = self.get_skill(name = name, name_search_type = "absolute")
-        if not target_skill_list:
-            raise ValueError("update_skill: no matching skill")
-        target_skill = target_skill_list[0]
-        # Ignore empty parameters
-        # Handle falsey values
+            target["name"] = name
         if rank is not None:
-            target_skill["rank"] = rank
+            target["rank"] = rank
         if isClass is not None:
-            target_skill["isClass"] = isClass
+            target["isClass"] = isClass
         if notes is not None:
-            target_skill["notes"] = notes
+            target["notes"] = notes
         if misc is not None:
-            target_skill["misc"] = misc
-        target_skill["name"] = new_name or target_skill["name"]
-        return target_skill
+            target["misc"] = misc
+        return target
 
     # Update an existing ability based on name; supports either named 
     # arguments or a dictionary
@@ -2209,15 +2154,18 @@ class Character:
         name = data["name"] if "name" in keys else name
         base = data["base"] if "base" in keys else base
         misc = data["misc"] if "misc" in keys else misc
-        # Abilities are all fixed, so selection is easy
-        allowed_values = self.abilities.keys()
-        if name not in allowed_values:
-            raise ValueError("update_ability: name must be one of " + allowed_values)
+        # Get target ability
+        target_list = self.get_ability(name = name, name_search_string = "absolute")
+        if not target_list:
+            raise ValueError("update_ability: no ability found with name '{}'".format(name))
         else:
-            target_ability = self.abilities[name]
-        # Ignore empty parameters
-        target_ability["base"] = base or target_ability["base"]
-        return target_ability
+            target = target_list[0]
+        # Ignore parameters not provided, allowing for "falsey" values
+        if base is not None:
+            target["base"] = base
+        if misc is not None:
+            target["misc"] = misc
+        return target
 
     # Delete a class by uuid
     def delete_class(self,
