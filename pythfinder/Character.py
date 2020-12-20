@@ -96,14 +96,10 @@ def remove_duplicates_by_name(l):
 # Perform a filtering operation on the provided list of dictionaries, 
 # based on a single property, using a dictionary of numeric comparisons.
 #
-# Treats the set of all comparisons as an "or" operation (this is to 
-# maintain consistency between different element properties for the 
-# get_* methods)
+# Treats the set of all comparisons as an "and" operation
 #
 # If 'operations' is a single number, it assumes that the operator is 
 # 'eq'
-#
-# removes duplicates via remove_duplicates_by_id
 def numeric_filter(items,
                    key,
                    operations = {}):
@@ -111,7 +107,6 @@ def numeric_filter(items,
     for item in items:
         if key not in item.keys():
             raise KeyError("numeric_filter: key '" + key + "' not in keys of given item")
-    out_items = []
     if type(operations) is int or type(operations) is float:
         operations = {
             "eq": operations
@@ -119,56 +114,73 @@ def numeric_filter(items,
     for operator in operations.keys():
         if operator not in allowed_operators:
             raise ValueError("numeric_filter: operator '" + operator + "' not in list of allowed operators: " + str(allowed_operators))
-        for item in items:
-            if operator == "lt":
-                if type(item[key]) is list:
-                    for element in item[key]:
-                        if element < operations["lt"]:
-                            out_items.append(item)
+        if operator == "lt":
+            if type(items[0][key]) is list:
+                subgroup = []
+                for item in items:
+                    for i in item[key]:
+                        if i < operations["lt"]:
+                            subgroup.append(item)
                             break
-                else:
-                    out_items.append(item) if item[key] < operations["lt"] else None
-            if operator == "gt":
-                if type(item[key]) is list:
-                    for element in item[key]:
-                        if element > operations["gt"]:
-                            out_items.append(item)
+                items = subgroup
+            else:
+                items = [item for item in items if item[key] < operations["lt"]]
+        if operator == "gt":
+            if type(items[0][key]) is list:
+                subgroup = []
+                for item in items:
+                    for i in item[key]:
+                        if i > operations["gt"]:
+                            subgroup.append(item)
                             break
-                else:
-                    out_items.append(item) if item[key] > operations["gt"] else None
-            if operator == "le":
-                if type(item[key]) is list:
-                    for element in item[key]:
-                        if element <= operations["le"]:
-                            out_items.append(item)
+                items = subgroup
+            else:
+                items = [item for item in items if item[key] > operations["gt"]]
+        if operator == "le":
+            if type(items[0][key]) is list:
+                subgroup = []
+                for item in items:
+                    for i in item[key]:
+                        if i <= operations["le"]:
+                            subgroup.append(item)
                             break
-                else:
-                    out_items.append(item) if item[key] <= operations["le"] else None
-            if operator == "ge":
-                if type(item[key]) is list:
-                    for element in item[key]:
-                        if element >= operations["ge"]:
-                            out_items.append(item)
+                items = subgroup
+            else:
+                items = [item for item in items if item[key] <= operations["le"]]
+        if operator == "ge":
+            if type(items[0][key]) is list:
+                subgroup = []
+                for item in items:
+                    for i in item[key]:
+                        if i >= operations["ge"]:
+                            subgroup.append(item)
                             break
-                else:
-                    out_items.append(item) if item[key] >= operations["ge"] else None
-            if operator == "eq":
-                if type(item[key]) is list:
-                    for element in item[key]:
-                        if element == operations["eq"]:
-                            out_items.append(item)
+                items = subgroup
+            else:
+                items = [item for item in items if item[key] >= operations["ge"]]
+        if operator == "eq":
+            if type(items[0][key]) is list:
+                subgroup = []
+                for item in items:
+                    for i in item[key]:
+                        if i == operations["eq"]:
+                            subgroup.append(item)
                             break
-                else:
-                    out_items.append(item) if item[key] == operations["eq"] else None
-            if operator == "ne":
-                if type(item[key]) is list:
-                    for element in item[key]:
-                        if element != operations["ne"]:
-                            out_items.append(item)
+                items = subgroup
+            else:
+                items = [item for item in items if item[key] == operations["eq"]]
+        if operator == "ne":
+            if type(items[0][key]) is list:
+                subgroup = []
+                for item in items:
+                    for i in item[key]:
+                        if i != operations["ne"]:
+                            subgroup.append(item)
                             break
-                else:
-                    out_items.append(item) if item[key] != operations["ne"] else None
-    return remove_duplicates_by_id(out_items)
+                items = subgroup
+            else:
+                items = [item for item in items if item[key] != operations["ne"]]
+    return items
 
 # Main character class
 class Character:
