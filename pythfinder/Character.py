@@ -2181,11 +2181,9 @@ class Character:
         base = data["base"] if "base" in keys else base
         misc = data["misc"] if "misc" in keys else misc
         # Get target ability
-        target_list = self.get_ability(name = name, name_search_type = "absolute")
-        if not target_list:
+        target = self.get_ability(name = name, name_search_type = "absolute")
+        if not target:
             raise ValueError("update_ability: no ability found with name '{}'".format(name))
-        else:
-            target = target_list[0]
         # Ignore parameters not provided, allowing for "falsey" values
         if base is not None:
             target["base"] = base
