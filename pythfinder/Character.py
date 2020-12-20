@@ -62,6 +62,7 @@ _skill_mods = {
     "Perform": "cha",
     "Use Magic Device": "cha"
 }
+_ability_names = ("str", "dex", "con", "int", "wis", "cha")
 
 # Helper functions
 
@@ -257,46 +258,64 @@ class Character:
 
         # Ability initialization
         #
-        self.abilities = {}
+        self.abilities = []
         #
-        # Abilities are nested dicts, so more validation is necessary 
-        # (like with saving throws)
+        # Although abilities are stored as a list, they are also 
+        # fixed - at least, by name. There are only 6 abilities. Thus, 
+        # using an 'add_ability' method wouldn't make sense, as we'll 
+        # never have more or less than these, and you can't change 
+        # their names via the update_ability method.
         if "abilities" in keys:
-            data_keys = data["abilities"].keys()
-            for key in data_keys:
-                if key in ("str","dex","con","int","wis","cha"):
-                    data_subkeys = data["abilities"][key].keys()
-                    self.abilities[key] = {
-                        "base": data["abilities"][key]["base"] if "base" in data_subkeys else 0,
-                        "misc": data["abilities"][key]["misc"] if "misc" in data_subkeys else [],
+            for name in _ability_names:
+                target_ability_list = [a for a in data["abilities"] if a["name"] == name]
+                if not target_ability_list:
+                    target_ability = {
+                        "name": name,
+                        "base": 0,
+                        "misc": []
                     }
+                else:
+                    target_ability = target_ability_list[0]
+                subkeys = target_ability.keys()
+                new_ability = {
+                    "name": target_ability["name"]
+                }
+                new_ability["base"] = target_ability["base"] if "base" in subkeys else 0
+                new_ability["misc"] = target_ability["misc"] if "misc" in subkeys else []
+                self.abilities.append(new_ability)
         else:
-            self.abilities = {
-                "str": {
+            self.abilities = [
+                {
+                    "name": "str",
                     "base": 0,
                     "misc": []
                 },
-                "dex": {
+                {
+                    "name": "dex",
                     "base": 0,
                     "misc": []
                 },
-                "con": {
+                {
+                    "name": "con",
                     "base": 0,
                     "misc": []
                 },
-                "int": {
+                {
+                    "name": "int",
                     "base": 0,
                     "misc": []
                 },
-                "wis": {
+                {
+                    "name": "wis",
                     "base": 0,
                     "misc": []
                 },
-                "cha": {
+                {
+                    "name": "cha",
                     "base": 0,
                     "misc": []
                 }
-            }
+            ]
 
         if "hp" in keys:
             data_keys = data["hp"].keys()
@@ -706,13 +725,8 @@ class Character:
             name = [name]
         base = data["base"] if "base" in keys else base
         misc = data["misc"] if "misc" in keys else misc
-        # Convert abilities to list of dicts
-        abilities = []
-        for key in self.abilities.keys():
-            d = self.abilities[key]
-            d["name"] = key
-            abilities.append(d)
         # Filter abilities
+        abilities = self.abilities
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -736,14 +750,7 @@ class Character:
             abilities = numeric_filter(items = abilities,
                                        key = "misc",
                                        operations = misc)
-        # Convert back into a single dict, with only those abilities 
-        # that passed the filters
-        out = {}
-        for a in abilities:
-            name = a["name"]
-            del a["name"]
-            out[name] = a
-        return out
+        return abilities
 
     # Returns saving_throws based on given filters; multiple values 
     # for a given property are treated like an 'or', while each 
@@ -1693,7 +1700,6 @@ class Character:
                    notes = "",
                    data = {}):
         keys = data.keys()
-        allowed_mods = self.abilities.keys()
         new_name = data["name"] if "name" in keys else name
         new_uuid = data["uuid"] if "uuid" in keys else uuid
         if not new_uuid:
@@ -1706,9 +1712,9 @@ class Character:
         new_attack_mod = data["attack_mod"] if "attack_mod" in keys else attack_mod
         new_damage_mod = data["damage_mod"] if "damage_mod" in keys else damage_mod
         # Ensure valid mod for attack & damage
-        if new_attack_mod not in allowed_mods:
+        if new_attack_mod not in _ability_names:
             raise ValueError("add_attack: attack_mod not an allowed modifier")
-        if new_damage_mod not in allowed_mods:
+        if new_damage_mod not in _ability_names:
             raise ValueError("add_attack: damage_mod not an allowed modifier")
         new_damage = data["damage"] if "damage" in keys else damage
         new_critRoll = data["critRoll"] if "critRoll" in keys else critRoll
@@ -2181,9 +2187,10 @@ class Character:
         base = data["base"] if "base" in keys else base
         misc = data["misc"] if "misc" in keys else misc
         # Get target ability
-        target = self.get_ability(name = name, name_search_type = "absolute")
-        if not target:
+        target_list = self.get_ability(name = name, name_search_type = "absolute")
+        if not target_list:
             raise ValueError("update_ability: no ability found with name '{}'".format(name))
+        target = target_list[0]
         # Ignore parameters not provided, allowing for "falsey" values
         if base is not None:
             target["base"] = base
