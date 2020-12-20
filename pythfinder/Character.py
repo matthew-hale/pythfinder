@@ -63,6 +63,7 @@ _skill_mods = {
     "Use Magic Device": "cha"
 }
 _ability_names = ("str", "dex", "con", "int", "wis", "cha")
+_saving_throw_names = ("reflex", "fortitude", "will")
 
 # Helper functions
 
@@ -375,21 +376,46 @@ class Character:
 
         # Saving throw initialization
         #
-        self.saving_throws = {}
+        self.saving_throws = []
         #
-        # Saving throws are nested dictionaries, so we have to do more 
-        # key checking than usual.
+        # Saving throws are like abilities: there's only 3, and they're 
+        # the same for everyone.
         if "saving_throws" in keys:
-            data_keys = data["saving_throws"].keys()
-            for key in data_keys:
-                if key in ("fortitude","reflex","will"):
-                    self.saving_throws[key] = data["saving_throws"][key] 
+            for name in _saving_throw_names:
+                target_saving_throw_list = [a for a in data["saving_throws"] if a["name"] == name]
+                if not target_saving_throw_list:
+                    target_saving_throw = {
+                        "name": name,
+                        "base": 0,
+                        "misc": []
+                    }
+                else:
+                    target_saving_throw = target_saving_throw_list[0]
+                subkeys = target_saving_throw.keys()
+                new_saving_throw = {
+                    "name": target_saving_throw["name"]
+                }
+                new_saving_throw["base"] = target_saving_throw["base"] if "base" in subkeys else 0
+                new_saving_throw["misc"] = target_saving_throw["misc"] if "misc" in subkeys else 0
+                self.saving_throws.append(new_saving_throw)
         else:
-            self.saving_throws = {
-                "fortitude": 0,
-                "reflex": 0,
-                "will": 0
-            }
+            self.saving_throws = [
+                {
+                    "name": "fortitude", 
+                    "base": 0,
+                    "misc": []
+                },
+                {
+                    "name": "reflex",
+                    "base": 0,
+                    "misc": []
+                },
+                {
+                    "name": "will",
+                    "base": 0,
+                    "misc": []
+                }
+            ]
         
         # Skill initialization
         #
@@ -772,13 +798,8 @@ class Character:
             name = [name]
         base = data["base"] if "base" in keys else base
         misc = data["misc"] if "misc" in keys else misc
-        # Convert saving_throws to list of dicts
-        saving_throws = []
-        for key in self.saving_throws.keys():
-            d = self.saving_throws[key]
-            d["name"] = key
-            saving_throws.append(d)
         # Filter saving_throws
+        saving_throws = self.saving_throws
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -793,7 +814,7 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_saving_throw: invalid name_search_type")
-            saving_throws = remove_duplicates_by_id(subgroup)
+            saving_throws = remove_duplicates_by_name(subgroup)
         if base:
             saving_throws = numeric_filter(items = saving_throws,
                                        key = "base",
@@ -804,12 +825,7 @@ class Character:
                                        operations = misc)
         # Convert back into a single dict, with only those saving_throws 
         # that passed the filters
-        out = {}
-        for t in saving_throws:
-            name = t["name"]
-            del t["name"]
-            out[name] = t
-        return out
+        return saving_throws
 
     # Returns classes based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
@@ -2190,6 +2206,31 @@ class Character:
         target_list = self.get_ability(name = name, name_search_type = "absolute")
         if not target_list:
             raise ValueError("update_ability: no ability found with name '{}'".format(name))
+        target = target_list[0]
+        # Ignore parameters not provided, allowing for "falsey" values
+        if base is not None:
+            target["base"] = base
+        if misc is not None:
+            target["misc"] = misc
+        return target
+
+    # Update an existing saving_throw based on name; supports either named 
+    # arguments or a dictionary
+    #
+    # returns the updated saving_throw dict
+    def update_saving_throw(self,
+                            name = None,
+                            base = None,
+                            misc = None,
+                            data = {}):
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        base = data["base"] if "base" in keys else base
+        misc = data["misc"] if "misc" in keys else misc
+        # Get target saving_throw
+        target_list = self.get_saving_throw(name = name, name_search_type = "absolute")
+        if not target_list:
+            raise ValueError("update_saving_throw: no saving_throw found with name '{}'".format(name))
         target = target_list[0]
         # Ignore parameters not provided, allowing for "falsey" values
         if base is not None:
