@@ -1444,7 +1444,7 @@ class Character:
         new_level = data["level"] if "level" in keys else level
         new_class = {
             "name": new_name,
-            "uuid": new_uuid,
+            "uuid": str(new_uuid),
             "archetypes": new_archetypes,
             "level": new_level
         }
@@ -1473,7 +1473,7 @@ class Character:
         new_notes = data["notes"] if "notes" in keys else notes
         new_feat = {
             "name": new_name,
-            "uuid": new_uuid,
+            "uuid": str(new_uuid),
             "description": new_description,
             "notes": new_notes,
         }
@@ -1502,7 +1502,7 @@ class Character:
         new_notes = data["notes"] if "notes" in keys else notes
         new_trait = {
             "name": new_name,
-            "uuid": new_uuid,
+            "uuid": str(new_uuid),
             "description": new_description,
             "notes": new_notes,
         }
@@ -1531,7 +1531,7 @@ class Character:
         new_notes = data["notes"] if "notes" in keys else notes
         new_special = {
             "name": new_name,
-            "uuid": new_uuid,
+            "uuid": str(new_uuid),
             "description": new_description,
             "notes": new_notes,
         }
@@ -1594,7 +1594,7 @@ class Character:
         new_misc = data["misc"] if "misc" in keys else misc
         new_skill = {
             "name": new_name,
-            "uuid": new_uuid,
+            "uuid": str(new_uuid),
             "rank": new_rank,
             "isClass": new_isClass,
             "mod": new_mod,
@@ -1636,7 +1636,7 @@ class Character:
         new_notes = data["notes"] if "notes" in keys else notes
         new_item = {
             "name": new_name,
-            "uuid": new_uuid,
+            "uuid": str(new_uuid),
             "weight": new_weight,
             "count": new_count,
             "camp": new_camp,
@@ -1691,7 +1691,7 @@ class Character:
         new_notes = data["notes"] if "notes" in keys else notes
         new_attack = {
             "name": new_name,
-            "uuid": new_uuid,
+            "uuid": str(new_uuid),
             "attackType": new_attackType,
             "damageType": new_damageType,
             "attack_mod": new_attack_mod,
@@ -1733,7 +1733,7 @@ class Character:
         new_type = data["type"] if "type" in keys else type_
         new_armor = {
             "name": new_name,
-            "uuid": new_uuid,
+            "uuid": str(new_uuid),
             "acBonus": new_acBonus,
             "acPenalty": new_acPenalty,
             "maxDexBonus": new_maxDexBonus,
@@ -1769,7 +1769,7 @@ class Character:
         new_cast = data["cast"] if "cast" in keys else cast
         new_spell = {
             "name": new_name,
-            "uuid": new_uuid,
+            "uuid": str(new_uuid),
             "level": new_level,
             "description": new_description,
             "prepared": new_prepared,
