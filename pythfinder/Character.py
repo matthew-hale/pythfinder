@@ -2181,7 +2181,7 @@ class Character:
         base = data["base"] if "base" in keys else base
         misc = data["misc"] if "misc" in keys else misc
         # Get target ability
-        target_list = self.get_ability(name = name, name_search_string = "absolute")
+        target_list = self.get_ability(name = name, name_search_type = "absolute")
         if not target_list:
             raise ValueError("update_ability: no ability found with name '{}'".format(name))
         else:
