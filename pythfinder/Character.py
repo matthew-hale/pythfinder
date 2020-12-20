@@ -2171,7 +2171,7 @@ class Character:
     def delete_class(self,
                      uuid):
         # Ensure a valid target
-        target_list = get_class(uuid = uuid)
+        target_list = self.get_class(uuid = uuid)
         if not target_list:
             raise ValueError("delete_class: no class with uuid '{}'".format(uuid))
         else:
@@ -2183,7 +2183,7 @@ class Character:
     def delete_feat(self,
                     uuid):
         # Ensure a valid target
-        target_list = get_feat(uuid = uuid)
+        target_list = self.get_feat(uuid = uuid)
         if not target_list:
             raise ValueError("delete_feat: no feat with uuid '{}'".format(uuid))
         else:
@@ -2195,7 +2195,7 @@ class Character:
     def delete_trait(self,
                      uuid):
         # Ensure a valid target
-        target_list = get_trait(uuid = uuid)
+        target_list = self.get_trait(uuid = uuid)
         if not target_list:
             raise ValueError("delete_trait: no trait with uuid '{}'".format(uuid))
         else:
@@ -2207,7 +2207,7 @@ class Character:
     def delete_special(self,
                        uuid):
         # Ensure a valid target
-        target_list = get_special(uuid = uuid)
+        target_list = self.get_special(uuid = uuid)
         if not target_list:
             raise ValueError("delete_special: no special with uuid '{}'".format(uuid))
         else:
@@ -2222,7 +2222,7 @@ class Character:
     def delete_skill(self,
                      uuid):
         # Ensure a valid target
-        target_list = get_skill(uuid = uuid)
+        target_list = self.get_skill(uuid = uuid)
         if not target_list:
             raise ValueError("delete_skill: no skill with uuid '{}'".format(uuid))
         else:
@@ -2242,7 +2242,7 @@ class Character:
     def delete_item(self,
                     uuid):
         # Ensure a valid target
-        target_list = get_item(uuid = uuid)
+        target_list = self.get_item(uuid = uuid)
         if not target_list:
             raise ValueError("delete_item: no item with uuid '{}'".format(uuid))
         else:
@@ -2254,7 +2254,7 @@ class Character:
     def delete_attack(self,
                       uuid):
         # Ensure a valid target
-        target_list = get_attack(uuid = uuid)
+        target_list = self.get_attack(uuid = uuid)
         if not target_list:
             raise ValueError("delete_attack: no attack with uuid '{}'".format(uuid))
         else:
@@ -2266,7 +2266,7 @@ class Character:
     def delete_armor(self,
                      uuid):
         # Ensure a valid target
-        target_list = get_armor(uuid = uuid)
+        target_list = self.get_armor(uuid = uuid)
         if not target_list:
             raise ValueError("delete_armor: no armor with uuid '{}'".format(uuid))
         else:
@@ -2278,7 +2278,7 @@ class Character:
     def delete_spell(self,
                       uuid):
         # Ensure a valid target
-        target_list = get_spell(uuid = uuid)
+        target_list = self.get_spell(uuid = uuid)
         if not target_list:
             raise ValueError("delete_spell: no spell with uuid '{}'".format(uuid))
         else:
