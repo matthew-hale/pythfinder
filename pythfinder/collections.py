@@ -16,8 +16,9 @@ class BasicItem:
         self.name = data["name"] if "name" in keys else name
         self.description = data["description"] if "description" in keys else description
         self.notes = data["notes"] if "notes" in keys else notes
+        self.uuid = data["uuid"] if "uuid" in keys else uuid
 
-        if not uuid:
+        if not self.uuid:
             self.uuid = str(uuid4())
     
     """
