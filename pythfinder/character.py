@@ -1,8 +1,10 @@
 import json
 import math
+import copy
 from uuid import uuid4
 from .helpers import remove_duplicates_by_id, remove_duplicates_by_name, numeric_filter
 from .vars import _allowed_skill_names, _trained_only, _skill_mods, _ability_names, _saving_throw_names
+from .collections import BasicItem
 
 # Main character class
 class Character:
@@ -156,16 +158,14 @@ class Character:
 
         # Special ability initialization
         #
-        self.special = []
+        self.specials = []
         #
         # If the character has no special abilities, we'll just skip it 
         # and leave it as an empty list. Otherwise, we'll want to add 
-        # abilities using a constructor method.
-        if "special" in keys:
-            for item in data["special"]:
-                # add_special returns the special ability dict, and we 
-                # don't want it, so we're throwing it out
-                _ = self.add_special(data = item)
+        # abilities using the BasicItem class.
+        if "specials" in keys:
+            for item in data["specials"]:
+                self.specials.append(BasicItem(data = item))
 
         # Trait initialization
         #
@@ -174,9 +174,7 @@ class Character:
         # As above.
         if "traits" in keys:
             for item in data["traits"]:
-                # add_trait returns the trait dict, and we don't want 
-                # it, so we're throwing it out
-                _ = self.add_trait(data = item)
+                self.traits.append(BasicItem(data = item))
 
         # Feat initialization
         #
@@ -185,9 +183,7 @@ class Character:
         # As above.
         if "feats" in keys:
             for item in data["feats"]:
-                # add_feat returns the feat dict, and we don't want 
-                # it, so we're throwing it out
-                _ = self.add_feat(data = item)
+                self.feats.append(BasicItem(data = item))
 
         self.equipment = []
         if "equipment" in keys:
@@ -344,15 +340,23 @@ class Character:
 
         return output
 
-    # Returns a dict of the entire character
+    """
+    Returns a dict of the entire character, converting list objects 
+    into dicts first
+    """
     def getDict(self):
-        return json.loads(
-            json.dumps(self, default = lambda o: getattr(o, '__dict__', str(o)))
-        )
+        out = copy.deepcopy(self)
+        out.feats = [feat.__dict__ for feat in out.feats]
+        out.traits = [trait.__dict__ for trait in out.traits]
+        out.specials = [special.__dict__ for special in out.specials]
+        return out.__dict__
 
-    # Returns a JSON string representation of the entire character
+    """
+    Returns a formatted JSON string representation of the entire 
+    character
+    """
     def getJson(self):
-        return json.dumps(self, default = lambda o: getattr(o, '__dict__', str(o)))
+        return json.dumps(self.getDict(), indent = 4)
 
     # Returns the total value of the specified skill, taking into 
     # account all of the current modifiers, including:
@@ -715,13 +719,13 @@ class Character:
     # Returns feats based on given filters; multiple values for a given 
     # property are treated like an 'or', while each separate property 
     # is treated like an 'and'.
-    def get_feat(self,
-                 name_search_type = "substring",
-                 name = [],
-                 uuid = [],
-                 description = [],
-                 notes = [],
-                 data = {}):
+    def get_feats(self,
+                  name_search_type = "substring",
+                  name = [],
+                  uuid = [],
+                  description = [],
+                  notes = [],
+                  data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
@@ -741,55 +745,55 @@ class Character:
         if type(notes) is not list:
             notes = [notes]
         # Filter feats
-        feats = self.feats
+        feats = [feat for feat in self.feats]
         if name:
             subgroup = []
             if name_search_type == "absolute":
                 for search in name:
                     for i in feats:
-                        if search == i["name"]:
+                        if search == i.name:
                             subgroup.append(i)
             elif name_search_type == "substring":
                 for search in name:
                     for i in feats:
-                        if search in i["name"]:
+                        if search in i.name:
                             subgroup.append(i)
             else:
                 raise ValueError("get_feat: invalid name_search_type")
-            feats = remove_duplicates_by_id(subgroup)
+            feats = list(set(subgroup))
         if uuid:
             subgroup = []
             for search in uuid:
                 for i in feats:
-                    if search == i["uuid"]:
+                    if search == i.uuid:
                         subgroup.append(i)
-            feats = remove_duplicates_by_id(subgroup)
+            feats = list(set(subgroup))
         if description:
             subgroup = []
             for search in description:
                 for i in feats:
-                    if search in i["description"]:
+                    if search in i.description:
                         subgroup.append(i)
-            feats = remove_duplicates_by_id(subgroup)
+            feats = list(set(subgroup))
         if notes:
             subgroup = []
             for search in notes:
                 for i in feats:
-                    if search in i["notes"]:
+                    if search in i.notes:
                         subgroup.append(i)
-            feats = remove_duplicates_by_id(subgroup)
+            feats = list(set(subgroup))
         return feats
 
-    # Returns traits based on given filters; multiple values for a 
-    # given property are treated like an 'or', while each separate 
-    # property is treated like an 'and'.
-    def get_trait(self,
-                 name_search_type = "substring",
-                 name = [],
-                 uuid = [],
-                 description = [],
-                 notes = [],
-                 data = {}):
+    # Returns traits based on given filters; multiple values for a given 
+    # property are treated like an 'or', while each separate property 
+    # is treated like an 'and'.
+    def get_traits(self,
+                   name_search_type = "substring",
+                   name = [],
+                   uuid = [],
+                   description = [],
+                   notes = [],
+                   data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
@@ -809,54 +813,55 @@ class Character:
         if type(notes) is not list:
             notes = [notes]
         # Filter traits
-        traits = self.traits
+        traits = [trait for trait in self.traits]
         if name:
             subgroup = []
             if name_search_type == "absolute":
                 for search in name:
                     for i in traits:
-                        if search == i["name"]:
+                        if search == i.name:
                             subgroup.append(i)
             elif name_search_type == "substring":
                 for search in name:
                     for i in traits:
-                        if search in i["name"]:
+                        if search in i.name:
                             subgroup.append(i)
             else:
                 raise ValueError("get_trait: invalid name_search_type")
-            traits = remove_duplicates_by_id(subgroup)
+            traits = list(set(subgroup))
         if uuid:
             subgroup = []
             for search in uuid:
                 for i in traits:
-                    if search == i["uuid"]:
+                    if search == i.uuid:
                         subgroup.append(i)
+            traits = list(set(subgroup))
         if description:
             subgroup = []
             for search in description:
                 for i in traits:
-                    if search in i["description"]:
+                    if search in i.description:
                         subgroup.append(i)
-            traits = remove_duplicates_by_id(subgroup)
+            traits = list(set(subgroup))
         if notes:
             subgroup = []
             for search in notes:
                 for i in traits:
-                    if search in i["notes"]:
+                    if search in i.notes:
                         subgroup.append(i)
-            traits = remove_duplicates_by_id(subgroup)
+            traits = list(set(subgroup))
         return traits
 
-    # Returns special abilities based on given filters; multiple values 
-    # for a given property are treated like an 'or', while each 
-    # separate property is treated like an 'and'.
-    def get_special(self,
-                 name_search_type = "substring",
-                 name = [],
-                 uuid = [],
-                 description = [],
-                 notes = [],
-                 data = {}):
+    # Returns specials based on given filters; multiple values for a given 
+    # property are treated like an 'or', while each separate property 
+    # is treated like an 'and'.
+    def get_specials(self,
+                     name_search_type = "substring",
+                     name = [],
+                     uuid = [],
+                     description = [],
+                     notes = [],
+                     data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
@@ -875,44 +880,45 @@ class Character:
         notes = data["notes"] if "notes" in keys else notes
         if type(notes) is not list:
             notes = [notes]
-        # Filter special
-        special = self.special
+        # Filter specials
+        specials = [special for special in self.specials]
         if name:
             subgroup = []
             if name_search_type == "absolute":
                 for search in name:
-                    for i in special:
-                        if search == i["name"]:
+                    for i in specials:
+                        if search == i.name:
                             subgroup.append(i)
             elif name_search_type == "substring":
                 for search in name:
-                    for i in special:
-                        if search in i["name"]:
+                    for i in specials:
+                        if search in i.name:
                             subgroup.append(i)
             else:
                 raise ValueError("get_special: invalid name_search_type")
-            special = remove_duplicates_by_id(subgroup)
+            specials = list(set(subgroup))
         if uuid:
             subgroup = []
             for search in uuid:
-                for i in special:
-                    if search in i["uuid"]:
+                for i in specials:
+                    if search == i.uuid:
                         subgroup.append(i)
+            specials = list(set(subgroup))
         if description:
             subgroup = []
             for search in description:
-                for i in special:
-                    if search in i["description"]:
+                for i in specials:
+                    if search in i.description:
                         subgroup.append(i)
-            special = remove_duplicates_by_id(subgroup)
+            specials = list(set(subgroup))
         if notes:
             subgroup = []
             for search in notes:
-                for i in special:
-                    if search in i["notes"]:
+                for i in specials:
+                    if search in i.notes:
                         subgroup.append(i)
-            special = remove_duplicates_by_id(subgroup)
-        return special
+            specials = list(set(subgroup))
+        return specials
 
     # Returns skills based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
@@ -1326,26 +1332,16 @@ class Character:
     # returns the newly created feat
     def add_feat(self,
                  name = "",
-                 uuid = "",
                  description = "",
                  notes = "",
                  data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        new_uuid = data["uuid"] if "uuid" in keys else uuid
-        if not new_uuid:
-            new_uuid = uuid4()
-        # Validate that new_uuid is unique
-        if not self.is_unique_id(uuid = new_uuid, prop = "feats"):
-            raise ValueError("add_feat: uuid must be unique among feats")
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
-        new_feat = {
-            "name": new_name,
-            "uuid": str(new_uuid),
-            "description": new_description,
-            "notes": new_notes,
-        }
+        new_feat = BasicItem(name = new_name,
+                             description = new_description,
+                             notes = new_notes)
         self.feats.append(new_feat)
         return new_feat
 
@@ -1355,26 +1351,16 @@ class Character:
     # returns the newly created trait
     def add_trait(self,
                   name = "",
-                  uuid = "",
                   description = "",
                   notes = "",
                   data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        new_uuid = data["uuid"] if "uuid" in keys else uuid
-        if not new_uuid:
-            new_uuid = uuid4()
-        # Validate that new_uuid is unique
-        if not self.is_unique_id(uuid = new_uuid, prop = "traits"):
-            raise ValueError("add_trait: uuid must be unique among traits")
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
-        new_trait = {
-            "name": new_name,
-            "uuid": str(new_uuid),
-            "description": new_description,
-            "notes": new_notes,
-        }
+        new_trait = BasicItem(name = new_name,
+                              description = new_description,
+                              notes = new_notes)
         self.traits.append(new_trait)
         return new_trait
 
@@ -1384,27 +1370,17 @@ class Character:
     # returns the newly created special ability
     def add_special(self,
                     name = "",
-                    uuid = "",
                     description = "",
                     notes = "",
                     data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        new_uuid = data["uuid"] if "uuid" in keys else uuid
-        if not new_uuid:
-            new_uuid = uuid4()
-        # Validate that new_uuid is unique
-        if not self.is_unique_id(uuid = new_uuid, prop = "special"):
-            raise ValueError("add_special: uuid must be unique among special abilities")
         new_description = data["description"] if "description" in keys else description
         new_notes = data["notes"] if "notes" in keys else notes
-        new_special = {
-            "name": new_name,
-            "uuid": str(new_uuid),
-            "description": new_description,
-            "notes": new_notes,
-        }
-        self.special.append(new_special)
+        new_special = BasicItem(name = new_name,
+                                description = new_description,
+                                notes = new_notes)
+        self.specials.append(new_special)
         return new_special
 
     # Add a skill to the character (craft, profession, and perform); 
@@ -1645,96 +1621,6 @@ class Character:
         }
         self.spells.append(new_spell)
         return new_spell
-
-    # Update an existing feat based on uuid; supports either named 
-    # arguments or a dictionary
-    #
-    # returns the updated feat
-    def update_feat(self,
-                    uuid = "",
-                    name = None,
-                    description = None,
-                    notes = None,
-                    data = {}):
-        keys = data.keys()
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        name = data["name"] if "name" in keys else name
-        description = data["description"] if "description" in keys else description
-        notes = data["notes"] if "notes" in keys else notes
-        # Get target feat
-        target_list = self.get_feat(uuid = uuid)
-        if not target_list:
-            raise ValueError("update_feat: no feat found with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Ignore parameters not provided, allowing for "falsey" values
-        if name is not None:
-            target["name"] = name
-        if description is not None:
-            target["description"] = description
-        if notes is not None:
-            target["notes"] = notes
-        return target_feat
-
-    # Update an existing trait based on uuid; supports either named 
-    # arguments or a dictionary
-    #
-    # returns the updated trait
-    def update_trait(self,
-                     uuid = "",
-                     name = None,
-                     description = None,
-                     notes = None,
-                     data = {}):
-        keys = data.keys()
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        name = data["name"] if "name" in keys else name
-        description = data["description"] if "description" in keys else description
-        notes = data["notes"] if "notes" in keys else notes
-        # Get target trait
-        target_list = self.get_trait(uuid = uuid)
-        if not target_list:
-            raise ValueError("update_trait: no trait found with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Ignore parameters not provided, allowing for "falsey" values
-        if name is not None:
-            target["name"] = name
-        if description is not None:
-            target["description"] = description
-        if notes is not None:
-            target["notes"] = notes
-        return target
-
-    # Update an existing special ability based on uuid; supports either 
-    # named arguments or a dictionary
-    #
-    # returns the updated special ability
-    def update_special(self,
-                       uuid = "",
-                       name = None,
-                       description = None,
-                       notes = None,
-                       data = {}):
-        keys = data.keys()
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        name = data["name"] if "name" in keys else name
-        description = data["description"] if "description" in keys else description
-        notes = data["notes"] if "notes" in keys else notes
-        # Get target special ability
-        target_list = self.get_special(uuid = uuid)
-        if not target_list:
-            raise ValueError("update_special: no special ability found with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Ignore parameters not provided, allowing for "falsey" values
-        if name is not None:
-            target["name"] = name
-        if description is not None:
-            target["description"] = description
-        if notes is not None:
-            target["notes"] = notes
-        return target
 
     # Update an existing class based on uuid; supports either named 
     # arguments or a dictionary
@@ -2071,41 +1957,32 @@ class Character:
         # Delete target
         self.classes.remove(target)
 
-    # Delete a feat by uuid
+    # Delete a feat
     def delete_feat(self,
-                    uuid):
-        # Ensure a valid target
-        target_list = self.get_feat(uuid = uuid)
-        if not target_list:
-            raise ValueError("delete_feat: no feat with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Delete target
-        self.feats.remove(target)
+                    feat):
+        try:
+            self.feats.remove(feat)
+        except ValueError as err:
+            raise ValueError("delete_feat: {}".format(err))
+        return feat
 
-    # Delete a trait by uuid
+    # Delete a trait
     def delete_trait(self,
-                     uuid):
-        # Ensure a valid target
-        target_list = self.get_trait(uuid = uuid)
-        if not target_list:
-            raise ValueError("delete_trait: no trait with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Delete target
-        self.traits.remove(target)
+                     trait):
+        try:
+            self.traits.remove(trait)
+        except ValueError as err:
+            raise ValueError("delete_trait: {}".format(err))
+        return trait
 
-    # Delete a special ability by uuid
+    # Delete a special
     def delete_special(self,
-                       uuid):
-        # Ensure a valid target
-        target_list = self.get_special(uuid = uuid)
-        if not target_list:
-            raise ValueError("delete_special: no special with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Delete target
-        self.special.remove(target)
+                       special):
+        try:
+            self.specials.remove(special)
+        except ValueError as err:
+            raise ValueError("delete_special: {}".format(err))
+        return special
 
     # Delete a skill by uuid
     #
