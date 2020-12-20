@@ -1,5 +1,5 @@
 # These vars are used for skill initialization
-_allowed_skill_names = (
+_allowed_skill_names = {
     "Acrobatics", "Appraise", "Bluff",
     "Climb", "Craft", "Diplomacy",
     "Disable Device", "Disguise", "Escape Artist",
@@ -12,15 +12,15 @@ _allowed_skill_names = (
     "Ride", "Sense Motive", "Sleight Of Hand",
     "Spellcraft", "Stealth", "Survival",
     "Swim", "Use Magic Device"
-)
-_trained_only = (
+}
+_trained_only = {
     "Disable Device", "Handle Animal", "Knowledge (Arcana)",
     "Knowledge (Dungeoneering)", "Knowledge (Engineering)", "Knowledge (Geography)",
     "Knowledge (History)", "Knowledge (Local)", "Knowledge (Nature)",
     "Knowledge (Nobility)", "Knowledge (Planes)", "Knowledge (Religion)",
     "Linguistics", "Profession",
     "Sleight Of Hand", "Spellcraft", "Use Magic Device"
-)
+}
 _skill_mods = {
     "Climb": "str",
     "Swim": "str",
