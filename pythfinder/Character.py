@@ -2239,12 +2239,12 @@ class Character:
         self.skills.remove(target)
 
     # Delete a piece of equipment by uuid
-    def delete_equipment(self,
-                         uuid):
+    def delete_item(self,
+                    uuid):
         # Ensure a valid target
-        target_list = get_equipment(uuid = uuid)
+        target_list = get_item(uuid = uuid)
         if not target_list:
-            raise ValueError("delete_equipment: no equipment with uuid '{}'".format(uuid))
+            raise ValueError("delete_item: no item with uuid '{}'".format(uuid))
         else:
             target = target_list[0]
         # Delete target
