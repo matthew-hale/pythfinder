@@ -2,9 +2,9 @@ import json
 import math
 import copy
 from uuid import uuid4
-from .helpers import remove_duplicates_by_id, remove_duplicates_by_name, numeric_filter
+from .helpers import remove_duplicates_by_id, remove_duplicates_by_name, numeric_filter, numeric_filter_objects
 from .vars import _allowed_skill_names, _trained_only, _skill_mods, _ability_names, _saving_throw_names
-from .collections import BasicItem
+from .collections import BasicItem, Ability
 
 # Main character class
 class Character:
@@ -79,15 +79,15 @@ class Character:
             for item in data["classes"]:
                 _ = self.add_class(data = item)
 
-        # Ability initialization
-        #
+        """
+        Ability initialization
+
+        Although abilities are stored as a list, they are also fixed - 
+        at least, by name. There are only 6 abilities. Thus, we don't 
+        have an 'add_ability' method anywhere. However, abilities are 
+        still objects, so we can use their class to construct them.
+        """
         self.abilities = []
-        #
-        # Although abilities are stored as a list, they are also 
-        # fixed - at least, by name. There are only 6 abilities. Thus, 
-        # using an 'add_ability' method wouldn't make sense, as we'll 
-        # never have more or less than these, and you can't change 
-        # their names via the update_ability method.
         if "abilities" in keys:
             for name in _ability_names:
                 target_ability_list = [a for a in data["abilities"] if a["name"] == name]
@@ -105,7 +105,7 @@ class Character:
                 }
                 new_ability["base"] = target_ability["base"] if "base" in subkeys else 0
                 new_ability["misc"] = target_ability["misc"] if "misc" in subkeys else []
-                self.abilities.append(new_ability)
+                self.abilities.append(Ability(data = new_ability))
         else:
             self.abilities = [
                 {
@@ -558,12 +558,12 @@ class Character:
     # Returns abilities based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
-    def get_ability(self,
-                    name_search_type = "substring",
-                    name = [],
-                    base = {},
-                    misc = {},
-                    data = {}):
+    def get_abilities(self,
+                      name_search_type = "substring",
+                      name = [],
+                      base = {},
+                      misc = {},
+                      data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
@@ -582,24 +582,24 @@ class Character:
             if name_search_type == "absolute":
                 for search in name:
                     for i in abilities:
-                        if search == i["name"]:
+                        if search == i.name:
                             subgroup.append(i)
             elif name_search_type == "substring":
                 for search in name:
                     for i in abilities:
-                        if search in i["name"]:
+                        if search in i.name:
                             subgroup.append(i)
             else:
                 raise ValueError("get_ability: invalid name_search_type")
-            abilities = remove_duplicates_by_name(subgroup)
+            abilities = list(set(subgroup))
         if base:
-            abilities = numeric_filter(items = abilities,
-                                       key = "base",
-                                       operations = base)
+            abilities = numeric_filter_objects(items = abilities,
+                                               attr = "base",
+                                               operations = base)
         if misc:
-            abilities = numeric_filter(items = abilities,
-                                       key = "misc",
-                                       operations = misc)
+            abilities = numeric_filter_objects(items = abilities,
+                                               attr = "misc",
+                                               operations = misc)
         return abilities
 
     # Returns saving_throws based on given filters; multiple values 
@@ -1891,31 +1891,6 @@ class Character:
             target["isClass"] = isClass
         if notes is not None:
             target["notes"] = notes
-        if misc is not None:
-            target["misc"] = misc
-        return target
-
-    # Update an existing ability based on name; supports either named 
-    # arguments or a dictionary
-    #
-    # returns the updated ability dict
-    def update_ability(self,
-                       name = None,
-                       base = None,
-                       misc = None,
-                       data = {}):
-        keys = data.keys()
-        name = data["name"] if "name" in keys else name
-        base = data["base"] if "base" in keys else base
-        misc = data["misc"] if "misc" in keys else misc
-        # Get target ability
-        target_list = self.get_ability(name = name, name_search_type = "absolute")
-        if not target_list:
-            raise ValueError("update_ability: no ability found with name '{}'".format(name))
-        target = target_list[0]
-        # Ignore parameters not provided, allowing for "falsey" values
-        if base is not None:
-            target["base"] = base
         if misc is not None:
             target["misc"] = misc
         return target

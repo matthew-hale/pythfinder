@@ -1,7 +1,8 @@
 from uuid import uuid4
+from .vars import _ability_names
 
 """
-An object containing a name, description, and notes, with a uuid.  Used 
+An object containing a name, description, and notes, with a uuid. Used 
 for feats, traits, and special abilities, as they all share this 
 structure.
 """
@@ -41,4 +42,42 @@ class BasicItem:
             self.description = description
         if notes is not None:
             self.notes = notes
+        return self
+
+"""
+An object containing a name, a base value, and 0 or more modifiers. 
+Used to represent a character's ability scores.
+
+As every character has a fixed set of abilities, there are no UUIDs.
+"""
+class Ability:
+    def __init__(self,
+                 name = "",
+                 base = 0,
+                 misc = [],
+                 data = {}):
+        keys = data.keys()
+        self.name = data["name"] if "name" in keys else name
+        self.base = data["base"] if "base" in keys else base
+        self.misc = data["misc"] if "misc" in keys else misc
+        # Validate abiltiy name
+        if self.name not in _ability_names:
+            raise ValueError("Ability.__init__: '{}' not an allowed ability name".format(self.name))
+
+    """
+    Accepts either named parameters or a dictionary of parameters; 
+    treat as a 'PATCH' request
+    """
+    def update(self,
+               base = None,
+               misc = None,
+               data = {}):
+        keys = data.keys()
+        base = data["base"] if "base" in keys else base
+        misc = data["misc"] if "misc" in keys else misc
+        # Ignore parameters not provided, allowing for "falsey" values
+        if base is not None:
+            self.base = base
+        if misc is not None:
+            self.misc = misc
         return self
