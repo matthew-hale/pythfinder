@@ -4,7 +4,7 @@ import copy
 from uuid import uuid4
 from .helpers import remove_duplicates_by_id, remove_duplicates_by_name, numeric_filter, numeric_filter_objects
 from .vars import _allowed_skill_names, _trained_only, _skill_mods, _ability_names, _saving_throw_names
-from .collections import BasicItem, Ability
+from .collections import BasicItem, Ability, CharacterClass
 
 # Main character class
 class Character:
@@ -1303,26 +1303,16 @@ class Character:
     # returns the newly created class
     def add_class(self,
                   name = "",
-                  uuid = "",
                   archetypes = [],
                   level = 0,
                   data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        new_uuid = data["uuid"] if "uuid" in keys else uuid
-        if not new_uuid:
-            new_uuid = uuid4()
-        # Validate that new_uuid is unique
-        if not self.is_unique_id(uuid = new_uuid, prop = "classes"):
-            raise ValueError("add_class: uuid must be unique among classes")
         new_archetypes = data["archetypes"] if "archetypes" in keys else archetypes
         new_level = data["level"] if "level" in keys else level
-        new_class = {
-            "name": new_name,
-            "uuid": str(new_uuid),
-            "archetypes": new_archetypes,
-            "level": new_level
-        }
+        new_class = CharacterClass(name = new_name,
+                                   archetypes = new_archetypes,
+                                   level = new_level)
         self.classes.append(new_class)
         return new_class
 
@@ -1622,36 +1612,6 @@ class Character:
         self.spells.append(new_spell)
         return new_spell
 
-    # Update an existing class based on uuid; supports either named 
-    # arguments or a dictionary
-    #
-    # returns the updated class
-    def update_class(self,
-                     uuid = "",
-                     name = None,
-                     archetypes = None,
-                     level = None,
-                     data = {}):
-        keys = data.keys()
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        name = data["name"] if "name" in keys else name
-        archetypes = data["archetypes"] if "archetypes" in keys else archetypes
-        level = data["level"] if "level" in keys else level
-        # Get target class
-        target_list = self.get_class(uuid = uuid)
-        if not target_list:
-            raise ValueError("update_class: no class found with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Ignore parameters not provided, allowing for "falsey" values
-        if name is not None:
-            target["name"] = name
-        if level is not None:
-            target["level"] = level
-        if archetypes is not None:
-            target["archetypes"] = archetypes
-        return target
-
     # Update an existing item based on uuid; supports either named 
     # arguments or a dictionary
     #
@@ -1922,15 +1882,12 @@ class Character:
 
     # Delete a class by uuid
     def delete_class(self,
-                     uuid):
-        # Ensure a valid target
-        target_list = self.get_class(uuid = uuid)
-        if not target_list:
-            raise ValueError("delete_class: no class with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Delete target
-        self.classes.remove(target)
+                     character_class):
+        try:
+            self.classes.remove(character_class)
+        except ValueError as err:
+            raise ValueError("delete_class: {}".format(err))
+        return character_class
 
     # Delete a feat
     def delete_feat(self,

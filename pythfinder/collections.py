@@ -81,3 +81,41 @@ class Ability:
         if misc is not None:
             self.misc = misc
         return self
+
+"""
+An object containing a name, level, and one or more archetypes, with a 
+uuid. Used to represent the class(es) that the character has levels in.
+"""
+class CharacterClass:
+    def __init__(self,
+                 name = "",
+                 uuid = "",
+                 level = 0,
+                 archetypes = [],
+                 data = {}):
+        keys = data.keys()
+        self.name = data["name"] if "name" in keys else name
+        self.uuid = data["uuid"] if "uuid" in keys else uuid
+        self.level = data["level"] if "level" in keys else level
+        self.archetypes = data["archetypes"] if "archetypes" in keys else archetypes
+
+        if not self.uuid:
+            self.uuid = str(uuid4())
+
+    """
+    Accepts either named parameters or a dictionary of parameters; 
+    treat as a 'PATCH' request
+    """
+    def update(self,
+               level = None,
+               archetypes = None,
+               data = {}):
+        keys = data.keys()
+        level = data["level"] if "level" in keys else level
+        archetypes = data["archetypes"] if "archetypes" in keys else archetypes
+        # Ignore parameters not provided, allowing for "falsey" values
+        if level is not None:
+            self.level = level
+        if archetypes is not None:
+            self.archetypes = archetypes
+        return self
