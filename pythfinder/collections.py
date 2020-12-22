@@ -23,6 +23,16 @@ class BasicItem:
             self.uuid = str(uuid4())
     
     """
+    Compare attributes excluding uuid
+    """
+    def __eq__(self, other):
+        if not isinstance(other, BasicItem):
+            return NotImplemented
+        return self.name == other.name and \
+        self.description == other.description and \
+        self.notes == other.notes
+
+    """
     Accepts either named parameters or a dictionary of parameters; 
     treat as a 'PATCH' request
     """
