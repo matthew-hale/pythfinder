@@ -1,16 +1,17 @@
 #!/bin/python3
 
-from unittest.mock import Mock
-import pythfinder as pf
 import pytest
+from unittest.mock import Mock
+from pythfinder import Character
+from pythfinder.collections import BasicItem
 
 # Define mocks in setup function
 @pytest.fixture()
 def setup_char():
-    pf.Character.__init__ = Mock()
-    pf.Character.__init__.return_value = None
-    pf.Character.is_unique_name = Mock()
-    pf.Character.is_unique_name.return_value = True
+    # Mock Character class constructor
+    Character.__init__ = Mock()
+    Character.__init__.return_value = None
+
     # Add a feat to a character
     feat_data = {
         "name": "feat name",
@@ -18,30 +19,21 @@ def setup_char():
         "notes": "notes"
     }
     
-    c = pf.Character()
+    c = Character()
     c.feats = []
-    feat = c.add_feat(data = feat_data)
+    feat_from_data = c.add_feat(data = feat_data)
 
-    return (feat_data, feat, c)
+    # Add a second identical feat, but using named parameters
+    feat_from_parameters = c.add_feat(name = feat_data["name"],
+                                      description = feat_data["description"],
+                                      notes = feat_data["notes"])
+    return [feat_data, feat_from_data, feat_from_parameters, c]
 
-# Is the feat that the method returns the same as what we put in?
-def test_add_feat_return(setup_char):
-    feat_data = setup_char[0]
-    feat = setup_char[1]
-    for key in feat_data.keys():
-        assert feat[key] == feat_data[key]
-
-# Is the actual feat in the character data the same as what we put in?
-def test_add_feat_actual(setup_char):
-    feat_data = setup_char[0]
-    c = setup_char[2]
-    for key in feat_data.keys():
-        assert c.feats[0][key] == feat_data[key]
-
-# Is the actual feat in the character data the same as the one that was 
-# returned?
-def test_add_feat_method(setup_char):
-    feat = setup_char[1]
-    c = setup_char[2]
-    for key in feat.keys():
-        assert c.feats[0][key] == feat[key]
+# Are both feats added to the character, and are they "equal"?
+def test_add_feat(setup_char):
+    feat_from_data = setup_char[1]
+    feat_from_parameters = setup_char[2]
+    c = setup_char[3]
+    assert c.feats[0] == feat_from_data
+    assert c.feats[1] == feat_from_parameters
+    assert feat_from_parameters == feat_from_data
