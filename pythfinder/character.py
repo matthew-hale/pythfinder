@@ -4,7 +4,7 @@ import copy
 from uuid import uuid4
 from .helpers import remove_duplicates_by_id, remove_duplicates_by_name, numeric_filter, numeric_filter_objects
 from .vars import _allowed_skill_names, _trained_only, _skill_mods, _ability_names, _saving_throw_names
-from .collections import BasicItem, Ability, CharacterClass
+from .collections import BasicItem, Ability, CharacterClass, Equipment
 
 # Main character class
 class Character:
@@ -188,7 +188,7 @@ class Character:
         self.equipment = []
         if "equipment" in keys:
             for item in data["equipment"]:
-                _ = self.add_item(data = item)
+                self.equipment.append(Equipment(data = item))
 
         # Saving throw initialization
         #
@@ -441,32 +441,35 @@ class Character:
         else:
             return True
 
-    # Returns items based on given filters; multiple values for a given 
-    # property are treated like an 'or', while each separate property 
-    # is treated like an 'and'.
-    #
-    # For example:
-    #
-    # If I want to get all of the items that:
-    #   * are currently on my person
-    #   * are either in my backpack or on my belt
-    # I would call this method as such:
-    #
-    # self.get_item(on_person = [True],
-    #               location = ["backpack", "belt"])
-    #
-    # Numeric filters use the numeric_filter function
-    def get_item(self,
-                 name_search_type = "substring",
-                 name = [],
-                 uuid = [],
-                 weight = {},
-                 count = {},
-                 camp = [],
-                 on_person = [],
-                 location = [],
-                 notes = [],
-                 data = {}):
+    """
+    Returns items based on given filters; multiple values for a given 
+    property are treated like an 'or', while each separate property 
+    is treated like an 'and'.
+   
+    For example:
+   
+    If I want to get all of the items that:
+      * are currently on my person
+        and
+      * are either in my backpack or on my belt
+    I would call this method as such:
+   
+    self.get_equipment(on_person = True,
+                       location = ["backpack", "belt"])
+   
+    Numeric filters use the numeric_filter function
+    """
+    def get_equipment(self,
+                      name_search_type = "substring",
+                      name = [],
+                      uuid = [],
+                      weight = {},
+                      count = {},
+                      camp = [],
+                      on_person = [],
+                      location = [],
+                      notes = [],
+                      data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
@@ -500,23 +503,23 @@ class Character:
             if name_search_type == "absolute":
                 for search in name:
                     for i in items:
-                        if search == i["name"]:
+                        if search == i.name:
                             subgroup.append(i)
             elif name_search_type == "substring":
                 for search in name:
                     for i in items:
-                        if search in i["name"]:
+                        if search in i.name:
                             subgroup.append(i)
             else:
-                raise ValueError("get_item: invalid name_search_type")
-            items = remove_duplicates_by_id(subgroup)
+                raise ValueError("get_equipment: invalid name_search_type")
+            items = list(set(subgroup))
         if uuid:
             subgroup = []
             for search in uuid:
                 for i in items:
-                    if search == i["uuid"]:
+                    if search == i.uuid:
                         subgroup.append(i)
-            items = remove_duplicates_by_id(subgroup)
+            items = list(set(subgroup))
         if weight:
             items = numeric_filter(items = items,
                                    key = "weight",
@@ -529,30 +532,30 @@ class Character:
             subgroup = []
             for search in camp:
                 for i in items:
-                    if search == i["camp"]:
+                    if search == i.camp:
                         subgroup.append(i)
-            items = remove_duplicates_by_id(subgroup)
+            items = list(set(subgroup))
         if on_person:
             subgroup = []
             for search in on_person:
                 for i in items:
-                    if search == i["on_person"]:
+                    if search == i.on_person:
                         subgroup.append(i)
-            items = remove_duplicates_by_id(subgroup)
+            items = list(set(subgroup))
         if location:
             subgroup = []
             for search in location:
                 for i in items:
-                    if search in i["location"]:
+                    if search in i.location:
                         subgroup.append(i)
-            items = remove_duplicates_by_id(subgroup)
+            items = list(set(subgroup))
         if notes:
             subgroup = []
             for search in notes:
                 for i in items:
-                    if search in i["notes"]:
+                    if search in i.notes:
                         subgroup.append(i)
-            items = remove_duplicates_by_id(subgroup)
+            items = list(set(subgroup))
         return items
 
     # Returns abilities based on given filters; multiple values for a 
@@ -1445,42 +1448,32 @@ class Character:
     # or a dictionary
     #
     # returns the newly created item
-    def add_item(self,
-                 name = "",
-                 uuid = "",
-                 weight = 0.0,
-                 count = 0,
-                 camp = False,
-                 on_person = False,
-                 location = "",
-                 notes = "",
-                 data = {}):
+    def add_equipment(self,
+                      name = "",
+                      weight = 0.0,
+                      count = 0,
+                      camp = False,
+                      on_person = False,
+                      location = "",
+                      notes = "",
+                      data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        new_uuid = data["uuid"] if "uuid" in keys else uuid
-        if not new_uuid:
-            new_uuid = uuid4()
-        # Validate that new_uuid is unique
-        if not self.is_unique_id(uuid = new_uuid, prop = "equipment"):
-            raise ValueError("add_item: uuid must be unique among items")
         new_weight = data["weight"] if "weight" in keys else weight
         new_count = data["count"] if "count" in keys else count
         new_camp = data["camp"] if "camp" in keys else camp
         new_on_person = data["on_person"] if "on_person" in keys else on_person
         new_location = data["location"] if "location" in keys else location
         new_notes = data["notes"] if "notes" in keys else notes
-        new_item = {
-            "name": new_name,
-            "uuid": str(new_uuid),
-            "weight": new_weight,
-            "count": new_count,
-            "camp": new_camp,
-            "on_person": new_on_person,
-            "location": new_location,
-            "notes": new_notes,
-        }
-        self.equipment.append(new_item)
-        return new_item
+        new_equipment = Equipment(name = new_name,
+                                  weight = new_weight,
+                                  count = new_count,
+                                  camp = new_camp,
+                                  on_person = new_on_person,
+                                  location = new_location,
+                                  notes = new_notes)
+        self.equipment.append(new_equipment)
+        return new_equipment
 
     # Add a new attack to the character; supports either named 
     # arguments or a dictionary
@@ -1611,52 +1604,6 @@ class Character:
         }
         self.spells.append(new_spell)
         return new_spell
-
-    # Update an existing item based on uuid; supports either named 
-    # arguments or a dictionary
-    #
-    # returns the updated item 
-    def update_item(self,
-                    uuid = "",
-                    name = None,
-                    weight = None,
-                    count = None,
-                    camp = None,
-                    location = None,
-                    on_person = None,
-                    notes = None,
-                    data = {}):
-        keys = data.keys()
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        name = data["name"] if "name" in keys else name
-        weight = data["weight"] if "weight" in keys else weight
-        count = data["count"] if "count" in keys else count
-        camp = data["camp"] if "camp" in keys else camp
-        location = data["location"] if "location" in keys else location
-        on_person = data["on_person"] if "on_person" in keys else on_person
-        notes = data["notes"] if "notes" in keys else notes
-        # Get target item
-        target_list = self.get_item(uuid = uuid)
-        if not target_list:
-            raise ValueError("update_item: no item found with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Ignore parameters not provided, allowing for "falsey" values
-        if name is not None:
-            target["name"] = name
-        if weight is not None:
-            target["weight"] = weight
-        if count is not None:
-            target["count"] = count
-        if notes is not None:
-            target["notes"] = notes
-        if location is not None:
-            target["location"] = location
-        if camp is not None:
-            target["camp"] = camp
-        if on_person is not None:
-            target["on_person"] = on_person
-        return target
 
     # Update an existing spell based on uuid; supports either named 
     # arguments or a dictionary
@@ -1939,17 +1886,14 @@ class Character:
         # Delete target
         self.skills.remove(target)
 
-    # Delete a piece of equipment by uuid
-    def delete_item(self,
-                    uuid):
-        # Ensure a valid target
-        target_list = self.get_item(uuid = uuid)
-        if not target_list:
-            raise ValueError("delete_item: no item with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Delete target
-        self.equipment.remove(target)
+    # Delete a piece of equipment
+    def delete_equipment(self,
+                         equipment):
+        try:
+            self.equipment.remove(equipment)
+        except ValueError as err:
+            raise ValueError("delete_equipment: {}".format(err))
+        return equipment
 
     # Delete an attack by uuid
     def delete_attack(self,
@@ -1990,13 +1934,13 @@ class Character:
     # Set items' "on_person" flags to False if they are also flagged 
     # as "camp" items.
     def set_up_camp(self):
-        camp_items = self.get_item(camp = True)
+        camp_items = self.get_equipment(camp = True)
         for item in camp_items:
             item["on_person"] = False
 
     # Set items' "on_person" flags to True if they are also flagged 
     # as "camp" items.
     def tear_down_camp(self):
-        camp_items = self.get_item(camp = True)
+        camp_items = self.get_equipment(camp = True)
         for item in camp_items:
             item["on_person"] = True
