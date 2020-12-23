@@ -4,7 +4,7 @@ import copy
 from uuid import uuid4
 from .helpers import remove_duplicates_by_id, remove_duplicates_by_name, numeric_filter, numeric_filter_objects
 from .vars import _allowed_skill_names, _trained_only, _skill_mods, _ability_names, _saving_throw_names
-from .collections import BasicItem, Ability, CharacterClass, Equipment, SavingThrow
+from .collections import BasicItem, Ability, CharacterClass, Equipment, SavingThrow, Skill
 
 # Main character class
 class Character:
@@ -108,36 +108,36 @@ class Character:
                 self.abilities.append(Ability(data = new_ability))
         else:
             self.abilities = [
-                {
+                Ability(data = {
                     "name": "str",
                     "base": 0,
                     "misc": []
-                },
-                {
+                }),
+                Ability(data = {
                     "name": "dex",
                     "base": 0,
                     "misc": []
-                },
-                {
+                }),
+                Ability(data = {
                     "name": "con",
                     "base": 0,
                     "misc": []
-                },
-                {
+                }),
+                Ability(data = {
                     "name": "int",
                     "base": 0,
                     "misc": []
-                },
-                {
+                }),
+                Ability(data = {
                     "name": "wis",
                     "base": 0,
                     "misc": []
-                },
-                {
+                }),
+                Ability(data = {
                     "name": "cha",
                     "base": 0,
                     "misc": []
-                }
+                })
             ]
 
         if "hp" in keys:
@@ -232,20 +232,19 @@ class Character:
         self.skills = []
         if "skills" in keys:
             for item in data["skills"]:
-                _ = self.add_skill(data = item)
+                self.skills.append(Skill(data = item))
+
         # If there are no skills in the character data, initialize from 
         # defaults
         else:
             for skill_name in _allowed_skill_names:
-                _ = self.add_skill(data = {
+                self.skills.append(Skill(data = {
                     "name": skill_name,
                     "rank": 0,
-                    "isClass":  False,
+                    "is_class":  False,
                     "notes": "",
-                    "misc": [],
-                    "mod": _skill_mods[skill_name],
-                    "useUntrained": False if skill_name in _trained_only else True
-                })
+                    "misc": []
+                }))
 
         # Spells, attacks, and armor are all collections of 
         # dictionaries; their initialization is pretty boring
@@ -270,23 +269,6 @@ class Character:
             return -5
         else:
             return math.floor(0.5 * ability - 5) # ability modifier equation
-
-    # Returns a dict containing the character object, without long elements 
-    # like skills, feats, traits, spells, and equipment.
-    def getCharacterShort(self):
-        output = {}
-        output["name"] = self.name
-        output["race"] = self.race
-        output["classes"] = []
-        for item in self.classes:
-            output["classes"].append(item)
-        output["alignment"] = self.alignment
-        output["description"] = self.description
-        output["height"] = self.height
-        output["weight"] = self.weight
-        output["abilities"] = self.abilities
-        output["hp"] = self.hp
-        return output
 
     # Returns the character's calculated AC value
     def get_total_AC(self,
@@ -344,8 +326,8 @@ class Character:
         out.traits = [trait.__dict__ for trait in out.traits]
         out.specials = [special.__dict__ for special in out.specials]
         out.equipment = [equipment.__dict__ for equipment in out.equipment]
-        out.skills = [skill.__dict__ for skill in out.skills]
-        out.classes = [class_.__dict__ for class_ in out.classes]
+        out.skills = [skill.get_dict() for skill in out.skills]
+        out.classes = [class_.__dict__ for class_ in out.classes] # name enforcement
         out.abilities = [ability.__dict__ for ability in out.abilities]
         out.saving_throws = [saving_throw.__dict__ for saving_throw in out.saving_throws]
         return out.__dict__
@@ -366,30 +348,13 @@ class Character:
     # + Skill's current ability modifier
     def get_skill_value(self, skill):
         total = 0
-        skill_names = self.skills.keys()
-        if not skill in skill_names:
-            raise ValueError("get_skill_value: '" + skill + "' not in character skills")
-        current_skill = self.skills[skill]
-        if current_skill["isClass"] and current_skill["rank"] >= 1:
+        if skill.is_class and skill.rank >= 1:
             total += 3
-        total += current_skill["rank"]
-        total += sum(current_skill["misc"])
-        total += self.getAbilityMod(self.get_total_ability_value(current_skill["mod"]))
+        total += skill.rank
+        total += sum(skill.misc)
+        ability = self.get_abilities(name = skill.mod, name_search_type = "absolute")[0]# xd
+        total += ability.modifier
         return total
-
-    # Returns the base ability score given an ability string
-    def get_base_ability_value(self, ability):
-        ability_strings = ("str", "dex", "con", "int", "wis", "cha")
-        if ability not in ability_strings:
-            raise ValueError("ability must be one of " + ability_strings)
-        return self.abilities[ability]["base"]
-
-    # Returns the ability value after summing modifiers
-    def get_total_ability_value(self, ability):
-        ability_strings = ("str", "dex", "con", "int", "wis", "cha")
-        if ability not in ability_strings:
-            raise ValueError("ability must be one of " + ability_strings)
-        return sum(self.abilities[ability]["misc"], self.abilities[ability]["base"])
 
     # Checks that the given UUID is unique within the collection
     def is_unique_id(self,
@@ -925,17 +890,17 @@ class Character:
     # Returns skills based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
-    def get_skill(self,
-                  name_search_type = "substring",
-                  name = [],
-                  uuid = [],
-                  rank = {},
-                  isClass = [],
-                  mod = [],
-                  notes = [],
-                  useUntrained = [],
-                  misc = {},
-                  data = {}):
+    def get_skills(self,
+                   name_search_type = "substring",
+                   name = [],
+                   uuid = [],
+                   rank = {},
+                   is_class = [],
+                   mod = [],
+                   notes = [],
+                   use_untrained = [],
+                   misc = {},
+                   data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
@@ -949,71 +914,71 @@ class Character:
         if type(uuid) is not list:
             uuid = [uuid]
         rank = data["rank"] if "rank" in keys else rank
-        isClass = data["isClass"] if "isClass" in keys else isClass
-        if type(isClass) is not list:
-            isClass = [isClass]
+        is_class = data["is_class"] if "is_class" in keys else is_class
+        if type(is_class) is not list:
+            is_class = [is_class]
         mod = data["mod"] if "mod" in keys else mod
         if type(mod) is not list:
             mod = [mod]
         notes = data["notes"] if "notes" in keys else notes
         if type(notes) is not list:
             notes = [notes]
-        useUntrained = data["useUntrained"] if "useUntrained" in keys else useUntrained
-        if type(useUntrained) is not list:
-            useUntrained = [useUntrained]
+        use_untrained = data["use_untrained"] if "use_untrained" in keys else use_untrained
+        if type(use_untrained) is not list:
+            use_untrained = [use_untrained]
         misc = data["misc"] if "misc" in keys else misc
         # Filter skills
-        skills = self.skills
+        skills = [skill for skill in self.skills]
         if name:
             subgroup = []
             if name_search_type == "absolute":
                 for search in name:
                     for i in skills:
-                        if search == i["name"]:
+                        if search == i.name:
                             subgroup.append(i)
             elif name_search_type == "substring":
                 for search in name:
                     for i in skills:
-                        if search in i["name"]:
+                        if search in i.name:
                             subgroup.append(i)
             else:
                 raise ValueError("get_skill: invalid name_search_type")
-            skills = remove_duplicates_by_id(subgroup)
+            skills = list(set(subgroup))
         if uuid:
             subgroup = []
             for search in uuid:
                 for i in skills:
-                    if search == i["uuid"]:
+                    if search == i.uuid:
                         subgroup.append(i)
-            skills = remove_duplicates_by_id(subgroup)
-        if isClass:
+            skills = list(set(subgroup))
+        if is_class:
             subgroup = []
-            for search in isClass:
+            for search in is_class:
                 for i in skills:
-                    if search == i["isClass"]:
+                    if search == i.is_class:
                         subgroup.append(i)
-            skills = remove_duplicates_by_id(subgroup)
+            skills = list(set(subgroup))
         if mod:
             subgroup = []
             for search in mod:
                 for i in skills:
-                    if search in i["mod"]:
+                    if search in i.mod:
                         subgroup.append(i)
-            skills = remove_duplicates_by_id(subgroup)
-        if useUntrained:
+            skills = list(set(subgroup))
+        if use_untrained:
             subgroup = []
-            for search in useUntrained:
+            for search in use_untrained:
                 for i in skills:
-                    if search == i["useUntrained"]:
+                    if search == i.use_untrained:
                         subgroup.append(i)
-            skills = remove_duplicates_by_id(subgroup)
+            skills = list(set(subgroup))
         if notes:
             subgroup = []
             for search in notes:
                 for i in skills:
-                    if search in i["notes"]:
+                    if search in i.notes:
                         subgroup.append(i)
-            skills = remove_duplicates_by_id(subgroup)
+            skills = list(set(subgroup))
         if rank:
             skills = numeric_filter(items = skills,
                                     key = "rank",
@@ -1383,7 +1348,7 @@ class Character:
                   name = "",
                   uuid = "",
                   rank = 0,
-                  isClass = False, 
+                  is_class = False, 
                   notes = "",
                   misc = [],
                   data = {}):
@@ -1403,9 +1368,9 @@ class Character:
         if new_name in _allowed_skill_names:
             new_mod = _skill_mods[new_name]
             if new_name in _trained_only:
-                new_useUntrained = False
+                new_use_untrained = False
             else:
-                new_useUntrained = True
+                new_use_untrained = True
         # Validate skill name is one of the three above
         # These skills can exist multiple times with variable names
         else:
@@ -1420,23 +1385,23 @@ class Character:
             if not self.is_unique_name(name = new_name, prop = "skills"):
                 raise ValueError("add_skill: name must be unique among skills")
             if skill_type in _trained_only:
-                new_useUntrained = False
+                new_use_untrained = False
             else:
-                new_useUntrained = True
+                new_use_untrained = True
             new_mod = _skill_mods[skill_type]
         # Get the rest of the properties
         new_rank = data["rank"] if "rank" in keys else rank
-        new_isClass = data["isClass"] if "isClass" in keys else isClass
+        new_is_class = data["is_class"] if "is_class" in keys else is_class
         new_notes = data["notes"] if "notes" in keys else notes
         new_misc = data["misc"] if "misc" in keys else misc
         new_skill = {
             "name": new_name,
             "uuid": str(new_uuid),
             "rank": new_rank,
-            "isClass": new_isClass,
+            "is_class": new_is_class,
             "mod": new_mod,
             "notes": new_notes,
-            "useUntrained": new_useUntrained,
+            "use_untrained": new_use_untrained,
             "misc": new_misc,
         }
         self.skills.append(new_skill)
@@ -1750,57 +1715,6 @@ class Character:
             target["notes"] = notes
         return target
 
-    # Update an existing skill based on uuid; supports either named 
-    # arguments or a dictionary
-    #
-    # returns the updated skill 
-    def update_skill(self,
-                     uuid = "",
-                     name = None,
-                     rank = None,
-                     isClass = None,
-                     notes = None,
-                     misc = None,
-                     data = {}):
-        keys = data.keys()
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        name = data["name"] if "name" in keys else name
-        rank = data["rank"] if "rank" in keys else rank
-        isClass = data["isClass"] if "isClass" in keys else isClass
-        notes = data["notes"] if "notes" in keys else notes
-        misc = data["misk"] if "misc" in keys else misc
-        # Get target skill
-        target_list = self.get_skill(uuid = uuid)
-        if not target_list:
-            raise ValueError("update_skill: no skill found with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Ignore parameters not provided, allowing for "falsey" values
-        # Verify skill is a Craft, Profession, or Perform skill if 
-        # being renamed
-        if name is not None:
-            allowed_rename = ("Craft", "Profession", "Perform")
-            allowed_start = False
-            allowed_end = False
-            for item in allowed_rename:
-                if item in target["name"]: # if the skill is currently one of the above
-                    allowed_start = True
-            for item in allowed_rename:
-                if item in name:           # if the provided name is one of the above
-                    allowed_end = True
-            if not (allowed_start and allowed_end):
-                raise ValueError("update_skill: cannot rename skills that are not of: " + str(allowed_rename))
-            target["name"] = name
-        if rank is not None:
-            target["rank"] = rank
-        if isClass is not None:
-            target["isClass"] = isClass
-        if notes is not None:
-            target["notes"] = notes
-        if misc is not None:
-            target["misc"] = misc
-        return target
-
     # Delete a class by uuid
     def delete_class(self,
                      character_class):
@@ -1842,23 +1756,12 @@ class Character:
     # only deletes skills that a character can normally have multiple 
     # of, e.g. Craft, Profession, Perform
     def delete_skill(self,
-                     uuid):
-        # Ensure a valid target
-        target_list = self.get_skill(uuid = uuid)
-        if not target_list:
-            raise ValueError("delete_skill: no skill with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        deletable_skills = ("Craft", "Perform", "Profession")
-        valid_target = False
-        for name in deletable_skills:
-            if name in target["name"]:
-                valid_target = True
-                break
-        if not valid_target:
-            raise ValueError("delete_skill: cannot delete skills which are not of type: {}".format(deletable_skills))
-        # Delete target
-        self.skills.remove(target)
+                     skill):
+        try:
+            self.skills.remove(skill)
+        except ValueError as err:
+            raise ValueError("delete_skill: {}".format(err))
+        return skill
 
     # Delete a piece of equipment
     def delete_equipment(self,

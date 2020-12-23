@@ -1,5 +1,5 @@
 from uuid import uuid4
-from .vars import _ability_names, _saving_throw_names, _allowed_skill_names
+from .vars import _ability_names, _saving_throw_names, _allowed_skill_names, _trained_only, _skill_mods
 
 _valid_names = ("Perform", "Profession", "Craft")
 
@@ -24,19 +24,15 @@ class BasicItem:
         if not self.uuid:
             self.uuid = str(uuid4())
     
-    """
-    Compare attributes excluding uuid
-    """
+    # Compare attributes excluding uuid
     def __eq__(self, other):
         if not isinstance(other, BasicItem):
             return NotImplemented
         keys = ["name", "description", "notes"]
         return all([getattr(self, key) == getattr(other, key) for key in keys])
 
-    """
-    Accepts either named parameters or a dictionary of parameters; 
-    treat as a 'PATCH' request
-    """
+    # Accepts either named parameters or a dictionary of parameters; 
+    # treat as a 'PATCH' request
     def update(self,
                name = None,
                description = None,
@@ -74,6 +70,14 @@ class Ability:
         # Validate abiltiy name
         if self.name not in _ability_names:
             raise ValueError("Ability.__init__: '{}' not an allowed ability name".format(self.name))
+
+    @property
+    def modifier(self):
+        total = self.base + sum(self.misc)
+        if total <= 1:
+            return -5
+        else:
+            return math.floor(0.5 * total - 5) # total modifier equation
 
     # Accepts either named parameters or a dictionary of parameters; 
     # treat as a 'PATCH' request
@@ -253,18 +257,76 @@ class Skill:
                  is_class = False, 
                  notes = "",
                  misc = [],
+                 use_untrained = "",
+                 mod = "",
                  data = {}):
         keys = data.keys()
-        self.name = data["name"] if "name" in keys else name
+        self._name = data["name"] if "name" in keys else name
         self.rank = data["rank"] if "rank" in keys else rank
         self.is_class = data["is_class"] if "is_class" in keys else is_class
         self.notes = data["notes"] if "notes" in keys else notes
         self.misc = data["misc"] if "misc" in keys else misc
+        self.use_untrained = data["use_untrained"] if "use_untrained" in keys else use_untrained
+        self.mod = data["mod"] if "mod" in keys else mod
         self.uuid = data["uuid"] if "uuid" in keys else uuid
+        if not self.use_untrained:
+            if self._name in _trained_only:
+                self.use_untrained = False
+            else:
+                self.use_untrained = True
+        if not self.mod:
+            self.mod = _skill_mods[self._name]
 
         if not self.uuid:
             self.uuid = str(uuid4())
 
-        if self.name not in _allowed_skill_names:
-            if all([n not in self.name for n in _valid_names]):
-                raise ValueError("Skill.__init__: '{}' not a valid skill name".format(name))
+    # We want a "name" key, not a "_name" key
+    def get_dict(self):
+        return {
+            "name": self._name,
+            "rank": self.rank,
+            "is_class": self.is_class,
+            "notes": self.notes,
+            "misc": self.misc,
+            "uuid": self.uuid
+        }
+
+    # Enforce name rules
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        if value not in _allowed_skill_names and \
+           all([n not in value for n in _valid_names]):
+            raise ValueError("Skill.__init__: '{}' not a valid skill value".format(value))
+        self._name = value
+
+    # Accepts either named parameters or a dictionary of parameters; 
+    # treat as a 'PATCH' request
+    def update(self,
+               name = None,
+               rank = None,
+               is_class = None,
+               notes = None,
+               misc = None,
+               data = {}):
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        rank = data["rank"] if "rank" in keys else rank
+        is_class = data["is_class"] if "is_class" in keys else is_class
+        notes = data["notes"] if "notes" in keys else notes
+        misc = data["misc"] if "misc" in keys else misc
+        # Ignore parameters not provided, allowing for "falsey" values
+        if name is not None:
+            self.name = name
+        if rank is not None:
+            self.rank = rank
+        if is_class is not None:
+            self.is_class = is_class
+        if notes is not None:
+            self.notes = notes
+        if misc is not None:
+            self.misc = misc
+        return self
