@@ -1,5 +1,5 @@
 from uuid import uuid4
-from .vars import _ability_names
+from .vars import _ability_names, _saving_throw_names 
 
 """
 An object containing a name, description, and notes, with a uuid. Used 
@@ -72,13 +72,6 @@ class Ability:
         # Validate abiltiy name
         if self.name not in _ability_names:
             raise ValueError("Ability.__init__: '{}' not an allowed ability name".format(self.name))
-
-    # Compare attributes excluding uuid
-    def __eq__(self, other):
-        if not isinstance(other, Ability):
-            return NotImplemented
-        keys = ["name", "description", "notes"]
-        return all([getattr(self, key) == getattr(other, key) for key in keys])
 
     # Accepts either named parameters or a dictionary of parameters; 
     # treat as a 'PATCH' request
@@ -211,4 +204,37 @@ class Equipment:
             self.location = location
         if notes is not None:
             self.notes = notes
+        return self
+
+"""
+Similar in structure to an Ability, but with a different purpose.
+"""
+class SavingThrow:
+    def __init__(self,
+                 name = "",
+                 base = 0,
+                 misc = [],
+                 data = {}):
+        keys = data.keys()
+        self.name = data["name"] if "name" in keys else name
+        self.base = data["base"] if "base" in keys else base
+        self.misc = data["misc"] if "misc" in keys else misc
+        # Validate saving throw name
+        if self.name not in _saving_throw_names:
+            raise ValueError("SavingThrow.__init__: '{}' not an allowed saving throw name".format(self.name))
+
+    # Accepts either named parameters or a dictionary of parameters; 
+    # treat as a 'PATCH' request
+    def update(self,
+               base = None,
+               misc = None,
+               data = {}):
+        keys = data.keys()
+        base = data["base"] if "base" in keys else base
+        misc = data["misc"] if "misc" in keys else misc
+        # Ignore parameters not provided, allowing for "falsey" values
+        if base is not None:
+            self.base = base
+        if misc is not None:
+            self.misc = misc
         return self
