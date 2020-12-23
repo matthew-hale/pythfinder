@@ -1,5 +1,7 @@
 from uuid import uuid4
-from .vars import _ability_names, _saving_throw_names 
+from .vars import _ability_names, _saving_throw_names, _allowed_skill_names
+
+_valid_names = ("Perform", "Profession", "Craft")
 
 """
 An object containing a name, description, and notes, with a uuid. Used 
@@ -238,3 +240,31 @@ class SavingThrow:
         if misc is not None:
             self.misc = misc
         return self
+
+"""
+Contains a rank, one or more misc modifiers, and a flag to determine if 
+it's a "class" skill.
+"""
+class Skill:
+    def __init__(self,
+                 name = "",
+                 uuid = "",
+                 rank = 0,
+                 is_class = False, 
+                 notes = "",
+                 misc = [],
+                 data = {}):
+        keys = data.keys()
+        self.name = data["name"] if "name" in keys else name
+        self.rank = data["rank"] if "rank" in keys else rank
+        self.is_class = data["is_class"] if "is_class" in keys else is_class
+        self.notes = data["notes"] if "notes" in keys else notes
+        self.misc = data["misc"] if "misc" in keys else misc
+        self.uuid = data["uuid"] if "uuid" in keys else uuid
+
+        if not self.uuid:
+            self.uuid = str(uuid4())
+
+        if self.name not in _allowed_skill_names:
+            if all([n not in self.name for n in _valid_names]):
+                raise ValueError("Skill.__init__: '{}' not a valid skill name".format(name))
