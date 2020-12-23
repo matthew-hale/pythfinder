@@ -4,7 +4,7 @@ import copy
 from uuid import uuid4
 from .helpers import remove_duplicates_by_id, remove_duplicates_by_name, numeric_filter, numeric_filter_objects
 from .vars import _allowed_skill_names, _trained_only, _skill_mods, _ability_names, _saving_throw_names
-from .collections import BasicItem, Ability, CharacterClass, Equipment
+from .collections import BasicItem, Ability, CharacterClass, Equipment, SavingThrow
 
 # Main character class
 class Character:
@@ -207,30 +207,24 @@ class Character:
                     }
                 else:
                     target_saving_throw = target_saving_throw_list[0]
-                subkeys = target_saving_throw.keys()
-                new_saving_throw = {
-                    "name": target_saving_throw["name"]
-                }
-                new_saving_throw["base"] = target_saving_throw["base"] if "base" in subkeys else 0
-                new_saving_throw["misc"] = target_saving_throw["misc"] if "misc" in subkeys else 0
-                self.saving_throws.append(new_saving_throw)
+                self.saving_throws.append(SavingThrow(data = target_saving_throw))
         else:
             self.saving_throws = [
-                {
+                SavingThrow(data = {
                     "name": "fortitude", 
                     "base": 0,
                     "misc": []
-                },
-                {
+                }),
+                SavingThrow(data = {
                     "name": "reflex",
                     "base": 0,
                     "misc": []
-                },
-                {
+                }),
+                SavingThrow(data = {
                     "name": "will",
                     "base": 0,
                     "misc": []
-                }
+                })
             ]
         
         # Skill initialization
@@ -626,22 +620,22 @@ class Character:
         base = data["base"] if "base" in keys else base
         misc = data["misc"] if "misc" in keys else misc
         # Filter saving_throws
-        saving_throws = self.saving_throws
+        saving_throws = [throw for throw in self.saving_throws]
         if name:
             subgroup = []
             if name_search_type == "absolute":
                 for search in name:
                     for i in saving_throws:
-                        if search == i["name"]:
+                        if search == i.name:
                             subgroup.append(i)
             elif name_search_type == "substring":
                 for search in name:
                     for i in saving_throws:
-                        if search in i["name"]:
+                        if search in i.name:
                             subgroup.append(i)
             else:
                 raise ValueError("get_saving_throw: invalid name_search_type")
-            saving_throws = remove_duplicates_by_name(subgroup)
+            saving_throws = list(set(saving_throws))
         if base:
             saving_throws = numeric_filter(items = saving_throws,
                                        key = "base",
@@ -1798,31 +1792,6 @@ class Character:
             target["isClass"] = isClass
         if notes is not None:
             target["notes"] = notes
-        if misc is not None:
-            target["misc"] = misc
-        return target
-
-    # Update an existing saving_throw based on name; supports either named 
-    # arguments or a dictionary
-    #
-    # returns the updated saving_throw dict
-    def update_saving_throw(self,
-                            name = None,
-                            base = None,
-                            misc = None,
-                            data = {}):
-        keys = data.keys()
-        name = data["name"] if "name" in keys else name
-        base = data["base"] if "base" in keys else base
-        misc = data["misc"] if "misc" in keys else misc
-        # Get target saving_throw
-        target_list = self.get_saving_throw(name = name, name_search_type = "absolute")
-        if not target_list:
-            raise ValueError("update_saving_throw: no saving_throw found with name '{}'".format(name))
-        target = target_list[0]
-        # Ignore parameters not provided, allowing for "falsey" values
-        if base is not None:
-            target["base"] = base
         if misc is not None:
             target["misc"] = misc
         return target
