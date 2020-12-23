@@ -343,6 +343,11 @@ class Character:
         out.feats = [feat.__dict__ for feat in out.feats]
         out.traits = [trait.__dict__ for trait in out.traits]
         out.specials = [special.__dict__ for special in out.specials]
+        out.equipment = [equipment.__dict__ for equipment in out.equipment]
+        out.skills = [skill.__dict__ for skill in out.skills]
+        out.classes = [class_.__dict__ for class_ in out.classes]
+        out.abilities = [ability.__dict__ for ability in out.abilities]
+        out.saving_throws = [saving_throw.__dict__ for saving_throw in out.saving_throws]
         return out.__dict__
 
     """
