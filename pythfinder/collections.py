@@ -330,3 +330,50 @@ class Skill:
         if misc is not None:
             self.misc = misc
         return self
+
+class Spell:
+    def __init__(self,
+                 name = "",
+                 uuid = "",
+                 level = 0,
+                 description = "",
+                 prepared = 0,
+                 cast = 0,
+                 data = {}):
+        keys = data.keys()
+        self.name = data["name"] if "name" in keys else name
+        self.level = data["level"] if "level" in keys else level
+        self.description = data["description"] if "description" in keys else description
+        self.prepared = data["prepared"] if "prepared" in keys else prepared
+        self.cast = data["cast"] if "cast" in keys else cast
+        self.uuid = data["uuid"] if "uuid" in keys else uuid
+
+        if not self.uuid:
+            self.uuid = str(uuid4())
+
+    def update(self,
+               name = None,
+               uuid = None,
+               level = None,
+               description = None,
+               prepared = None,
+               cast = None,
+               data = {}):
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        level = data["level"] if "level" in keys else level
+        description = data["description"] if "description" in keys else description
+        prepared = data["prepared"] if "prepared" in keys else prepared
+        cast = data["cast"] if "cast" in keys else cast
+        # Ignore parameters not provided, allowing for "falsey" values
+        if name is not None:
+            self.name = name
+        if level is not None:
+            self.level = level
+        if description is not None:
+            self.description = description
+        if prepared is not None:
+            self.prepared = prepared
+        if cast is not None:
+            self.cast = cast
+        return self

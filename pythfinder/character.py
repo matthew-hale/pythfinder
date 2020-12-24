@@ -251,7 +251,7 @@ class Character:
         self.spells = []
         if "spells" in keys:
             for item in data["spells"]:
-                _ = self.add_spell(data = item)
+                self.spells.append(Spell(data = item))
 
         self.attacks = []
         if "attacks" in keys:
@@ -326,10 +326,11 @@ class Character:
         out.traits = [trait.__dict__ for trait in out.traits]
         out.specials = [special.__dict__ for special in out.specials]
         out.equipment = [equipment.__dict__ for equipment in out.equipment]
-        out.skills = [skill.get_dict() for skill in out.skills]
-        out.classes = [class_.__dict__ for class_ in out.classes] # name enforcement
+        out.skills = [skill.get_dict() for skill in out.skills] # name enforcement
+        out.classes = [class_.__dict__ for class_ in out.classes]
         out.abilities = [ability.__dict__ for ability in out.abilities]
         out.saving_throws = [saving_throw.__dict__ for saving_throw in out.saving_throws]
+        out.spells = [spell.__dict__ for spell in out.spells]
         return out.__dict__
 
     """
@@ -992,15 +993,15 @@ class Character:
     # Returns spells based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
-    def get_spell(self,
-                  name_search_type = "substring",
-                  name = [],
-                  uuid = [],
-                  level = {},
-                  description = [],
-                  prepared = {},
-                  cast = {},
-                  data = {}):
+    def get_spells(self,
+                   name_search_type = "substring",
+                   name = [],
+                   uuid = [],
+                   level = {},
+                   description = [],
+                   prepared = {},
+                   cast = {},
+                   data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
@@ -1026,16 +1027,16 @@ class Character:
             if name_search_type == "absolute":
                 for search in name:
                     for i in spells:
-                        if search == i["name"]:
+                        if search == i.name:
                             subgroup.append(i)
             elif name_search_type == "substring":
                 for search in name:
                     for i in spells:
-                        if search in i["name"]:
+                        if search in i.name:
                             subgroup.append(i)
             else:
-                raise ValueError("get_spell: invalid name_search_type")
-            spells = remove_duplicates_by_id(subgroup)
+                raise ValueError("get_spells: invalid name_search_type")
+            spells = list(set(subgroup))
         if level:
             spells = numeric_filter(items = spells,
                                     key = "level",
@@ -1044,16 +1045,16 @@ class Character:
             subgroup = []
             for search in uuid:
                 for i in spells:
-                    if search == i["uuid"]:
+                    if search == i.uuid:
                         subgroup.append(i)
-            spells = remove_duplicates_by_id(subgroup)
+            spells = list(set(subgroup))
         if description:
             subgroup = []
             for search in description:
                 for i in spells:
-                    if search in i["description"]:
+                    if search in i.description:
                         subgroup.append(i)
-            spells = remove_duplicates_by_id(subgroup)
+            spells = list(set(subgroup))
         if prepared:
             spells = numeric_filter(items = spells,
                                     key = "prepared",
@@ -1540,7 +1541,6 @@ class Character:
     # returns the newly created spell
     def add_spell(self,
                   name = "",
-                  uuid = "",
                   level = 0,
                   description = "",
                   prepared = 0,
@@ -1548,64 +1548,17 @@ class Character:
                   data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        new_uuid = data["uuid"] if "uuid" in keys else uuid
-        if not new_uuid:
-            new_uuid = uuid4()
-        # Validate that new_uuid is unique
-        if not self.is_unique_id(uuid = new_uuid, prop = "spells"):
-            raise ValueError("add_spell: uuid must be unique among spells")
         new_level = data["level"] if "level" in keys else level
         new_description = data["description"] if "description" in keys else description
         new_prepared = data["prepared"] if "prepared" in keys else prepared
         new_cast = data["cast"] if "cast" in keys else cast
-        new_spell = {
-            "name": new_name,
-            "uuid": str(new_uuid),
-            "level": new_level,
-            "description": new_description,
-            "prepared": new_prepared,
-            "cast": new_cast,
-        }
+        new_spell = Spell(name = new_name,
+                          level = new_level,
+                          description = new_description,
+                          prepared = new_prepared,
+                          cast = new_cast)
         self.spells.append(new_spell)
         return new_spell
-
-    # Update an existing spell based on uuid; supports either named 
-    # arguments or a dictionary
-    #
-    # returns the updated spell 
-    def update_spell(self,
-                     uuid = "",
-                     name = None,
-                     level = None,
-                     description = None,
-                     prepared = None,
-                     cast = None,
-                     data = {}):
-        keys = data.keys()
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        name = data["name"] if "name" in keys else name
-        level = data["level"] if "level" in keys else level
-        description = data["description"] if "description" in keys else description
-        prepared = data["prepared"] if "prepared" in keys else prepared
-        cast = data["cast"] if "cast" in keys else cast
-        # Get target spell
-        target_list = self.get_spell(uuid = uuid)
-        if not target_list:
-            raise ValueError("update_spell: no spell found with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Ignore parameters not provided, allowing for "falsey" values
-        if name is not None:
-            target["name"] = name
-        if level is not None:
-            target["level"] = level
-        if prepared is not None:
-            target["prepared"] = prepared
-        if cast is not None:
-            target["cast"] = cast
-        if description is not None:
-            target["description"] = description
-        return target
 
     # Update an existing piece of armor based on uuid; supports either 
     # named arguments or a dictionary
@@ -1803,15 +1756,12 @@ class Character:
 
     # Delete a spell by uuid
     def delete_spell(self,
-                      uuid):
-        # Ensure a valid target
-        target_list = self.get_spell(uuid = uuid)
-        if not target_list:
-            raise ValueError("delete_spell: no spell with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Delete target
-        self.spells.remove(target)
+                     spell):
+        try:
+            self.spells.remove(spell)
+        except ValueError as err:
+            raise ValueError("delete_spell: {}".format(err))
+        return spell
 
     # Set items' "on_person" flags to False if they are also flagged 
     # as "camp" items.
