@@ -4,7 +4,7 @@ import copy
 from uuid import uuid4
 from .helpers import numeric_filter_objects
 from .vars import _allowed_skill_names, _trained_only, _skill_mods, _ability_names, _saving_throw_names
-from .collections import BasicItem, Ability, CharacterClass, Equipment, SavingThrow, Skill, Attack, Armor
+from .collections import BasicItem, Ability, CharacterClass, Equipment, SavingThrow, Skill, Attack, Armor, Spell
 
 # Main character class
 class Character:
