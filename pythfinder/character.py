@@ -6,7 +6,11 @@ from .helpers import numeric_filter_objects
 from .vars import _allowed_skill_names, _trained_only, _skill_mods, _ability_names, _saving_throw_names
 from .collections import BasicItem, Ability, CharacterClass, Equipment, SavingThrow, Skill, Attack, Armor, Spell
 
-# Main character class
+"""
+Main character class
+
+Contains multiple collections of objects, imported from .collections
+"""
 class Character:
     def __init__(self, data = {}):
         # Grab keys from imported json data
@@ -79,14 +83,13 @@ class Character:
             for item in data["classes"]:
                 _ = self.add_class(data = item)
 
-        """
-        Ability initialization
+        # Ability initialization
 
-        Although abilities are stored as a list, they are also fixed - 
-        at least, by name. There are only 6 abilities. Thus, we don't 
-        have an 'add_ability' method anywhere. However, abilities are 
-        still objects, so we can use their class to construct them.
-        """
+        # Although abilities are stored as a list, they are also 
+        # fixed - at least, by name. There are only 6 abilities. Thus, 
+        # we don't have an 'add_ability' method anywhere. However, 
+        # abilities are still objects, so we can use their class to 
+        # construct them.
         self.abilities = []
         if "abilities" in keys:
             for name in _ability_names:
@@ -305,10 +308,8 @@ class Character:
 
         return output
 
-    """
-    Returns a dict of the entire character, converting list objects 
-    into dicts first
-    """
+    # Returns a dict of the entire character, converting list objects 
+    # into dicts first
     def get_dict(self):
         out = copy.deepcopy(self)
         out.feats = [feat.__dict__ for feat in out.feats]
@@ -324,10 +325,8 @@ class Character:
         out.armor = [armor.__dict__ for armor in out.armor]
         return out.__dict__
 
-    """
-    Returns a formatted JSON string representation of the entire 
-    character
-    """
+    # Returns a formatted JSON string representation of the entire 
+    # character
     def get_json(self):
         return json.dumps(self.get_dict(), indent = 4)
 
@@ -397,24 +396,21 @@ class Character:
         else:
             return True
 
-    """
-    Returns items based on given filters; multiple values for a given 
-    property are treated like an 'or', while each separate property 
-    is treated like an 'and'.
-   
-    For example:
-   
-    If I want to get all of the items that:
-      * are currently on my person
-        and
-      * are either in my backpack or on my belt
-    I would call this method as such:
-   
-    self.get_equipment(on_person = True,
-                       location = ["backpack", "belt"])
-   
-    Numeric filters use the numeric_filter function
-    """
+    # Returns items based on given filters; multiple values for a given 
+    # property are treated like an 'or', while each separate property 
+    # is treated like an 'and'.
+    #
+    # For example:
+    #
+    # If I want to get all of the items that:
+    #   * are currently on my person
+    #     and
+    #   * are either in my backpack or on my belt
+    # I would call this method as such:
+    #
+    # self.get_equipment(on_person = True,
+    #                    location = ["backpack", "belt"])
+    # Numeric filters use the numeric_filter function
     def get_equipment(self,
                       name_search_type = "substring",
                       name = [],

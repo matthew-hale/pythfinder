@@ -1,4 +1,7 @@
-# These vars are used for skill initialization
+"""
+The variables here are used for multiple types of initialization and 
+input validation.
+"""
 _allowed_skill_names = {
     "Acrobatics", "Appraise", "Bluff",
     "Climb", "Craft", "Diplomacy",
