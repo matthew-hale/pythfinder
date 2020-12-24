@@ -93,6 +93,6 @@ def numeric_filter_objects(items,
     return items
 
 # Write the given character data to the file in path
-def writeCharacter(character, path):
+def write_character(character, path):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(character.getDict(), f, indent=4)

@@ -1,2 +1,2 @@
 from .character import Character
-from .helpers import writeCharacter
+from .helpers import write_character
