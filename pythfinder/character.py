@@ -256,7 +256,7 @@ class Character:
         self.attacks = []
         if "attacks" in keys:
             for item in data["attacks"]:
-                self.attacks.append(Spell(data = item))
+                self.attacks.append(Attack(data = item))
 
         self.armor = []
         if "armor" in keys:
