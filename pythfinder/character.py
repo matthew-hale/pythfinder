@@ -553,7 +553,7 @@ class Character:
                         if search in i.name:
                             subgroup.append(i)
             else:
-                raise ValueError("get_ability: invalid name_search_type")
+                raise ValueError("get_abilities: invalid name_search_type")
             abilities = list(set(subgroup))
         if base:
             abilities = numeric_filter_objects(items = abilities,
