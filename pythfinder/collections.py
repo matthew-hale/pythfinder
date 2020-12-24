@@ -496,3 +496,55 @@ class Attack:
         if notes is not None:
             self.notes = notes
         return self
+
+class Armor:
+    def __init__(self,
+                 name = "",
+                 uuid = "",
+                 ac_bonus = 0,
+                 ac_penalty = 0,
+                 max_dex_bonus = 0,
+                 arcane_failure_chance = 0,
+                 type_ = "",
+                 data = {}):
+        keys = data.keys()
+        self.name = data["name"] if "name" in keys else name
+        self.ac_bonus = data["ac_bonus"] if "ac_bonus" in keys else ac_bonus
+        self.ac_penalty = data["ac_penalty"] if "ac_penalty" in keys else ac_penalty
+        self.max_dex_bonus = data["max_dex_bonus"] if "max_dex_bonus" in keys else max_dex_bonus
+        self.arcane_failure_chance = data["arcane_failure_chance"] if "arcane_failure_chance" in keys else arcane_failure_chance
+        self.type = data["type"] if "type" in keys else type_
+        self.uuid = data["uuid"] if "uuid" in keys else uuid
+
+        if not self.uuid:
+            self.uuid = str(uuid4())
+
+    def update(self,
+               name = None,
+               ac_bonus = None,
+               ac_penalty = None,
+               max_dex_bonus = None,
+               arcane_failure_chance = None,
+               type_ = None,
+               data = {}):
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        ac_bonus = data["ac_bonus"] if "ac_bonus" in keys else ac_bonus
+        ac_penalty = data["ac_penalty"] if "ac_penalty" in keys else ac_penalty
+        max_dex_bonus = data["max_dex_bonus"] if "max_dex_bonus" in keys else max_dex_bonus
+        arcane_failure_chance = data["arcane_failure_chance"] if "arcane_failure_chance" in keys else arcane_failure_chance
+        type_ = data["type"] if "type" in keys else type_
+        # Ignore parameters not provided, allowing for "falsey" values
+        if name is not None:
+            self.name = name
+        if ac_bonus is not None:
+            self.ac_bonus = ac_bonus
+        if ac_penalty is not None:
+            self.ac_penalty = ac_penalty
+        if max_dex_bonus is not None:
+            self.max_dex_bonus = max_dex_bonus
+        if arcane_failure_chance is not None:
+            self.arcane_failure_chance = arcane_failure_chance
+        if type_ is not None:
+            self.type = type_
+        return self

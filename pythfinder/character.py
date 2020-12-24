@@ -4,7 +4,7 @@ import copy
 from uuid import uuid4
 from .helpers import remove_duplicates_by_id, remove_duplicates_by_name, numeric_filter, numeric_filter_objects
 from .vars import _allowed_skill_names, _trained_only, _skill_mods, _ability_names, _saving_throw_names
-from .collections import BasicItem, Ability, CharacterClass, Equipment, SavingThrow, Skill, Attack
+from .collections import BasicItem, Ability, CharacterClass, Equipment, SavingThrow, Skill, Attack, Armor
 
 # Main character class
 class Character:
@@ -246,8 +246,8 @@ class Character:
                     "misc": []
                 }))
 
-        # Spells, attacks, and armor are all collections of 
-        # dictionaries; their initialization is pretty boring
+        # Spells, attacks, and armor are all collections of plain 
+        # objects; their initialization is pretty boring
         self.spells = []
         if "spells" in keys:
             for item in data["spells"]:
@@ -261,7 +261,7 @@ class Character:
         self.armor = []
         if "armor" in keys:
             for item in data["armor"]:
-                _ = self.add_armor(data = item)
+                self.armor.append(Armor(data = item))
 
     # Get the modifier for a given ability
     def getAbilityMod(self, ability):
@@ -332,6 +332,7 @@ class Character:
         out.saving_throws = [saving_throw.__dict__ for saving_throw in out.saving_throws]
         out.spells = [spell.__dict__ for spell in out.spells]
         out.attacks = [attack.get_dict() for attack in out.attacks] # ability enforcement
+        out.armor = [armor.__dict__ for armor in out.armor]
         return out.__dict__
 
     """
@@ -1073,10 +1074,10 @@ class Character:
                   name_search_type = "substring",
                   name = [],
                   uuid = [],
-                  acBonus = {},
-                  acPenalty = {},
-                  maxDexBonus = {},
-                  arcaneFailureChance = {},
+                  ac_bonus = {},
+                  ac_penalty = {},
+                  max_dex_bonus = {},
+                  arcane_failure_chance = {},
                   type_ = [],
                   data = {}):
         keys = data.keys()
@@ -1091,56 +1092,56 @@ class Character:
         uuid = data["uuid"] if "uuid" in keys else uuid
         if type(uuid) is not list:
             uuid = [uuid]
-        acBonus = data["acBonus"] if "acBonus" in keys else acBonus
-        acPenalty = data["acPenalty"] if "acPenalty" in keys else acPenalty
-        maxDexBonus = data["maxDexBonus"] if "maxDexBonus" in keys else maxDexBonus
-        arcaneFailureChance = data["arcaneFailureChance"] if "arcaneFailureChance" in keys else arcaneFailureChance
-        # Filter armor
+        ac_bonus = data["ac_bonus"] if "ac_bonus" in keys else ac_bonus
+        ac_penalty = data["ac_penalty"] if "ac_penalty" in keys else ac_penalty
+        max_dex_bonus = data["max_dex_bonus"] if "max_dex_bonus" in keys else max_dex_bonus
+        arcane_failure_chance = data["arcane_failure_chance"] if "arcane_failure_chance" in keys else arcane_failure_chance
+        # _filter armor
         armor = self.armor
         if name:
             subgroup = []
             if name_search_type == "absolute":
                 for search in name:
                     for i in armor:
-                        if search == i["name"]:
+                        if search == i.name:
                             subgroup.append(i)
             elif name_search_type == "substring":
                 for search in name:
                     for i in armor:
-                        if search in i["name"]:
+                        if search in i.name:
                             subgroup.append(i)
             else:
                 raise ValueError("get_armor: invalid name_search_type")
-            armor = remove_duplicates_by_id(subgroup)
+            armor = list(set(subgroup))
         if uuid:
             subgroup = []
             for search in uuid:
                 for i in armor:
-                    if search == i["uuid"]:
+                    if search == i.uuid:
                         subgroup.append(i)
-        if acBonus:
+        if ac_bonus:
             armor = numeric_filter(items = armor,
-                                    key = "acBonus",
-                                    operations = acBonus)
-        if acPenalty:
+                                    key = "ac_bonus",
+                                    operations = ac_bonus)
+        if ac_penalty:
             armor = numeric_filter(items = armor,
-                                    key = "acPenalty",
-                                    operations = acPenalty)
-        if maxDexBonus:
+                                    key = "ac_penalty",
+                                    operations = ac_penalty)
+        if max_dex_bonus:
             armor = numeric_filter(items = armor,
-                                    key = "maxDexBonus",
-                                    operations = maxDexBonus)
-        if arcaneFailureChance:
+                                    key = "max_dex_bonus",
+                                    operations = max_dex_bonus)
+        if arcane_failure_chance:
             armor = numeric_filter(items = armor,
-                                    key = "arcaneFailureChance",
-                                    operations = arcaneFailureChance)
+                                    key = "arcane_failure_chance",
+                                    operations = arcane_failure_chance)
         if type_:
             subgroup = []
             for search in type_:
                 for i in armor:
-                    if search in i["type"]:
+                    if search in i.type:
                         subgroup.append(i)
-            armor = remove_duplicates_by_id(subgroup)
+            armor = list(set(subgroup))
         return armor
 
     # Returns attacks based on given filters; multiple values for a 
@@ -1489,35 +1490,26 @@ class Character:
     # returns the newly created armor
     def add_armor(self,
                   name = "",
-                  uuid = "",
-                  acBonus = 0,
-                  acPenalty = 0,
-                  maxDexBonus = 0,
-                  arcaneFailureChance = 0,
+                  ac_bonus = 0,
+                  ac_penalty = 0,
+                  max_dex_bonus = 0,
+                  arcane_failure_chance = 0,
                   type_ = "",
                   data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        new_uuid = data["uuid"] if "uuid" in keys else uuid
-        if not new_uuid:
-            new_uuid = uuid4()
-        # Validate that new_uuid is unique
-        if not self.is_unique_id(uuid = new_uuid, prop = "armor"):
-            raise ValueError("add_armor: uuid must be unique among armors")
-        new_acBonus = data["acBonus"] if "acBonus" in keys else acBonus
-        new_acPenalty = data["acPenalty"] if "acPenalty" in keys else acPenalty
-        new_maxDexBonus = data["maxDexBonus"] if "maxDexBonus" in keys else maxDexBonus
-        new_arcaneFailureChance = data["arcaneFailureChance"] if "arcaneFailureChance" in keys else arcaneFailureChance
+        new_ac_bonus = data["ac_bonus"] if "ac_bonus" in keys else ac_bonus
+        new_ac_penalty = data["ac_penalty"] if "ac_penalty" in keys else ac_penalty
+        new_max_dex_bonus = data["max_dex_bonus"] if "max_dex_bonus" in keys else max_dex_bonus
+        new_arcane_failure_chance = data["arcane_failure_chance"] if "arcane_failure_chance" in keys else arcane_failure_chance
         new_type = data["type"] if "type" in keys else type_
-        new_armor = {
-            "name": new_name,
-            "uuid": str(new_uuid),
-            "acBonus": new_acBonus,
-            "acPenalty": new_acPenalty,
-            "maxDexBonus": new_maxDexBonus,
-            "arcaneFailureChance": new_arcaneFailureChance,
-            "type": new_type
-        }
+        new_armor = Armor(name = new_name,
+                          uuid = str(new_uuid),
+                          ac_bonus = new_ac_bonus,
+                          ac_penalty = new_ac_penalty,
+                          max_dex_bonus = new_max_dex_bonus,
+                          arcane_failure_chance = new_arcane_failure_chance,
+                          type_ = new_type)
         self.armor.append(new_armor)
         return new_armor
 
@@ -1545,48 +1537,6 @@ class Character:
                           cast = new_cast)
         self.spells.append(new_spell)
         return new_spell
-
-    # Update an existing piece of armor based on uuid; supports either 
-    # named arguments or a dictionary
-    #
-    # returns the updated armor
-    def update_armor(self,
-                     uuid = "",
-                     name = None,
-                     acBonus = None,
-                     acPenalty = None,
-                     maxDexBonus = None,
-                     arcaneFailureChance = None,
-                     type_ = None,
-                     data = {}):
-        keys = data.keys()
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        name = data["name"] if "name" in keys else name
-        acBonus = data["acBonus"] if "acBonus" in keys else acBonus
-        acPenalty = data["acPenalty"] if "acPenalty" in keys else acPenalty
-        maxDexBonus = data["maxDexBonus"] if "maxDexBonus" in keys else maxDexBonus
-        arcaneFailureChance = data["arcaneFailureChance"] if "arcaneFailureChance" in keys else arcaneFailureChance
-        type_ = data["type"] if "type" in keys else type_
-        # Get target armor
-        target_list = self.get_armor(uuid = uuid)
-        if not target_list:
-            raise ValueError("update_armor: no armor found with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Ignore parameters not provided, allowing for "falsey" values
-        if name is not None:
-            target["name"] = name
-        if acBonus is not None:
-            target["acBonus"] = acBonus
-        if acPenalty is not None:
-            target["acPenalty"] = acPenalty
-        if maxDexBonus is not None:
-            target["maxDexBonus"] = maxDexBonus
-        if arcaneFailureChance is not None:
-            target["arcaneFailureChance"] = arcaneFailureChance
-        if type_ is not None:
-            target["type"] = type_
-        return target
 
     # Delete a class by uuid
     def delete_class(self,
@@ -1661,15 +1611,12 @@ class Character:
 
     # Delete a piece of armor by uuid
     def delete_armor(self,
-                     uuid):
-        # Ensure a valid target
-        target_list = self.get_armor(uuid = uuid)
-        if not target_list:
-            raise ValueError("delete_armor: no armor with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Delete target
-        self.armor.remove(target)
+                     armor):
+        try:
+            self.armor.remove(armor)
+        except ValueError as err:
+            raise ValueError("delete_armor: {}".format(err))
+        return armor
 
     # Delete a spell by uuid
     def delete_spell(self,
