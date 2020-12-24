@@ -1349,7 +1349,6 @@ class Character:
     # returns the newly created skill
     def add_skill(self,
                   name = "",
-                  uuid = "",
                   rank = 0,
                   is_class = False, 
                   notes = "",
@@ -1360,39 +1359,6 @@ class Character:
         skill_type = ""
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        new_uuid = data["uuid"] if "uuid" in keys else uuid
-        if not new_uuid:
-            new_uuid = uuid4()
-        # Validate that new_uuid is unique
-        if not self.is_unique_id(uuid = new_uuid, prop = "skills"):
-            raise ValueError("add_skill: uuid must be unique among skills")
-        # Validate skill name is in allowed_skills
-        # If so, we can use all the built-in values for things
-        if new_name in _allowed_skill_names:
-            new_mod = _skill_mods[new_name]
-            if new_name in _trained_only:
-                new_use_untrained = False
-            else:
-                new_use_untrained = True
-        # Validate skill name is one of the three above
-        # These skills can exist multiple times with variable names
-        else:
-            is_valid = False
-            for valid in valid_names:
-                if valid in new_name:
-                    is_valid = True
-                    skill_type = valid
-            if not is_valid:
-                raise ValueError("add_skill: skill with custom name must be a Perform, Profession, or Craft skill")
-            # Validate that new name is unique
-            if not self.is_unique_name(name = new_name, prop = "skills"):
-                raise ValueError("add_skill: name must be unique among skills")
-            if skill_type in _trained_only:
-                new_use_untrained = False
-            else:
-                new_use_untrained = True
-            new_mod = _skill_mods[skill_type]
-        # Get the rest of the properties
         new_rank = data["rank"] if "rank" in keys else rank
         new_is_class = data["is_class"] if "is_class" in keys else is_class
         new_notes = data["notes"] if "notes" in keys else notes
@@ -1402,9 +1368,7 @@ class Character:
             "uuid": str(new_uuid),
             "rank": new_rank,
             "is_class": new_is_class,
-            "mod": new_mod,
             "notes": new_notes,
-            "use_untrained": new_use_untrained,
             "misc": new_misc,
         }
         self.skills.append(new_skill)
