@@ -20,7 +20,7 @@ class Character:
         self.homeland = data["homeland"] if "homeland" in keys else ""
         self.CMB = data["CMB"] if "CMB" in keys else 0
         self.CMD = data["CMD"] if "CMD" in keys else 10
-        self.initiativeMods = data["initiativeMods"] if "initiativeMods" in keys else []
+        self.initiative_mods = data["initiative_mods"] if "initiative_mods" in keys else []
         self.alignment = data["alignment"] if "alignment" in keys else ""
         self.description = data["description"] if "description" in keys else ""
         self.height = data["height"] if "height" in keys else ""
@@ -30,7 +30,7 @@ class Character:
         self.hair = data["hair"] if "hair" in keys else ""
         self.eyes = data["eyes"] if "eyes" in keys else ""
         self.languages = data["languages"] if "languages" in keys else []
-        self.spellsPerDay = data["spellsPerDay"] if "spellsPerDay" in keys else {
+        self.spells_per_day = daya["spells_per_day"] if "spells_per_day" in keys else {
             "0": 0,
             "1": 0,
             "2": 0,
@@ -42,7 +42,7 @@ class Character:
             "8": 0,
             "9": 0
         }
-        self.baseAttackBonus = data["baseAttackBonus"] if "baseAttackBonus" in keys else 0
+        self.base_attack_bonus = data["base_attack_bonus"] if "base_attack_bonus" in keys else 0
         self.gold = data["gold"] if "gold" in keys else 0
 
         # Complex object members
