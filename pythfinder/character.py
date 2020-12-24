@@ -624,13 +624,13 @@ class Character:
     # Returns classes based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
-    def get_class(self,
-                  name_search_type = "substring",
-                  name = [],
-                  uuid = [],
-                  archetypes = [],
-                  level = {},
-                  data = {}):
+    def get_classes(self,
+                    name_search_type = "substring",
+                    name = [],
+                    uuid = [],
+                    archetypes = [],
+                    level = {},
+                    data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
@@ -654,31 +654,31 @@ class Character:
             if name_search_type == "absolute":
                 for search in name:
                     for i in classes:
-                        if search == i["name"]:
+                        if search == i.name:
                             subgroup.append(i)
             elif name_search_type == "substring":
                 for search in name:
                     for i in classes:
-                        if search in i["name"]:
+                        if search in i.name:
                             subgroup.append(i)
             else:
                 raise ValueError("get_class: invalid name_search_type")
-            classes = remove_duplicates_by_id(subgroup)
+            classes = list(set(subgroup))
         if uuid:
             subgroup = []
             for search in uuid:
                 for i in classes:
-                    if search == i["uuid"]:
+                    if search == i.uuid:
                         subgroup.append(i)
-            classes = remove_duplicates_by_id(subgroup)
+            classes = list(set(subgroup))
         if archetypes:
             subgroup = []
             for search in archetypes:
                 for i in classes:
-                    for archetype in i["archetypes"]:
+                    for archetype in i.archetypes:
                         if search in archetype:
                             subgroup.append(i)
-            classes = remove_duplicates_by_id(subgroup)
+            classes = list(set(subgroup))
         if level:
             classes = numeric_filter(items = classes,
                                      key = "level",
