@@ -2,7 +2,7 @@ import json
 import math
 import copy
 from uuid import uuid4
-from .helpers import remove_duplicates_by_id, remove_duplicates_by_name, numeric_filter, numeric_filter_objects
+from .helpers import numeric_filter_objects
 from .vars import _allowed_skill_names, _trained_only, _skill_mods, _ability_names, _saving_throw_names
 from .collections import BasicItem, Ability, CharacterClass, Equipment, SavingThrow, Skill, Attack, Armor
 
@@ -488,11 +488,11 @@ class Character:
                         subgroup.append(i)
             items = list(set(subgroup))
         if weight:
-            items = numeric_filter(items = items,
+            items = numeric_filter_objects(items = items,
                                    key = "weight",
                                    operations = weight)
         if count:
-            items = numeric_filter(items = items,
+            items = numeric_filter_objects(items = items,
                                    key = "count",
                                    operations = count)
         if camp:
@@ -610,11 +610,11 @@ class Character:
                 raise ValueError("get_saving_throw: invalid name_search_type")
             saving_throws = list(set(saving_throws))
         if base:
-            saving_throws = numeric_filter(items = saving_throws,
+            saving_throws = numeric_filter_objects(items = saving_throws,
                                        key = "base",
                                        operations = base)
         if misc:
-            saving_throws = numeric_filter(items = saving_throws,
+            saving_throws = numeric_filter_objects(items = saving_throws,
                                        key = "misc",
                                        operations = misc)
         # Convert back into a single dict, with only those saving_throws 
@@ -680,7 +680,7 @@ class Character:
                             subgroup.append(i)
             classes = list(set(subgroup))
         if level:
-            classes = numeric_filter(items = classes,
+            classes = numeric_filter_objects(items = classes,
                                      key = "level",
                                      operations = level)
         return classes
@@ -983,11 +983,11 @@ class Character:
                         subgroup.append(i)
             skills = list(set(subgroup))
         if rank:
-            skills = numeric_filter(items = skills,
+            skills = numeric_filter_objects(items = skills,
                                     key = "rank",
                                     operations = rank)
         if misc:
-            skills = numeric_filter(items = skills,
+            skills = numeric_filter_objects(items = skills,
                                     key = "misc",
                                     operations = misc)
         return skills
@@ -1040,7 +1040,7 @@ class Character:
                 raise ValueError("get_spells: invalid name_search_type")
             spells = list(set(subgroup))
         if level:
-            spells = numeric_filter(items = spells,
+            spells = numeric_filter_objects(items = spells,
                                     key = "level",
                                     operations = level)
         if uuid:
@@ -1058,11 +1058,11 @@ class Character:
                         subgroup.append(i)
             spells = list(set(subgroup))
         if prepared:
-            spells = numeric_filter(items = spells,
+            spells = numeric_filter_objects(items = spells,
                                     key = "prepared",
                                     operations = prepared)
         if cast:
-            spells = numeric_filter(items = spells,
+            spells = numeric_filter_objects(items = spells,
                                     key = "cast",
                                     operations = cast)
         return spells
@@ -1120,19 +1120,19 @@ class Character:
                     if search == i.uuid:
                         subgroup.append(i)
         if ac_bonus:
-            armor = numeric_filter(items = armor,
+            armor = numeric_filter_objects(items = armor,
                                     key = "ac_bonus",
                                     operations = ac_bonus)
         if ac_penalty:
-            armor = numeric_filter(items = armor,
+            armor = numeric_filter_objects(items = armor,
                                     key = "ac_penalty",
                                     operations = ac_penalty)
         if max_dex_bonus:
-            armor = numeric_filter(items = armor,
+            armor = numeric_filter_objects(items = armor,
                                     key = "max_dex_bonus",
                                     operations = max_dex_bonus)
         if arcane_failure_chance:
-            armor = numeric_filter(items = armor,
+            armor = numeric_filter_objects(items = armor,
                                     key = "arcane_failure_chance",
                                     operations = arcane_failure_chance)
         if type_:
@@ -1254,15 +1254,15 @@ class Character:
                         subgroup.append(i)
             attacks = list(set(subgroup))
         if critRoll:
-            attacks = numeric_filter(items = attacks,
+            attacks = numeric_filter_objects(items = attacks,
                                      key = "crit_roll",
                                      operations = crit_roll)
         if critMulti:
-            attacks = numeric_filter(items = attacks,
+            attacks = numeric_filter_objects(items = attacks,
                                      key = "crit_multi",
                                      operations = crit_multi)
         if range_:
-            attacks = numeric_filter(items = attacks,
+            attacks = numeric_filter_objects(items = attacks,
                                      key = "range",
                                      operations = range_)
         return attacks
