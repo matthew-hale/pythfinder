@@ -24,13 +24,6 @@ class BasicItem:
         if not self.uuid:
             self.uuid = str(uuid4())
     
-    # Compare attributes excluding uuid
-    def __eq__(self, other):
-        if not isinstance(other, BasicItem):
-            return NotImplemented
-        keys = ["name", "description", "notes"]
-        return all([getattr(self, key) == getattr(other, key) for key in keys])
-
     # Accepts either named parameters or a dictionary of parameters; 
     # treat as a 'PATCH' request
     def update(self,
@@ -130,14 +123,6 @@ class CharacterClass:
         if not self.uuid:
             self.uuid = str(uuid4())
 
-    # Compare attributes excluding uuid
-    def __eq__(self, other):
-        if not isinstance(other, CharacterClass):
-            return NotImplemented
-        return self.name == other.name and \
-        self.level == other.level and \
-        self.archetypes == other.archetypes
-
     # Accepts either named parameters or a dictionary of parameters; 
     # treat as a 'PATCH' request
     def update(self,
@@ -183,13 +168,6 @@ class Equipment:
 
         if not self.uuid:
             self.uuid = str(uuid4())
-
-    # Compare attributes excluding uuid
-    def __eq__(self, other):
-        if not isinstance(other, Equipment):
-            return NotImplemented
-        keys = ["name", "weight", "count", "camp", "on_person", "location", "notes"]
-        return all([getattr(self, key) == getattr(other, key) for key in keys])
 
     # Accepts either named parameters or a dictionary of parameters; 
     # treat as a 'PATCH' request
