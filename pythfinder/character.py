@@ -1757,6 +1757,11 @@ class Character:
     # of, e.g. Craft, Profession, Perform
     def delete_skill(self,
                      skill):
+        deletable_skills = ("Profession", "Craft", "Perform")
+        # If the skill is not a profession, craft, or perform skill, 
+        # raise an error
+        if all([n not in skill.name for n in deletable_skills]):
+            raise ValueError("delete_skill: {} not able to be deleted".format(skill.name))
         try:
             self.skills.remove(skill)
         except ValueError as err:
