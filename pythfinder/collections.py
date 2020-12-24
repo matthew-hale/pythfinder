@@ -67,9 +67,17 @@ class Ability:
         self.name = data["name"] if "name" in keys else name
         self.base = data["base"] if "base" in keys else base
         self.misc = data["misc"] if "misc" in keys else misc
-        # Validate abiltiy name
-        if self.name not in _ability_names:
-            raise ValueError("Ability.__init__: '{}' not an allowed ability name".format(self.name))
+
+    # Validate ability name
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        if value not in _ability_names:
+            raise ValueError("Ability.__init__: '{}' not an allowed ability value".format(self.value))
+        self._name = value
 
     @property
     def modifier(self):
@@ -78,6 +86,13 @@ class Ability:
             return -5
         else:
             return math.floor(0.5 * total - 5) # total modifier equation
+
+    def get_dict(self):
+        return {
+            "name": self.name,
+            "base": self.base,
+            "misc": self.misc
+        }
 
     # Accepts either named parameters or a dictionary of parameters; 
     # treat as a 'PATCH' request
@@ -353,7 +368,6 @@ class Spell:
 
     def update(self,
                name = None,
-               uuid = None,
                level = None,
                description = None,
                prepared = None,
@@ -376,4 +390,109 @@ class Spell:
             self.prepared = prepared
         if cast is not None:
             self.cast = cast
+        return self
+
+class Attack:
+    def __init__(self,
+                 name = "",
+                 uuid = "",
+                 attack_type = "",
+                 damage_type = "",
+                 # default to str for mods so that attack creation 
+                 # does not fail if not provided
+                 attack_mod = "str",
+                 damage_mod = "str",
+                 damage = "",
+                 crit_roll = 20,
+                 crit_multi = 2,
+                 range_ = 0,
+                 notes = "",
+                 data = {}):
+        keys = data.keys()
+        self.name = data["name"] if "name" in keys else name
+        self.attack_type = data["attack_type"] if "attack_type" in keys else attack_type
+        self.damage_type = data["damage_type"] if "damage_type" in keys else damage_type
+        self.attack_mod = data["attack_mod"] if "attack_mod" in keys else attack_mod
+        self.damage_mod = data["damage_mod"] if "damage_mod" in keys else damage_mod
+        self.damage = data["damage"] if "damage" in keys else damage
+        self.crit_roll = data["crit_roll"] if "crit_roll" in keys else crit_roll
+        self.crit_multi = data["crit_multi"] if "crit_multi" in keys else crit_multi
+        self.range = data["range"] if "range" in keys else range_
+        self.notes = data["notes"] if "notes" in keys else notes
+        self.uuid = data["uuid"] if "uuid" in keys else uuid
+
+        if not self.uuid:
+            self.uuid = str(uuid4())
+
+    # Validate ability name
+    @property
+    def attack_mod(self):
+        return self._attack_mod
+
+    @attack_mod.setter
+    def attack_mod(self, value):
+        if value not in _ability_names:
+            raise ValueError("Attack.attack_mod: '{}' not a valid ability name".format(value))
+        self._attack_mod = value
+
+    @property
+    def damage_mod(self):
+        return self._damage_mod
+
+    @damage_mod.setter
+    def damage_mod(self, value):
+        if value not in _ability_names:
+            raise ValueError("Attack.damage_mod: '{}' not a valid ability name".format(value))
+        self._damage_mod = value
+
+    def get_dict(self):
+        return {
+            "name": self.name,
+            "attack_type": self.attack_type,
+            "damage_type": self.damage_type,
+            "attack_mod": self.attack_mod,
+            "damage_mod": self.damage_mod,
+            "damage": self.damage,
+            "crit_roll": self.crit_roll,
+            "crit_multi": self.crit_multi,
+            "range": self.range,
+            "notes": self.notes,
+            "uuid": self.uuid
+        }
+
+    def update(self,
+               name = None,
+               attack_type = None,
+               damage_type = None,
+               attack_mod = None,
+               damage_mod = None,
+               damage = None,
+               crit_roll = None,
+               crit_multi = None,
+               range_ = None,
+               notes = None,
+               data = {}):
+        keys = data.keys()
+        name = data["name"] if "name" in keys else name
+        # Ignore parameters not provided, allowing for "falsey" values
+        if name is not None:
+            self.name = name
+        if attack_type is not None:
+            self.attack_type = attack_type
+        if damage_type is not None:
+            self.damage_type = damage_type
+        if attack_mod is not None:
+            self.attack_mod = attack_mod
+        if damage_mod is not None:
+            self.damage_mod = damage_mod
+        if damage is not None:
+            self.damage = damage
+        if crit_roll is not None:
+            self.crit_roll = crit_roll
+        if crit_multi is not None:
+            self.crit_multi = crit_multi
+        if range_ is not None:
+            self.range = range_
+        if notes is not None:
+            self.notes = notes
         return self

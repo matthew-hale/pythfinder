@@ -4,7 +4,7 @@ import copy
 from uuid import uuid4
 from .helpers import remove_duplicates_by_id, remove_duplicates_by_name, numeric_filter, numeric_filter_objects
 from .vars import _allowed_skill_names, _trained_only, _skill_mods, _ability_names, _saving_throw_names
-from .collections import BasicItem, Ability, CharacterClass, Equipment, SavingThrow, Skill
+from .collections import BasicItem, Ability, CharacterClass, Equipment, SavingThrow, Skill, Attack
 
 # Main character class
 class Character:
@@ -256,7 +256,7 @@ class Character:
         self.attacks = []
         if "attacks" in keys:
             for item in data["attacks"]:
-                _ = self.add_attack(data = item)
+                self.attacks.append(Spell(data = item))
 
         self.armor = []
         if "armor" in keys:
@@ -320,7 +320,7 @@ class Character:
     Returns a dict of the entire character, converting list objects 
     into dicts first
     """
-    def getDict(self):
+    def get_dict(self):
         out = copy.deepcopy(self)
         out.feats = [feat.__dict__ for feat in out.feats]
         out.traits = [trait.__dict__ for trait in out.traits]
@@ -328,17 +328,18 @@ class Character:
         out.equipment = [equipment.__dict__ for equipment in out.equipment]
         out.skills = [skill.get_dict() for skill in out.skills] # name enforcement
         out.classes = [class_.__dict__ for class_ in out.classes]
-        out.abilities = [ability.__dict__ for ability in out.abilities]
+        out.abilities = [ability.get_dict() for ability in out.abilities] # name enforcement
         out.saving_throws = [saving_throw.__dict__ for saving_throw in out.saving_throws]
         out.spells = [spell.__dict__ for spell in out.spells]
+        out.attacks = [attack.get_dict() for attack in out.attacks] # ability enforcement
         return out.__dict__
 
     """
     Returns a formatted JSON string representation of the entire 
     character
     """
-    def getJson(self):
-        return json.dumps(self.getDict(), indent = 4)
+    def get_json(self):
+        return json.dumps(self.get_dict(), indent = 4)
 
     # Returns the total value of the specified skill, taking into 
     # account all of the current modifiers, including:
@@ -1145,20 +1146,20 @@ class Character:
     # Returns attacks based on given filters; multiple values for a 
     # given property are treated like an 'or', while each separate 
     # property is treated like an 'and'.
-    def get_attack(self,
-                   name_search_type = "substring",
-                   name = [],
-                   uuid = [],
-                   attackType = [],
-                   damageType = [],
-                   attack_mod = [],
-                   damage_mod = [],
-                   damage = [],
-                   critRoll = {},
-                   critMulti = {},
-                   range_ = {},
-                   notes = [],
-                   data = {}):
+    def get_attacks(self,
+                    name_search_type = "substring",
+                    name = [],
+                    uuid = [],
+                    attackType = [],
+                    damageType = [],
+                    attack_mod = [],
+                    damage_mod = [],
+                    damage = [],
+                    critRoll = {},
+                    critMulti = {},
+                    range_ = {},
+                    notes = [],
+                    data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values
@@ -1193,76 +1194,76 @@ class Character:
         if type(notes) is not list:
             notes = [notes]
         # Filter attacks
-        attacks = self.attacks
+        attacks = [attack for attack in self.attacks]
         if name:
             subgroup = []
             if name_search_type == "absolute":
                 for search in name:
                     for i in attacks:
-                        if search == i["name"]:
+                        if search == i.name:
                             subgroup.append(i)
             elif name_search_type == "substring":
                 for search in name:
                     for i in attacks:
-                        if search in i["name"]:
+                        if search in i.name:
                             subgroup.append(i)
             else:
                 raise ValueError("get_attack: invalid name_search_type")
-            attacks = remove_duplicates_by_id(subgroup)
+            attacks = list(set(subgroup))
         if uuid:
             subgroup = []
             for search in uuid:
                 for i in attacks:
-                    if search == i["uuid"]:
+                    if search == i.uuid:
                         subgroup.append(i)
-            attacks = remove_duplicates_by_id(subgroup)
+            attacks = list(set(subgroup))
         if attackType:
             subgroup = []
             for search in attackType:
                 for i in attacks:
-                    if search in i["attackType"]:
+                    if search in i.attack_type:
                         subgroup.append(i)
-            attacks = remove_duplicates_by_id(subgroup)
+            attacks = list(set(subgroup))
         if damageType:
             subgroup = []
             for search in damageType:
                 for i in attacks:
-                    if search in i["damageType"]:
+                    if search in i.damage_type:
                         subgroup.append(i)
-            attacks = remove_duplicates_by_id(subgroup)
+            attacks = list(set(subgroup))
         if attack_mod:
             subgroup = []
             for search in attack_mod:
                 for i in attacks:
-                    if search in i["attack_mod"]:
+                    if search in i.attack_mod:
                         subgroup.append(i)
-            attacks = remove_duplicates_by_id(subgroup)
+            attacks = list(set(subgroup))
         if damage_mod:
             subgroup = []
             for search in damage_mod:
                 for i in attacks:
-                    if search in i["damage_mod"]:
+                    if search in i.damage_mod:
                         subgroup.append(i)
-            attacks = remove_duplicates_by_id(subgroup)
+            attacks = list(set(subgroup))
         if damage:
             subgroup = []
             for search in damage:
                 for i in attacks:
-                    if search in i["damage"]:
+                    if search in i.damage:
                         subgroup.append(i)
-            attacks = remove_duplicates_by_id(subgroup)
+            attacks = list(set(subgroup))
         if critRoll:
             attacks = numeric_filter(items = attacks,
-                                   key = "critRoll",
-                                   operations = critRoll)
+                                     key = "crit_roll",
+                                     operations = crit_roll)
         if critMulti:
             attacks = numeric_filter(items = attacks,
-                                   key = "critMulti",
-                                   operations = critMulti)
+                                     key = "crit_multi",
+                                     operations = crit_multi)
         if range_:
             attacks = numeric_filter(items = attacks,
-                                   key = "range",
-                                   operations = range_)
+                                     key = "range",
+                                     operations = range_)
         return attacks
 
     # Add a new class to the character; supports either named arguments 
@@ -1446,54 +1447,39 @@ class Character:
     # returns the newly created attack
     def add_attack(self,
                    name = "",
-                   uuid = "",
-                   attackType = "",
-                   damageType = "",
+                   attack_type = "",
+                   damage_type = "",
                    # default to str for mods so that attack creation 
                    # does not fail if not provided
                    attack_mod = "str",
                    damage_mod = "str", 
                    damage = "",
-                   critRoll = 20,
-                   critMulti = 2,
+                   crit_roll = 20,
+                   crit_multi = 2,
                    range_ = 0,
                    notes = "",
                    data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
-        new_uuid = data["uuid"] if "uuid" in keys else uuid
-        if not new_uuid:
-            new_uuid = uuid4()
-        # Validate that new_uuid is unique
-        if not self.is_unique_id(uuid = new_uuid, prop = "attacks"):
-            raise ValueError("add_attack: uuid must be unique among attacks")
-        new_attackType = data["attackType"] if "attackType" in keys else attackType
-        new_damageType = data["damageType"] if "damageType" in keys else damageType
+        new_attack_type = data["attack_type"] if "attack_type" in keys else attack_type
+        new_damage_type = data["damage_type"] if "damage_type" in keys else damage_type
         new_attack_mod = data["attack_mod"] if "attack_mod" in keys else attack_mod
         new_damage_mod = data["damage_mod"] if "damage_mod" in keys else damage_mod
-        # Ensure valid mod for attack & damage
-        if new_attack_mod not in _ability_names:
-            raise ValueError("add_attack: attack_mod not an allowed modifier")
-        if new_damage_mod not in _ability_names:
-            raise ValueError("add_attack: damage_mod not an allowed modifier")
         new_damage = data["damage"] if "damage" in keys else damage
-        new_critRoll = data["critRoll"] if "critRoll" in keys else critRoll
-        new_critMulti = data["critMulti"] if "critMulti" in keys else critMulti
+        new_crit_roll = data["crit_roll"] if "crit_roll" in keys else crit_roll
+        new_crit_multi = data["crit_multi"] if "crit_multi" in keys else crit_multi
         new_range = data["range"] if "range" in keys else range_
         new_notes = data["notes"] if "notes" in keys else notes
-        new_attack = {
-            "name": new_name,
-            "uuid": str(new_uuid),
-            "attackType": new_attackType,
-            "damageType": new_damageType,
-            "attack_mod": new_attack_mod,
-            "damage_mod": new_damage_mod,
-            "damage": new_damage,
-            "critRoll": new_critRoll,
-            "critMulti": new_critMulti,
-            "range": new_range,
-            "notes": new_notes
-        }
+        new_attack = Attack(name = new_name,
+                            attack_type = new_attack_type,
+                            damage_type = new_damage_type,
+                            attack_mod = new_attack_mod,
+                            damage_mod = new_damage_mod,
+                            damage = new_damage,
+                            crit_roll = new_crit_roll,
+                            crit_multi = new_crit_multi,
+                            range_ = new_range,
+                            notes = new_notes)
         self.attacks.append(new_attack)
         return new_attack
 
@@ -1602,72 +1588,6 @@ class Character:
             target["type"] = type_
         return target
 
-    # Update an existing attack based on uuid; supports either named 
-    # arguments or a dictionary
-    #
-    # returns the updated attack 
-    def update_attack(self,
-                      uuid = "",
-                      name = None,
-                      attackType = None,
-                      damageType = None,
-                      damage = None,
-                      attack_mod = None,
-                      damage_mod = None,
-                      critRoll = None,
-                      critMulti = None,
-                      range_ = None,
-                      notes = None,
-                      data = {}):
-        keys = data.keys()
-        allowed_mods = self.abilities.keys()
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        name = data["name"] if "name" in keys else name
-        attackType = data["attackType"] if "attackType" in keys else attackType
-        damageType = data["damageType"] if "damageType" in keys else damageType
-        damage = data["damage"] if "damage" in keys else damage
-        attack_mod = data["attack_mod"] if "attack_mod" in keys else attack_mod
-        damage_mod = data["damage_mod"] if "damage_mod" in keys else damage_mod
-        critRoll = data["critRoll"] if "critRoll" in keys else critRoll
-        critMulti = data["critMulti"] if "critMulti" in keys else critMulti
-        range_ = data["range"] if "range" in keys else range_
-        notes = data["notes"] if "notes" in keys else notes
-        # Get target attack
-        target_list = self.get_attack(uuid = uuid)
-        if not target_list:
-            raise ValueError("update_attack: no attack found with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Ignore parameters not provided, allowing for "falsey" values
-        if name is not None:
-            target["name"] = name
-        if attackType is not None:
-            target["attackType"] = attackType
-        if damageType is not None:
-            target["damageType"] = damageType
-        if damage is not None:
-            target["damage"] = damage
-        if attack_mod is not None:
-            # validate mods
-            if attack_mod in allowed_mods:
-                target["attack_mod"] = attack_mod
-            else:
-                raise ValueError("update_attack: attack_mod '{}' not an allowed modifier".format(attack_mod))
-        if damage_mod is not None:
-            if attack_mod in allowed_mods:
-                target["damage_mod"] = damage_mod
-            else:
-                raise ValueError("update_attack: damage_mod '{}' not an allowed modifier".format(damage_mod))
-        if critRoll is not None:
-            target["critRoll"] = critRoll
-        if critMulti is not None:
-            target["critMulti"] = critMulti
-        if range_ is not None:
-            target["range"] = range_
-        if notes is not None:
-            target["notes"] = notes
-        return target
-
     # Delete a class by uuid
     def delete_class(self,
                      character_class):
@@ -1732,15 +1652,12 @@ class Character:
 
     # Delete an attack by uuid
     def delete_attack(self,
-                      uuid):
-        # Ensure a valid target
-        target_list = self.get_attack(uuid = uuid)
-        if not target_list:
-            raise ValueError("delete_attack: no attack with uuid '{}'".format(uuid))
-        else:
-            target = target_list[0]
-        # Delete target
-        self.attacks.remove(target)
+                      attack):
+        try:
+            self.attacks.remove(attack)
+        except ValueError as err:
+            raise ValueError("delete_attack: {}".format(err))
+        return attack
 
     # Delete a piece of armor by uuid
     def delete_armor(self,
