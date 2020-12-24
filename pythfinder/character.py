@@ -263,13 +263,6 @@ class Character:
             for item in data["armor"]:
                 self.armor.append(Armor(data = item))
 
-    # Get the modifier for a given ability
-    def getAbilityMod(self, ability):
-        if ability <= 1:
-            return -5
-        else:
-            return math.floor(0.5 * ability - 5) # ability modifier equation
-
     # Returns the character's calculated AC value
     def get_total_AC(self,
                      flat_footed = False,
