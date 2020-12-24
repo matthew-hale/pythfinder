@@ -267,15 +267,15 @@ class Character:
     def get_total_AC(self,
                      flat_footed = False,
                      touch = False):
-        total_dex_mod = self.getAbilityMod(self.get_total_ability_value("dex"))
+        total_dex_mod = self.get_abilities(name = "dex")[0].modifier
         # Flat footed sets dex bonus to 0
-        if flat_footed:
+        if flat_footed and total_dex_mod > 0:
             total_dex_mod = 0
         total_armor_bonus = 0
         for item in self.armor:
-            total_armor_bonus += item["acBonus"]
-            if item["maxDexBonus"] < total_dex_mod:
-                total_dex_mod = item["maxDexBonus"]
+            total_armor_bonus += item.ac_bonus
+            if item.max_dex_bonus < total_dex_mod:
+                total_dex_mod = item.max_dex_bonus
         # Touch sets armor bonuses to 0
         if touch:
             total_armor_bonus = 0

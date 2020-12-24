@@ -1,3 +1,4 @@
+import math
 from uuid import uuid4
 from .vars import _ability_names, _saving_throw_names, _allowed_skill_names, _trained_only, _skill_mods
 
