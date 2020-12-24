@@ -30,7 +30,7 @@ class Character:
         self.hair = data["hair"] if "hair" in keys else ""
         self.eyes = data["eyes"] if "eyes" in keys else ""
         self.languages = data["languages"] if "languages" in keys else []
-        self.spells_per_day = daya["spells_per_day"] if "spells_per_day" in keys else {
+        self.spells_per_day = data["spells_per_day"] if "spells_per_day" in keys else {
             "0": 0,
             "1": 0,
             "2": 0,
