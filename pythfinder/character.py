@@ -29,6 +29,7 @@ class Character:
         self.description = data["description"] if "description" in keys else ""
         self.height = data["height"] if "height" in keys else ""
         self.weight = data["weight"] if "weight" in keys else 0
+        self.gender = data["gender"] if "gender" in keys else ""
         self.size = data["size"] if "size" in keys else ""
         self.age = data["age"] if "age" in keys else 0
         self.hair = data["hair"] if "hair" in keys else ""
