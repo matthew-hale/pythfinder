@@ -386,6 +386,7 @@ class Attack:
                  crit_multi = 2,
                  range_ = 0,
                  notes = "",
+                 misc = [],
                  data = {}):
         keys = data.keys()
         self.name = data["name"] if "name" in keys else name
@@ -398,6 +399,7 @@ class Attack:
         self.crit_multi = data["crit_multi"] if "crit_multi" in keys else crit_multi
         self.range = data["range"] if "range" in keys else range_
         self.notes = data["notes"] if "notes" in keys else notes
+        self.misc = data["misc"] if "misc" in keys else misc
         self.uuid = data["uuid"] if "uuid" in keys else uuid
 
         if not self.uuid:
@@ -436,6 +438,7 @@ class Attack:
             "crit_multi": self.crit_multi,
             "range": self.range,
             "notes": self.notes,
+            "misc": self.misc,
             "uuid": self.uuid
         }
 
@@ -450,6 +453,7 @@ class Attack:
                crit_multi = None,
                range_ = None,
                notes = None,
+               misc = None,
                data = {}):
         keys = data.keys()
         name = data["name"] if "name" in keys else name
@@ -474,6 +478,8 @@ class Attack:
             self.range = range_
         if notes is not None:
             self.notes = notes
+        if misc is not None:
+            self.misc = misc
         return self
 
 class Armor:
