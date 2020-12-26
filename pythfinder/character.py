@@ -27,6 +27,7 @@ class Character:
         self.initiative_mods = data["initiative_mods"] if "initiative_mods" in keys else []
         self.alignment = data["alignment"] if "alignment" in keys else ""
         self.description = data["description"] if "description" in keys else ""
+        self.notes = data["notes"] if "notes" in keys else ""
         self.height = data["height"] if "height" in keys else ""
         self.weight = data["weight"] if "weight" in keys else 0
         self.gender = data["gender"] if "gender" in keys else ""
