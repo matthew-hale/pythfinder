@@ -266,11 +266,11 @@ class Skill:
                  is_class = False, 
                  notes = "",
                  misc = [],
-                 use_untrained = "",
+                 use_untrained = None,
                  mod = "",
                  data = {}):
         keys = data.keys()
-        self._name = data["name"] if "name" in keys else name
+        self.name = data["name"] if "name" in keys else name
         self.rank = data["rank"] if "rank" in keys else rank
         self.is_class = data["is_class"] if "is_class" in keys else is_class
         self.notes = data["notes"] if "notes" in keys else notes
@@ -278,13 +278,19 @@ class Skill:
         self.use_untrained = data["use_untrained"] if "use_untrained" in keys else use_untrained
         self.mod = data["mod"] if "mod" in keys else mod
         self.uuid = data["uuid"] if "uuid" in keys else uuid
-        if not self.use_untrained:
-            if self._name in _trained_only:
-                self.use_untrained = False
-            else:
-                self.use_untrained = True
+        if self.use_untrained == None:
+            for trained in _trained_only:
+                if trained in self.name:
+                    self.use_untrained = False
+                else:
+                    self.use_untrained = True
         if not self.mod:
-            self.mod = _skill_mods[self._name]
+            for n in _valid_names:
+                if n in self.name:
+                    self.mod = _skill_mods[n]
+                    break
+        if not self.mod:
+            self.mod = _skill_mods[self.name]
 
         if not self.uuid:
             self.uuid = str(uuid4())
@@ -292,9 +298,11 @@ class Skill:
     # We want a "name" key, not a "_name" key
     def get_dict(self):
         return {
-            "name": self._name,
+            "name": self.name,
             "rank": self.rank,
             "is_class": self.is_class,
+            "use_untrained": self.use_untrained,
+            "mod": self.mod,
             "notes": self.notes,
             "misc": self.misc,
             "uuid": self.uuid
