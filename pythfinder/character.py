@@ -345,7 +345,7 @@ class Character:
         out.skills = [skill.get_dict() for skill in out.skills] # name enforcement
         out.classes = [class_.__dict__ for class_ in out.classes]
         out.abilities = [ability.get_dict() for ability in out.abilities] # name enforcement
-        out.saving_throws = [saving_throw.__dict__ for saving_throw in out.saving_throws]
+        out.saving_throws = [saving_throw.get_dict() for saving_throw in out.saving_throws] # name enforcement
         out.spells = [spell.__dict__ for spell in out.spells]
         out.attacks = [attack.get_dict() for attack in out.attacks] # ability enforcement
         out.armor = [armor.__dict__ for armor in out.armor]
@@ -586,12 +586,12 @@ class Character:
     # Returns saving_throws based on given filters; multiple values 
     # for a given property are treated like an 'or', while each 
     # separate property is treated like an 'and'.
-    def get_saving_throw(self,
-                         name_search_type = "substring",
-                         name = [],
-                         base = {},
-                         misc = {},
-                         data = {}):
+    def get_saving_throws(self,
+                          name_search_type = "substring",
+                          name = [],
+                          base = {},
+                          misc = {},
+                          data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
         # non-list values into lists, except for numeric values

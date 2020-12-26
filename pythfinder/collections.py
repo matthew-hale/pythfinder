@@ -219,9 +219,24 @@ class SavingThrow:
         self.name = data["name"] if "name" in keys else name
         self.base = data["base"] if "base" in keys else base
         self.misc = data["misc"] if "misc" in keys else misc
-        # Validate saving throw name
-        if self.name not in _saving_throw_names:
-            raise ValueError("SavingThrow.__init__: '{}' not an allowed saving throw name".format(self.name))
+
+    # Validate saving throw name
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        if value not in _saving_throw_names:
+            raise ValueError("SavingThrow.name: '{}' not an allowed saving throw name".format(self.value))
+        self._name = value
+
+    def get_dict(self):
+        return {
+            "name": self.name,
+            "base": self.base,
+            "misc": self.misc
+        }
 
     # Accepts either named parameters or a dictionary of parameters; 
     # treat as a 'PATCH' request
