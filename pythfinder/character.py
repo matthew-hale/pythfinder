@@ -107,7 +107,7 @@ class Character:
         self.classes = []
         if "classes" in keys:
             for item in data["classes"]:
-                _ = self.add_class(data = item)
+                self.classes.append(CharacterClass(data = item))
 
         # Ability initialization
 
