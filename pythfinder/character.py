@@ -46,6 +46,30 @@ class Character:
             "8": 0,
             "9": 0
         }
+        self.spells_known = data["spells_known"] if "spells_known" in keys else {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+        }
+        self.bonus_spells = data["bonus_spells"] if "bonus_spells" in keys else {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 0
+        }
         self.base_attack_bonus = data["base_attack_bonus"] if "base_attack_bonus" in keys else 0
         self.gold = data["gold"] if "gold" in keys else 0
 
