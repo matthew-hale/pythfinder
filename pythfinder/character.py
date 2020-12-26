@@ -1379,14 +1379,11 @@ class Character:
         new_is_class = data["is_class"] if "is_class" in keys else is_class
         new_notes = data["notes"] if "notes" in keys else notes
         new_misc = data["misc"] if "misc" in keys else misc
-        new_skill = {
-            "name": new_name,
-            "uuid": str(new_uuid),
-            "rank": new_rank,
-            "is_class": new_is_class,
-            "notes": new_notes,
-            "misc": new_misc,
-        }
+        new_skill = Skill(name = new_name,
+                          rank = new_rank,
+                          is_class = new_is_class,
+                          notes = new_notes,
+                          misc = new_misc)
         self.skills.append(new_skill)
         return new_skill
 
