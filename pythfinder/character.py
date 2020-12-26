@@ -619,7 +619,7 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_saving_throw: invalid name_search_type")
-            saving_throws = list(set(saving_throws))
+            saving_throws = list(set(subgroup))
         if base:
             saving_throws = numeric_filter_objects(items = saving_throws,
                                        key = "base",
