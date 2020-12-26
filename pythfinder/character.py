@@ -1161,15 +1161,16 @@ class Character:
                     name_search_type = "substring",
                     name = [],
                     uuid = [],
-                    attackType = [],
-                    damageType = [],
+                    attack_type = [],
+                    damage_type = [],
                     attack_mod = [],
                     damage_mod = [],
                     damage = [],
-                    critRoll = {},
-                    critMulti = {},
+                    crit_roll = {},
+                    crit_multi = {},
                     range_ = {},
                     notes = [],
+                    misc = {},
                     data = {}):
         keys = data.keys()
         # Gather values from either parameters or data, converting 
@@ -1183,12 +1184,12 @@ class Character:
         uuid = data["uuid"] if "uuid" in keys else uuid
         if type(uuid) is not list:
             uuid = [uuid]
-        attackType = data["attackType"] if "attackType" in keys else attackType
-        if type(attackType) is not list:
-            attackType = [attackType]
-        damageType = data["damageType"] if "damageType" in keys else damageType
-        if type(damageType) is not list:
-            damageType = [damageType]
+        attack_type = data["attack_type"] if "attack_type" in keys else attack_type
+        if type(attack_type) is not list:
+            attack_type = [attack_type]
+        damage_type = data["damage_type"] if "damage_type" in keys else damage_type
+        if type(damage_type) is not list:
+            damage_type = [damage_type]
         attack_mod = data["attack_mod"] if "attack_mod" in keys else attack_mod
         if type(attack_mod) is not list:
             attack_mod = [attack_mod]
@@ -1198,8 +1199,8 @@ class Character:
         damage = data["damage"] if "damage" in keys else damage
         if type(damage) is not list:
             damage = [damage]
-        critRoll = data["critRoll"] if "critRoll" in keys else critRoll
-        critMulti = data["critMulti"] if "critMulti" in keys else critMulti
+        crit_roll = data["crit_roll"] if "crit_roll" in keys else crit_roll
+        crit_multi = data["crit_multi"] if "crit_multi" in keys else crit_multi
         range_ = data["range"] if "range" in keys else range_
         notes = data["notes"] if "notes" in keys else notes
         if type(notes) is not list:
@@ -1228,16 +1229,16 @@ class Character:
                     if search == i.uuid:
                         subgroup.append(i)
             attacks = list(set(subgroup))
-        if attackType:
+        if attack_type:
             subgroup = []
-            for search in attackType:
+            for search in attack_type:
                 for i in attacks:
                     if search in i.attack_type:
                         subgroup.append(i)
             attacks = list(set(subgroup))
-        if damageType:
+        if damage_type:
             subgroup = []
-            for search in damageType:
+            for search in damage_type:
                 for i in attacks:
                     if search in i.damage_type:
                         subgroup.append(i)
@@ -1263,11 +1264,11 @@ class Character:
                     if search in i.damage:
                         subgroup.append(i)
             attacks = list(set(subgroup))
-        if critRoll:
+        if crit_roll:
             attacks = numeric_filter_objects(items = attacks,
                                      key = "crit_roll",
                                      operations = crit_roll)
-        if critMulti:
+        if crit_multi:
             attacks = numeric_filter_objects(items = attacks,
                                      key = "crit_multi",
                                      operations = crit_multi)
@@ -1275,6 +1276,10 @@ class Character:
             attacks = numeric_filter_objects(items = attacks,
                                      key = "range",
                                      operations = range_)
+        if misc:
+            attacks = numeric_filter_objects(items = attacks,
+                                     key = "misc",
+                                     operations = misc)
         return attacks
 
     # Add a new class to the character; supports either named arguments 
@@ -1433,6 +1438,7 @@ class Character:
                    crit_multi = 2,
                    range_ = 0,
                    notes = "",
+                   misc = [],
                    data = {}):
         keys = data.keys()
         new_name = data["name"] if "name" in keys else name
@@ -1445,6 +1451,7 @@ class Character:
         new_crit_multi = data["crit_multi"] if "crit_multi" in keys else crit_multi
         new_range = data["range"] if "range" in keys else range_
         new_notes = data["notes"] if "notes" in keys else notes
+        new_misc = data["misc"] if "misc" in keys else misc
         new_attack = Attack(name = new_name,
                             attack_type = new_attack_type,
                             damage_type = new_damage_type,
@@ -1454,7 +1461,8 @@ class Character:
                             crit_roll = new_crit_roll,
                             crit_multi = new_crit_multi,
                             range_ = new_range,
-                            notes = new_notes)
+                            notes = new_notes,
+                            misc = new_misc)
         self.attacks.append(new_attack)
         return new_attack
 
