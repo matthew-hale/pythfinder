@@ -1484,7 +1484,6 @@ class Character:
         new_arcane_failure_chance = data["arcane_failure_chance"] if "arcane_failure_chance" in keys else arcane_failure_chance
         new_type = data["type"] if "type" in keys else type_
         new_armor = Armor(name = new_name,
-                          uuid = str(new_uuid),
                           ac_bonus = new_ac_bonus,
                           ac_penalty = new_ac_penalty,
                           max_dex_bonus = new_max_dex_bonus,
