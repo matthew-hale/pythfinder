@@ -85,6 +85,7 @@ class Ability:
         return {
             "name": self.name,
             "base": self.base,
+            "modifier": self.modifier,
             "misc": self.misc
         }
 

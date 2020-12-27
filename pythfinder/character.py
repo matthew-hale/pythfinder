@@ -543,6 +543,7 @@ class Character:
                       name_search_type = "substring",
                       name = [],
                       base = {},
+                      modifier = {},
                       misc = {},
                       data = {}):
         keys = data.keys()
@@ -577,6 +578,10 @@ class Character:
             abilities = numeric_filter_objects(items = abilities,
                                                attr = "base",
                                                operations = base)
+        if modifier:
+            abilities = numeric_filter_objects(items = abilities,
+                                               attr = "modifier",
+                                               operations = modifier)
         if misc:
             abilities = numeric_filter_objects(items = abilities,
                                                attr = "misc",
