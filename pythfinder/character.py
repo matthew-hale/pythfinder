@@ -556,6 +556,7 @@ class Character:
         if type(name) is not list:
             name = [name]
         base = data["base"] if "base" in keys else base
+        modifier = data["modifier"] if "modifier" in keys else modifier
         misc = data["misc"] if "misc" in keys else misc
         # Filter abilities
         abilities = self.abilities
