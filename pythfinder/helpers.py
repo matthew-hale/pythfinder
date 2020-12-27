@@ -15,7 +15,9 @@ def numeric_filter_objects(items,
                            operations = {}):
     allowed_operators = {"lt", "gt", "le", "ge", "eq", "ne"}
     for item in items:
-        if attr not in item.__dict__.keys():
+        try:
+            getattr(item, attr)
+        except AttributeError:
             raise AttributeError("numeric_filter: attr '" + attr + "' not in attributes of given object")
     if type(operations) is int or type(operations) is float:
         operations = {
