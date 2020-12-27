@@ -480,6 +480,16 @@ class Attack:
                data = {}):
         keys = data.keys()
         name = data["name"] if "name" in keys else name
+        attack_type = data["attack_type"] if "attack_type" in keys else attack_type
+        damage_type = data["damage_type"] if "damage_type" in keys else damage_type
+        attack_mod = data["attack_mod"] if "attack_mod" in keys else attack_mod
+        damage_mod = data["damage_mod"] if "damage_mod" in keys else damage_mod
+        damage = data["damage"] if "damage" in keys else damage
+        crit_roll = data["crit_roll"] if "crit_roll" in keys else crit_roll
+        crit_multi = data["crit_multi"] if "crit_multi" in keys else crit_multi
+        range_ = data["range"] if "range" in keys else range_
+        notes = data["notes"] if "notes" in keys else notes
+        misc = data["misc"] if "misc" in keys else misc
         # Ignore parameters not provided, allowing for "falsey" values
         if name is not None:
             self.name = name
