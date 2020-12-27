@@ -1130,6 +1130,7 @@ class Character:
                 for i in armor:
                     if search == i.uuid:
                         subgroup.append(i)
+            armor = list(set(subgroup))
         if ac_bonus:
             armor = numeric_filter_objects(items = armor,
                                     key = "ac_bonus",
