@@ -351,10 +351,9 @@ class Character:
         out.armor = [armor.__dict__ for armor in out.armor]
         return out.__dict__
 
-    # Returns a formatted JSON string representation of the entire 
-    # character
+    # Returns a JSON string representation of the entire character
     def get_json(self):
-        return json.dumps(self.get_dict(), indent = 4)
+        return json.dumps(self.get_dict())
 
     # Returns the total value of the specified skill, taking into 
     # account all of the current modifiers, including:
