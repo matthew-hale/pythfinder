@@ -104,70 +104,29 @@ class Character:
                 "burrow": 0
             }
 
-        self.classes = []
+        self.classes = {}
         if "classes" in keys:
-            for item in data["classes"]:
-                self.classes.append(CharacterClass(data = item))
+            for item in data["classes"].values():
+                obj = CharacterClass(data = item)
+                self.classes[obj.uuid] = obj
 
         # Ability initialization
 
-        # Although abilities are stored as a list, they are also 
-        # fixed - at least, by name. There are only 6 abilities. Thus, 
-        # we don't have an 'add_ability' method anywhere. However, 
-        # abilities are still objects, so we can use their class to 
-        # construct them.
-        self.abilities = []
+        # There are only 6 abilities. Thus, we don't have an 
+        # 'add_ability' method anywhere. However, abilities are still 
+        # objects, so we can use their class to construct them.
+        self.abilities = {}
         if "abilities" in keys:
             for name in _ability_names:
-                target_ability_list = [a for a in data["abilities"] if a["name"] == name]
-                if not target_ability_list:
-                    target_ability = {
-                        "name": name,
-                        "base": 0,
-                        "misc": []
-                    }
-                else:
-                    target_ability = target_ability_list[0]
-                subkeys = target_ability.keys()
-                new_ability = {
-                    "name": target_ability["name"]
-                }
-                new_ability["base"] = target_ability["base"] if "base" in subkeys else 0
-                new_ability["misc"] = target_ability["misc"] if "misc" in subkeys else []
-                self.abilities.append(Ability(data = new_ability))
+                try:
+                    new_data = data["abilities"][name]
+                except:
+                    new_data = {"name": name, "base": 0, "misc": []}
+                self.abilities[name] = Ability(data = new_data)
         else:
-            self.abilities = [
-                Ability(data = {
-                    "name": "str",
-                    "base": 0,
-                    "misc": []
-                }),
-                Ability(data = {
-                    "name": "dex",
-                    "base": 0,
-                    "misc": []
-                }),
-                Ability(data = {
-                    "name": "con",
-                    "base": 0,
-                    "misc": []
-                }),
-                Ability(data = {
-                    "name": "int",
-                    "base": 0,
-                    "misc": []
-                }),
-                Ability(data = {
-                    "name": "wis",
-                    "base": 0,
-                    "misc": []
-                }),
-                Ability(data = {
-                    "name": "cha",
-                    "base": 0,
-                    "misc": []
-                })
-            ]
+            for name in _ability_names:
+                new_data = {"name": name, "base": 0, "misc": []}
+                self.abilities[name] = Ability(data = new_data)
 
         if "hp" in keys:
             data_keys = data["hp"].keys()
@@ -187,110 +146,99 @@ class Character:
 
         # Special ability initialization
         #
-        self.specials = []
+        self.specials = {}
         #
         # If the character has no special abilities, we'll just skip it 
-        # and leave it as an empty list. Otherwise, we'll want to add 
+        # and leave it as an empty dict. Otherwise, we'll want to add 
         # abilities using the BasicItem class.
         if "specials" in keys:
-            for item in data["specials"]:
-                self.specials.append(BasicItem(data = item))
+            for item in data["specials"].values():
+                obj = BasicItem(data = item)
+                self.specials[obj.uuid] = obj
 
         # Trait initialization
         #
-        self.traits = []
+        self.traits = {}
         #
         # As above.
         if "traits" in keys:
-            for item in data["traits"]:
-                self.traits.append(BasicItem(data = item))
+            for item in data["traits"].values():
+                obj = BasicItem(data = item)
+                self.traits[obj.uuid] = obj
 
         # Feat initialization
         #
-        self.feats = []
+        self.feats = {}
         #
         # As above.
         if "feats" in keys:
-            for item in data["feats"]:
-                self.feats.append(BasicItem(data = item))
+            for item in data["feats"].values():
+                obj = BasicItem(data = item)
+                self.feats[obj.uuid] = obj
 
-        self.equipment = []
+        self.equipment = {}
         if "equipment" in keys:
-            for item in data["equipment"]:
-                self.equipment.append(Equipment(data = item))
+            for item in data["equipment"].values():
+                obj = Equipment(data = item)
+                self.equipment[obj.uuid] = obj
 
         # Saving throw initialization
         #
-        self.saving_throws = []
+        self.saving_throws = {}
         #
         # Saving throws are like abilities: there's only 3, and they're 
         # the same for everyone.
         if "saving_throws" in keys:
             for name in _saving_throw_names:
-                target_saving_throw_list = [a for a in data["saving_throws"] if a["name"] == name]
-                if not target_saving_throw_list:
-                    target_saving_throw = {
-                        "name": name,
-                        "base": 0,
-                        "misc": []
-                    }
-                else:
-                    target_saving_throw = target_saving_throw_list[0]
-                self.saving_throws.append(SavingThrow(data = target_saving_throw))
+                try:
+                    new_data = data["abilities"][name]
+                except:
+                    new_data = {"name": name, "base": 0, "misc": []}
+                self.saving_throws[name] = SavingThrow(data = new_data)
         else:
-            self.saving_throws = [
-                SavingThrow(data = {
-                    "name": "fortitude", 
-                    "base": 0,
-                    "misc": []
-                }),
-                SavingThrow(data = {
-                    "name": "reflex",
-                    "base": 0,
-                    "misc": []
-                }),
-                SavingThrow(data = {
-                    "name": "will",
-                    "base": 0,
-                    "misc": []
-                })
-            ]
+            for name in _saving_throw_names:
+                new_data = {"name": name, "base": 0, "misc": []}
+                self.saving_throws[name] = SavingThrow(data = new_data)
         
         # Skill initialization
         #
-        self.skills = []
+        self.skills = {}
         if "skills" in keys:
-            for item in data["skills"]:
-                self.skills.append(Skill(data = item))
+            for item in data["skills"].values():
+                obj = Skill(data = item)
+                self.skills[obj.uuid] = obj
 
         # If there are no skills in the character data, initialize from 
         # defaults
         else:
             for skill_name in _allowed_skill_names:
-                self.skills.append(Skill(data = {
+                self.skills[skill_name] = Skill(data = {
                     "name": skill_name,
                     "rank": 0,
                     "is_class":  False,
                     "notes": "",
                     "misc": []
-                }))
+                })
 
         # Spells, attacks, and armor are all collections of plain 
         # objects; their initialization is pretty boring
-        self.spells = []
+        self.spells = {}
         if "spells" in keys:
-            for item in data["spells"]:
-                self.spells.append(Spell(data = item))
+            for item in data["spells"].values():
+                obj = Spell(data = item)
+                self.spells[obj.uuid] = obj
 
-        self.attacks = []
+        self.attacks = {}
         if "attacks" in keys:
-            for item in data["attacks"]:
-                self.attacks.append(Attack(data = item))
+            for item in data["attacks"].values():
+                obj = Attack(data = item)
+                self.attacks[obj.uuid] = obj
 
-        self.armor = []
+        self.armor = {}
         if "armor" in keys:
-            for item in data["armor"]:
-                self.armor.append(Armor(data = item))
+            for item in data["armor"].values():
+                obj = Armor(data = item)
+                self.armor[obj.uuid] = obj
 
     # Returns the character's calculated AC value
     def get_total_AC(self,
@@ -338,17 +286,17 @@ class Character:
     # into dicts first
     def get_dict(self):
         out = copy.deepcopy(self)
-        out.feats = [feat.__dict__ for feat in out.feats]
-        out.traits = [trait.__dict__ for trait in out.traits]
-        out.specials = [special.__dict__ for special in out.specials]
-        out.equipment = [equipment.__dict__ for equipment in out.equipment]
-        out.skills = [skill.get_dict() for skill in out.skills] # name enforcement
-        out.classes = [class_.__dict__ for class_ in out.classes]
-        out.abilities = [ability.get_dict() for ability in out.abilities] # name enforcement
-        out.saving_throws = [saving_throw.get_dict() for saving_throw in out.saving_throws] # name enforcement
-        out.spells = [spell.__dict__ for spell in out.spells]
-        out.attacks = [attack.get_dict() for attack in out.attacks] # ability enforcement
-        out.armor = [armor.__dict__ for armor in out.armor]
+        out.feats = {obj.uuid : obj.__dict__ for obj in out.feats.values()}
+        out.traits = {obj.uuid : obj.__dict__ for obj in out.traits.values()}
+        out.specials = {obj.uuid : obj.__dict__ for obj in out.specials.values()}
+        out.equipment = {obj.uuid : obj.__dict__ for obj in out.equipment.values()}
+        out.skills = {obj.uuid : obj.get_dict() for obj in out.skills.values()} # name enforcement
+        out.classes = {obj.uuid : obj.__dict__ for obj in out.classes.values()}
+        out.abilities = {obj.name : obj.get_dict() for obj in out.abilities.values()} # name enforcement
+        out.saving_throws = {obj.name : obj.get_dict() for obj in out.saving_throws.values()} # name enforcement
+        out.spells = {obj.uuid : obj.__dict__ for obj in out.spells.values()}
+        out.attacks = {obj.uuid : obj.get_dict() for obj in out.attacks.values()} # ability enforcement
+        out.armor = {obj.uuid : obj.__dict__ for obj in out.armor.values()}
         return out.__dict__
 
     # Returns a JSON string representation of the entire character
@@ -439,7 +387,6 @@ class Character:
     def get_equipment(self,
                       name_search_type = "substring",
                       name = [],
-                      uuid = [],
                       weight = {},
                       count = {},
                       camp = [],
@@ -456,9 +403,6 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        if type(uuid) is not list:
-            uuid = [uuid]
         weight = data["weight"] if "weight" in keys else weight
         count = data["count"] if "count" in keys else count
         camp = data["camp"] if "camp" in keys else camp
@@ -474,7 +418,7 @@ class Character:
         if type(notes) is not list:
             notes = [notes]
         # Filter items
-        items = self.equipment
+        items = self.equipment.values()
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -489,13 +433,6 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_equipment: invalid name_search_type")
-            items = list(set(subgroup))
-        if uuid:
-            subgroup = []
-            for search in uuid:
-                for i in items:
-                    if search == i.uuid:
-                        subgroup.append(i)
             items = list(set(subgroup))
         if weight:
             items = numeric_filter_objects(items = items,
@@ -558,7 +495,7 @@ class Character:
         modifier = data["modifier"] if "modifier" in keys else modifier
         misc = data["misc"] if "misc" in keys else misc
         # Filter abilities
-        abilities = self.abilities
+        abilities = self.abilities.values()
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -609,7 +546,7 @@ class Character:
         base = data["base"] if "base" in keys else base
         misc = data["misc"] if "misc" in keys else misc
         # Filter saving_throws
-        saving_throws = [throw for throw in self.saving_throws]
+        saving_throws = self.saving_throws.values()
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -643,7 +580,6 @@ class Character:
     def get_classes(self,
                     name_search_type = "substring",
                     name = [],
-                    uuid = [],
                     archetypes = [],
                     level = {},
                     data = {}):
@@ -656,15 +592,12 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        if type(uuid) is not list:
-            uuid = [uuid]
         archetypes = data["archetypes"] if "archetypes" in keys else archetypes
         if type(archetypes) is not list:
             archetypes = [archetypes]
         level = data["level"] if "level" in keys else level
         # Filter classes
-        classes = self.classes
+        classes = self.classes.values()
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -679,13 +612,6 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_class: invalid name_search_type")
-            classes = list(set(subgroup))
-        if uuid:
-            subgroup = []
-            for search in uuid:
-                for i in classes:
-                    if search == i.uuid:
-                        subgroup.append(i)
             classes = list(set(subgroup))
         if archetypes:
             subgroup = []
@@ -708,7 +634,6 @@ class Character:
     def get_feats(self,
                   name_search_type = "substring",
                   name = [],
-                  uuid = [],
                   description = [],
                   notes = [],
                   data = {}):
@@ -721,9 +646,6 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        if type(uuid) is not list:
-            uuid = [uuid]
         description = data["description"] if "description" in keys else description
         if type(description) is not list:
             description = [description]
@@ -731,7 +653,7 @@ class Character:
         if type(notes) is not list:
             notes = [notes]
         # Filter feats
-        feats = [feat for feat in self.feats]
+        feats = self.feats.values()
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -746,13 +668,6 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_feat: invalid name_search_type")
-            feats = list(set(subgroup))
-        if uuid:
-            subgroup = []
-            for search in uuid:
-                for i in feats:
-                    if search == i.uuid:
-                        subgroup.append(i)
             feats = list(set(subgroup))
         if description:
             subgroup = []
@@ -776,7 +691,6 @@ class Character:
     def get_traits(self,
                    name_search_type = "substring",
                    name = [],
-                   uuid = [],
                    description = [],
                    notes = [],
                    data = {}):
@@ -789,9 +703,6 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        if type(uuid) is not list:
-            uuid = [uuid]
         description = data["description"] if "description" in keys else description
         if type(description) is not list:
             description = [description]
@@ -799,7 +710,7 @@ class Character:
         if type(notes) is not list:
             notes = [notes]
         # Filter traits
-        traits = [trait for trait in self.traits]
+        traits = self.traits.values()
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -814,13 +725,6 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_trait: invalid name_search_type")
-            traits = list(set(subgroup))
-        if uuid:
-            subgroup = []
-            for search in uuid:
-                for i in traits:
-                    if search == i.uuid:
-                        subgroup.append(i)
             traits = list(set(subgroup))
         if description:
             subgroup = []
@@ -844,7 +748,6 @@ class Character:
     def get_specials(self,
                      name_search_type = "substring",
                      name = [],
-                     uuid = [],
                      description = [],
                      notes = [],
                      data = {}):
@@ -857,9 +760,6 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        if type(uuid) is not list:
-            uuid = [uuid]
         description = data["description"] if "description" in keys else description
         if type(description) is not list:
             description = [description]
@@ -867,7 +767,7 @@ class Character:
         if type(notes) is not list:
             notes = [notes]
         # Filter specials
-        specials = [special for special in self.specials]
+        specials = self.specials.values()
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -882,13 +782,6 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_special: invalid name_search_type")
-            specials = list(set(subgroup))
-        if uuid:
-            subgroup = []
-            for search in uuid:
-                for i in specials:
-                    if search == i.uuid:
-                        subgroup.append(i)
             specials = list(set(subgroup))
         if description:
             subgroup = []
@@ -912,7 +805,6 @@ class Character:
     def get_skills(self,
                    name_search_type = "substring",
                    name = [],
-                   uuid = [],
                    rank = {},
                    is_class = [],
                    mod = [],
@@ -929,9 +821,6 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        if type(uuid) is not list:
-            uuid = [uuid]
         rank = data["rank"] if "rank" in keys else rank
         is_class = data["is_class"] if "is_class" in keys else is_class
         if type(is_class) is not list:
@@ -947,7 +836,7 @@ class Character:
             use_untrained = [use_untrained]
         misc = data["misc"] if "misc" in keys else misc
         # Filter skills
-        skills = [skill for skill in self.skills]
+        skills = self.skills.values()
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -962,13 +851,6 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_skill: invalid name_search_type")
-            skills = list(set(subgroup))
-        if uuid:
-            subgroup = []
-            for search in uuid:
-                for i in skills:
-                    if search == i.uuid:
-                        subgroup.append(i)
             skills = list(set(subgroup))
         if is_class:
             subgroup = []
@@ -1014,7 +896,6 @@ class Character:
     def get_spells(self,
                    name_search_type = "substring",
                    name = [],
-                   uuid = [],
                    level = {},
                    description = [],
                    prepared = {},
@@ -1029,9 +910,6 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        if type(uuid) is not list:
-            uuid = [uuid]
         level = data["level"] if "level" in keys else level
         prepared = data["prepared"] if "prepared" in keys else prepared
         cast = data["cast"] if "cast" in keys else cast
@@ -1039,7 +917,7 @@ class Character:
         if type(description) is not list:
             description = [description]
         # Filter spells
-        spells = self.spells
+        spells = self.spells.values()
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -1059,13 +937,6 @@ class Character:
             spells = numeric_filter_objects(items = spells,
                                     key = "level",
                                     operations = level)
-        if uuid:
-            subgroup = []
-            for search in uuid:
-                for i in spells:
-                    if search == i.uuid:
-                        subgroup.append(i)
-            spells = list(set(subgroup))
         if description:
             subgroup = []
             for search in description:
@@ -1089,7 +960,6 @@ class Character:
     def get_armor(self,
                   name_search_type = "substring",
                   name = [],
-                  uuid = [],
                   ac_bonus = {},
                   ac_penalty = {},
                   max_dex_bonus = {},
@@ -1105,15 +975,12 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        if type(uuid) is not list:
-            uuid = [uuid]
         ac_bonus = data["ac_bonus"] if "ac_bonus" in keys else ac_bonus
         ac_penalty = data["ac_penalty"] if "ac_penalty" in keys else ac_penalty
         max_dex_bonus = data["max_dex_bonus"] if "max_dex_bonus" in keys else max_dex_bonus
         arcane_failure_chance = data["arcane_failure_chance"] if "arcane_failure_chance" in keys else arcane_failure_chance
         # _filter armor
-        armor = self.armor
+        armor = self.armor.values()
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -1128,13 +995,6 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_armor: invalid name_search_type")
-            armor = list(set(subgroup))
-        if uuid:
-            subgroup = []
-            for search in uuid:
-                for i in armor:
-                    if search == i.uuid:
-                        subgroup.append(i)
             armor = list(set(subgroup))
         if ac_bonus:
             armor = numeric_filter_objects(items = armor,
@@ -1167,7 +1027,6 @@ class Character:
     def get_attacks(self,
                     name_search_type = "substring",
                     name = [],
-                    uuid = [],
                     attack_type = [],
                     damage_type = [],
                     attack_mod = [],
@@ -1188,9 +1047,6 @@ class Character:
             name_search_type = "substring"
         if type(name) is not list:
             name = [name]
-        uuid = data["uuid"] if "uuid" in keys else uuid
-        if type(uuid) is not list:
-            uuid = [uuid]
         attack_type = data["attack_type"] if "attack_type" in keys else attack_type
         if type(attack_type) is not list:
             attack_type = [attack_type]
@@ -1213,7 +1069,7 @@ class Character:
         if type(notes) is not list:
             notes = [notes]
         # Filter attacks
-        attacks = [attack for attack in self.attacks]
+        attacks = self.attacks.values()
         if name:
             subgroup = []
             if name_search_type == "absolute":
@@ -1228,13 +1084,6 @@ class Character:
                             subgroup.append(i)
             else:
                 raise ValueError("get_attack: invalid name_search_type")
-            attacks = list(set(subgroup))
-        if uuid:
-            subgroup = []
-            for search in uuid:
-                for i in attacks:
-                    if search == i.uuid:
-                        subgroup.append(i)
             attacks = list(set(subgroup))
         if attack_type:
             subgroup = []
@@ -1305,7 +1154,7 @@ class Character:
         new_class = CharacterClass(name = new_name,
                                    archetypes = new_archetypes,
                                    level = new_level)
-        self.classes.append(new_class)
+        self.classes[new_class.uuid] = new_class
         return new_class
 
     # Add a new feat to the character; supports either named arguments 
@@ -1324,7 +1173,7 @@ class Character:
         new_feat = BasicItem(name = new_name,
                              description = new_description,
                              notes = new_notes)
-        self.feats.append(new_feat)
+        self.feats[new_feat.uuid] = new_feat
         return new_feat
 
     # Add a new trait to the character; supports either named arguments 
@@ -1343,7 +1192,7 @@ class Character:
         new_trait = BasicItem(name = new_name,
                               description = new_description,
                               notes = new_notes)
-        self.traits.append(new_trait)
+        self.traits[new_trait.uuid] = new_trait
         return new_trait
 
     # Add a new special ability to the character; supports either named 
@@ -1362,7 +1211,7 @@ class Character:
         new_special = BasicItem(name = new_name,
                                 description = new_description,
                                 notes = new_notes)
-        self.specials.append(new_special)
+        self.specials[new_special.uuid] = new_special
         return new_special
 
     # Add a skill to the character (craft, profession, and perform); 
@@ -1390,7 +1239,7 @@ class Character:
                           is_class = new_is_class,
                           notes = new_notes,
                           misc = new_misc)
-        self.skills.append(new_skill)
+        self.skills[new_skill.uuid] = new_skill
         return new_skill
 
 
@@ -1422,7 +1271,7 @@ class Character:
                                   on_person = new_on_person,
                                   location = new_location,
                                   notes = new_notes)
-        self.equipment.append(new_equipment)
+        self.equipment[new_equipment.uuid] = new_equipment
         return new_equipment
 
     # Add a new attack to the character; supports either named 
@@ -1467,7 +1316,7 @@ class Character:
                             range_ = new_range,
                             notes = new_notes,
                             misc = new_misc)
-        self.attacks.append(new_attack)
+        self.attacks[new_attack.uuid] = new_attack
         return new_attack
 
     # Add new armor to the character; supports either named arguments 
@@ -1495,7 +1344,7 @@ class Character:
                           max_dex_bonus = new_max_dex_bonus,
                           arcane_failure_chance = new_arcane_failure_chance,
                           type_ = new_type)
-        self.armor.append(new_armor)
+        self.armor[new_armor.uuid] = new_armor
         return new_armor
 
     # Add new spell to the character; supports either named arguments 
@@ -1520,44 +1369,44 @@ class Character:
                           description = new_description,
                           prepared = new_prepared,
                           cast = new_cast)
-        self.spells.append(new_spell)
+        self.spells[new_spell.uuid] = new_spell
         return new_spell
 
     # Delete a class by uuid
     def delete_class(self,
                      character_class):
         try:
-            self.classes.remove(character_class)
-        except ValueError as err:
-            raise ValueError("delete_class: {}".format(err))
-        return character_class
+            out = self.classes.pop(character_class.uuid)
+        except KeyError:
+            raise KeyError("delete_class: no class with uuid = '{}' found".format(character_class.uuid))
+        return out
 
     # Delete a feat
     def delete_feat(self,
                     feat):
         try:
-            self.feats.remove(feat)
-        except ValueError as err:
-            raise ValueError("delete_feat: {}".format(err))
-        return feat
+            out = self.feats.pop(feat.uuid)
+        except KeyError:
+            raise KeyError("delete_feat: no feat with uuid = '{}' found".format(feat.uuid))
+        return out
 
     # Delete a trait
     def delete_trait(self,
                      trait):
         try:
-            self.traits.remove(trait)
-        except ValueError as err:
-            raise ValueError("delete_trait: {}".format(err))
-        return trait
+            out = self.traits.pop(trait.uuid)
+        except KeyError:
+            raise KeyError("delete_trait: no trait with uuid = '{}' found".format(trait.uuid))
+        return out
 
     # Delete a special
     def delete_special(self,
                        special):
         try:
-            self.specials.remove(special)
-        except ValueError as err:
-            raise ValueError("delete_special: {}".format(err))
-        return special
+            out = self.specials.pop(special.uuid)
+        except KeyError:
+            raise KeyError("delete_special: no special with uuid = '{}' found".format(special.uuid))
+        return out
 
     # Delete a skill by uuid
     #
@@ -1571,46 +1420,46 @@ class Character:
         if all([n not in skill.name for n in deletable_skills]):
             raise ValueError("delete_skill: {} not able to be deleted".format(skill.name))
         try:
-            self.skills.remove(skill)
-        except ValueError as err:
-            raise ValueError("delete_skill: {}".format(err))
-        return skill
+            out = self.skills.pop(skill.uuid)
+        except KeyError:
+            raise KeyError("delete_skill: no skill with uuid = '{}' found".format(skill.uuid))
+        return out
 
     # Delete a piece of equipment
     def delete_equipment(self,
                          equipment):
         try:
-            self.equipment.remove(equipment)
-        except ValueError as err:
-            raise ValueError("delete_equipment: {}".format(err))
-        return equipment
+            out = self.equipment.pop(equipment.uuid)
+        except KeyError:
+            raise KeyError("delete_equipment: no equipment with uuid = '{}' found".format(equipment.uuid))
+        return out
 
     # Delete an attack by uuid
     def delete_attack(self,
                       attack):
         try:
-            self.attacks.remove(attack)
-        except ValueError as err:
-            raise ValueError("delete_attack: {}".format(err))
-        return attack
+            out = self.attacks.pop(attack.uuid)
+        except KeyError:
+            raise KeyError("delete_attack: no attack with uuid = '{}' found".format(attack.uuid))
+        return out
 
     # Delete a piece of armor by uuid
     def delete_armor(self,
                      armor):
         try:
-            self.armor.remove(armor)
-        except ValueError as err:
-            raise ValueError("delete_armor: {}".format(err))
-        return armor
+            out = self.armor.pop(armor.uuid)
+        except KeyError:
+            raise KeyError("delete_armor: no armor with uuid = '{}' found".format(armor.uuid))
+        return out
 
     # Delete a spell by uuid
     def delete_spell(self,
                      spell):
         try:
-            self.spells.remove(spell)
-        except ValueError as err:
-            raise ValueError("delete_spell: {}".format(err))
-        return spell
+            out = self.spells.pop(spell.uuid)
+        except KeyError:
+            raise KeyError("delete_spell: no spell with uuid = '{}' found".format(spell.uuid))
+        return out
 
     # Set items' "on_person" flags to False if they are also flagged 
     # as "camp" items.
